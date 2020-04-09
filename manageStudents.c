@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 /**
  * defines the max length for each field of the user input.
@@ -27,7 +28,12 @@ int gStopFlag = 0;
 int gStudentCounter = 0;
 Student gStudentList[MAX_STUDENT_NUM];
 
-int checkIfNum();
+/**
+ * predeclared method for checking if a given string is a number.
+ */
+int checkIfNum(char *input);
+int checkID(char *id);
+int checkName(char *name);
 
 /**
  * This function checks that all given fields are legal.
@@ -35,13 +41,33 @@ int checkIfNum();
  */
 int checkInput(char* id, char* name, char* grade, char* age, char* country, char* city)
 {
-    int checkVal = checkIfNum();
-    if((checkVal == 0) || (strlen(id) != 10) || (id[0] == 0)) //means we found letters in the id.
-    {
-        printf("ERROR: ID can only contain exactly 10 digits and the first digit must not be 0,"
-               " in line %d\n", gStudentCounter);
-    }
+
+    checkID(id); // checks if id is legal, otherwise returns 0.
+    checkName(name);
     return 0;
+}
+
+/**
+ * checks if a given name contains only the allowed characters.
+ * @param name - name to check.
+ * @return - 0 if an illegal character was found, 1 if name is legal.
+ */
+int checkName(char *name)
+{
+    for(int j = 0; j < strlen(name); j++)
+    {
+        if((name[j] == 32) || (name[j] == 45) || (isalpha(name[j])))
+        {
+            continue; // the values are legal.
+        }
+        else // found illegal value in the name.
+        {
+            printf("ERROR: a name may only contain letter - both lower and upper case, "
+                   "spaces and '-'. in line %d\n", gStudentCounter);
+            return 0;
+        }
+    }
+    return 1;
 }
 
 /**
@@ -57,6 +83,23 @@ int checkIfNum(char* input)
         {
             return 0;
         }
+    }
+    return 1;
+}
+
+/**
+ * checks if a given ID upholds all demands.
+ * @param id ID to check.
+ * @return 1 if the ID is legal 0 otherwise, also prints relevent informative error message.
+ */
+int checkID(char* id)
+{
+    int checkVal = checkIfNum(id);
+    if((checkVal == 0) || (strlen(id) != 10) || ((int)id[0] == 48))
+    {
+        printf("ERROR: ID can only contain exactly 10 digits and the first digit must not be 0,"
+               " in line %d\n", gStudentCounter);
+        return 0;
     }
     return 1;
 }
