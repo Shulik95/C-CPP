@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 /**
  * defines the max length for each field of the user input.
@@ -28,24 +29,6 @@ int gStopFlag = 0;
 int gStudentCounter = 0;
 Student gStudentList[MAX_STUDENT_NUM];
 
-/**
- * predeclared method for checking if a given string is a number.
- */
-int checkIfNum(char *input);
-int checkID(char *id);
-int checkName(char *name);
-
-/**
- * This function checks that all given fields are legal.
- * @return 1 if an illegal input was found, 0 otherwise.
- */
-int checkInput(char* id, char* name, char* grade, char* age, char* country, char* city)
-{
-
-    checkID(id); // checks if id is legal, otherwise returns 0.
-    checkName(name);
-    return 0;
-}
 
 /**
  * checks if a given name contains only the allowed characters.
@@ -70,6 +53,7 @@ int checkName(char *name)
     return 1;
 }
 
+
 /**
  * checks if a given input string contains only number.
  * @param input - a given string.
@@ -86,6 +70,7 @@ int checkIfNum(char* input)
     }
     return 1;
 }
+
 
 /**
  * checks if a given ID upholds all demands.
@@ -104,6 +89,40 @@ int checkID(char* id)
     return 1;
 }
 
+
+/**
+ * checks if the given grade is legal.
+ * @param grade
+ * @return 1 if the grade is legal, 0 otherwise.
+ */
+int checkGrade(char* grade)
+{
+    char *remain;
+    long int convertedGrade = strtol(grade, &remain, 10); // convert str into a long.
+    if(convertedGrade > 100 || convertedGrade < 0)
+    {
+        printf("Error: grade may only contain integer from 0 to a 100, including. "
+               "in line %d\n", gStudentCounter);
+        return 0;
+    }
+    return 1;
+}
+
+
+/**
+ * This function checks that all given fields are legal.
+ * @return 1 if an illegal input was found, 0 otherwise.
+ */
+int checkInput(char* id, char* name, char* grade, char* age, char* country, char* city)
+{
+
+    checkID(id); // checks if id is legal, otherwise returns 0.
+    checkName(name);
+    checkGrade(grade);
+    return 0;
+}
+
+
 /**
  * the main running function for getting the best student, receives input, calls needed methods to
  * check legality and returns the student if such exits.
@@ -121,7 +140,6 @@ void getBestStudent()
         sscanf(input, "%[^,], %[^,], %[^,], %[^,], %[^,], %[^\n]", id, name, grade,
                 age, country, city);
         gStudentCounter++;
-
         if(quit == id[0])
         {
             gStopFlag = 1; //change the flag to stop gathering data.
