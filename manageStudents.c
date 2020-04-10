@@ -27,9 +27,9 @@ const int maxAge = 120;
  * a Student struct, enveloping all relevant student information.
  */
 typedef struct Student{
-    double ID;
+    long ID;
     long int grade, age;
-    char name[MAX_FIELD_LEN], country[MAX_FIELD_LEN], city[MAX_FIELD_LEN];
+    char name[MAX_FIELD_LEN+1], country[MAX_FIELD_LEN], city[MAX_FIELD_LEN];
     long int counter;
 }Student;
 
@@ -231,8 +231,15 @@ void getBestStudent(){
                     country, city);
             if(legalCheck(id, grade, age, name, country, city) == LEGAL_INPUT)
             {
-                
-                Student tempStu = {.ID};
+                char *remain;
+                long tempID = strtol(id, &remain, 10);
+                long int tempGrade = strtol(grade, &remain, 10);
+                long int tempAge = strtol(age, &remain, 10);
+                Student tempStu = {.ID = tempID, .counter = gStudentCounter,
+                                   .grade = tempGrade, .age = tempAge};
+                strcpy(tempStu.name, name);
+                strcpy(tempStu.country, country);
+                strcpy(tempStu.city, city);
             }
         }
     }
