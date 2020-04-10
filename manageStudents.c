@@ -141,14 +141,71 @@ int checkAge(char age[MAX_FIELD_LEN])
 }
 
 /**
+ * checks if a given string contain only letters or '-'.
+ * @param string - string to check.
+ * @return return 1 if the string is legal, 0 otherwise.
+ */
+int checkString(char *string)
+{
+    for(int i = 0; i < strlen(string); i++)
+    {
+        if((isalpha(string[i]) != 0) || (string[i] == 45))
+        {
+            continue;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/**
+ * checks if the given country value is legal.
+ * @param country - value to check.
+ * @return 1 if the given value is legal, 0 otherwise.
+ */
+int checkCountry(char country[MAX_FIELD_LEN])
+{
+    if(checkString(country))
+    {
+        return 1;
+    }
+    else
+    {
+        printf("ERROR: country may only contain lower and upper case letters and '-'."
+               " in line %d\n", glineCounter);
+        return 0;
+    }
+}
+
+/**
+ * checks if the given city is legal.
+ * @param country - value to check.
+ * @return 1 if the value is lega, 0 otherwise.
+ */
+int checkCity(char city[MAX_FIELD_LEN])
+{
+    if(checkString(city))
+    {
+        return 1;
+    }
+    printf("ERROR: city may only contain lower and upper case letters and '-'."
+           " in line %d\n", glineCounter);
+    return 0;
+}
+
+/**
  * calls all helper function which check legality of given input fields.
  * @return returns 6(1 for each input field) if all input fields are legal. another integer
  * otherwise.
  */
 int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
         char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
-        {
-    return idCheck(id) + nameCheck(name) + checkGrade(grade) + checkAge(age);
+{
+    return idCheck(id) + nameCheck(name) + checkGrade(grade) + checkAge(age) +
+    checkCountry(country) + checkCity(city);
 }
 
 
@@ -157,8 +214,8 @@ int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_F
  * student.
  */
 void getBestStudent(){
-    char grade[MAX_FIELD_LEN], age[MAX_FIELD_LEN];
-    char id[MAX_FIELD_LEN], name[MAX_FIELD_LEN], country[MAX_FIELD_LEN], city[MAX_FIELD_LEN], input[MAX_LINE_LEN],
+    char grade[MAX_FIELD_LEN], age[MAX_FIELD_LEN], id[MAX_FIELD_LEN], name[MAX_FIELD_LEN],
+    country[MAX_FIELD_LEN], city[MAX_FIELD_LEN], input[MAX_LINE_LEN],
     temp;
     while(1) {
         printf("Enter student info.  To exit press q, then enter\n");
@@ -172,10 +229,10 @@ void getBestStudent(){
         {
             sscanf(input, "%[^,], %[^,], %[^,], %[^,], %[^,], %[^\n]", id, name, grade, age,
                     country, city);
-            printf("grade is %s and age is %s\n", grade, age);
             if(legalCheck(id, grade, age, name, country, city) == LEGAL_INPUT)
             {
-
+                
+                Student tempStu = {.ID};
             }
         }
     }
