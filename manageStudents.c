@@ -10,7 +10,7 @@
 /**
  * max length for given input
  */
-#define MAX_LINE_LEN 60
+#define MAX_LINE_LEN 100
 #define MAX_STUDENT_NUM 5500
 #define LEGAL_INPUT 6
 #define BEST "best"
@@ -26,10 +26,11 @@ const int maxAge = 120;
 /**
  * a Student struct, enveloping all relevant student information.
  */
-typedef struct Student{
+typedef struct Student
+{
     long ID;
     long int grade, age;
-    char name[MAX_FIELD_LEN+1], country[MAX_FIELD_LEN], city[MAX_FIELD_LEN];
+    char name[MAX_FIELD_LEN], country[MAX_FIELD_LEN], city[MAX_FIELD_LEN];
     long int counter;
 }Student;
 
@@ -57,8 +58,9 @@ int digitNum(long num)
  * @param input
  * @return 1 if input is a number, 0 otherwise.
  */
-int checkIfNum(const char input[MAX_FIELD_LEN]){
-    for(int i = 0; i < strlen(input); i++)
+int checkIfNum(const char input[MAX_FIELD_LEN])
+{
+    for(unsigned int i = 0; i < strlen(input); i++)
     {
         if((input[i] < 48) || (input[i] > 57))
         {
@@ -89,12 +91,13 @@ int idCheck(char id[MAX_FIELD_LEN])
 
 int nameCheck(char name[MAX_FIELD_LEN])
 {
-    for(int i = 0; i < strlen(name); i++)
+    for(unsigned int i = 0; i < strlen(name); i++)
     {
         if ((isalpha(name[i]) != 0) || (name[i] == 32) || (name[i] == 45))
         {
             continue;
-        } else
+        }
+        else
         {
             printf("ERROR: a name may only contain letter - both lower and upper case, "
                    "spaces and '-'. in line %d\n", glineCounter);
@@ -147,7 +150,7 @@ int checkAge(char age[MAX_FIELD_LEN])
  */
 int checkString(char *string)
 {
-    for(int i = 0; i < strlen(string); i++)
+    for(unsigned int i = 0; i < strlen(string); i++)
     {
         if((isalpha(string[i]) != 0) || (string[i] == 45))
         {
@@ -202,10 +205,35 @@ int checkCity(char city[MAX_FIELD_LEN])
  * otherwise.
  */
 int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
-        char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
+                char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
 {
     return idCheck(id) + nameCheck(name) + checkGrade(grade) + checkAge(age) +
     checkCountry(country) + checkCity(city);
+}
+
+/**
+ * finds the best grade/age ratio for each student on the list.
+ * @return
+ */
+long findBestRatio()
+{
+    if(gStudentCounter == 0) // no legal values were given, do nothing like shimon said
+    {
+        return 0;
+    }
+    long bestIndex = 0;
+    double bestRatio = 0;
+    for(int i = 0; i < gStudentCounter; i++)
+    {
+        Student temp = gStudentList[i];
+        double tempRatio = (double)temp.grade / (double)temp.age;
+        if(tempRatio > bestRatio)
+        {
+            bestIndex = temp.counter;
+            bestRatio = tempRatio;
+        }
+    }
+    return bestIndex;
 }
 
 
@@ -213,16 +241,19 @@ int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_F
  * read the input given by user, call relevant function to check input legality and return best
  * student.
  */
-void getBestStudent(){
+void getBestStudent()
+{
     char grade[MAX_FIELD_LEN], age[MAX_FIELD_LEN], id[MAX_FIELD_LEN], name[MAX_FIELD_LEN],
     country[MAX_FIELD_LEN], city[MAX_FIELD_LEN], input[MAX_LINE_LEN],
     temp;
-    while(1) {
-        printf("Enter student info.  To exit press q, then enter\n");
+    while(1)
+    {
+        printf("Enter student info. To exit press q, then enter\n");
         fgets(input, MAX_LINE_LEN, stdin);
         glineCounter++;
         sscanf(input, "%c", &temp);
-        if (temp == quit) { // user is done giving input.
+        if (temp == quit)
+        { // user is done giving input.
             break;
         }
         else
@@ -235,23 +266,38 @@ void getBestStudent(){
                 long tempID = strtol(id, &remain, 10);
                 long int tempGrade = strtol(grade, &remain, 10);
                 long int tempAge = strtol(age, &remain, 10);
-                Student tempStu = {.ID = tempID, .counter = gStudentCounter,
-                                   .grade = tempGrade, .age = tempAge};
+                Student tempStu = {.ID = tempID, .counter = gStudentCounter, .grade = tempGrade, .age = tempAge};
                 strcpy(tempStu.name, name);
                 strcpy(tempStu.country, country);
                 strcpy(tempStu.city, city);
+                gStudentList[gStudentCounter] = tempStu; // assign student into list.
+                gStudentCounter++;
             }
         }
     }
-
+    long bestStudentIndex = findBestRatio();
+    Student bestStudent = gStudentList[bestStudentIndex];
+    printf("best student info is: %ld,%s,%ld,%ld,%s,%s\n", bestStudent.ID, bestStudent.name,
+            bestStudent.grade, bestStudent.age, bestStudent.country, bestStudent.city);
 }
-
-
 
 int main(int argc, char* argv[])
 {
-    if(strcmp(BEST,argv[1]) == 0){
+    if(argc == 1) //no arguments were given
+    {
+        return 0;
+    }
+    if(strcmp(BEST,argv[1]) == 0)
+    {
         getBestStudent();
+    }
+    else if(strcmp(MERGE,argv[1]) == 0)
+    {
+
+    }
+    else if(strcmp(QUICK, argv[1]) == 0)
+    {
+
     }
     return 0;
 }
