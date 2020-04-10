@@ -82,8 +82,8 @@ int idCheck(char id[MAX_FIELD_LEN])
     sscanf(id, "%li", &converted);
     if((id[0] == 48) || (checkIfNum(id) == 0) || (digitNum(converted) != 10))
     {
-        printf("ERROR: ID can only contain exactly 10 digits and the first digit must not be 0,"
-               " in line %d\n", glineCounter);
+        printf("ERROR: info must match specified format\n"
+               "in line %d\n", glineCounter);
         return 0; //first number is 0;
     }
     return 1;
@@ -100,7 +100,7 @@ int nameCheck(char name[MAX_FIELD_LEN])
         else
         {
             printf("ERROR: a name may only contain letter - both lower and upper case, "
-                   "spaces and '-'. in line %d\n", glineCounter);
+                   "spaces and '-'.\n in line %d\n", glineCounter);
             return 0;
         }
     }
@@ -118,7 +118,7 @@ int checkGrade(char grade[MAX_FIELD_LEN])
     sscanf(grade, "%li", &converted);
     if(converted < minGrade || converted > maxGrade || checkIfNum(grade) == 0)
     {
-        printf("ERROR: grade may only be an integer from 0 to 100, including. "
+        printf("ERROR: grade may only be an integer from 0 to 100, including.\n "
                "in line %d\n", glineCounter);
         return 0;
     }
@@ -136,7 +136,7 @@ int checkAge(char age[MAX_FIELD_LEN])
     sscanf(age, "%li", &converted);
     if(converted < minAge || converted > maxAge || checkIfNum(age) == 0)
     {
-        printf("ERROR: age may only be an integer from 18 to 120, including. "
+        printf("ERROR: age may only be an integer from 18 to 120, including.\n "
                "in line %d\n", glineCounter);
         return 0;
     }
@@ -177,8 +177,8 @@ int checkCountry(char country[MAX_FIELD_LEN])
     }
     else
     {
-        printf("ERROR: country may only contain lower and upper case letters and '-'."
-               " in line %d\n", glineCounter);
+        printf("ERROR: country may only contain lower and upper case letters and '-'\n."
+               "in line %d\n", glineCounter);
         return 0;
     }
 }
@@ -194,8 +194,8 @@ int checkCity(char city[MAX_FIELD_LEN])
     {
         return 1;
     }
-    printf("ERROR: city may only contain lower and upper case letters and '-'."
-           " in line %d\n", glineCounter);
+    printf("ERROR: city may only contain lower and upper case letters and '-'.\n"
+           "in line %d\n", glineCounter);
     return 0;
 }
 
@@ -207,8 +207,31 @@ int checkCity(char city[MAX_FIELD_LEN])
 int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
                 char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
 {
-    return idCheck(id) + nameCheck(name) + checkGrade(grade) + checkAge(age) +
-    checkCountry(country) + checkCity(city);
+    if(!idCheck(id))
+    {
+        return 0;
+    }
+    if(!nameCheck(name))
+    {
+        return 0;
+    }
+    if(!checkGrade(grade))
+    {
+        return 0;
+    }
+    if(!checkCountry(country))
+    {
+        return 0;
+    }
+    if(!checkAge(age))
+    {
+        return 0;
+    }
+    if(!checkCity(city))
+    {
+        return 0;
+    }
+    return LEGAL_INPUT;
 }
 
 /**
@@ -250,7 +273,6 @@ void getBestStudent()
     {
         printf("Enter student info. To exit press q, then enter\n");
         fgets(input, MAX_LINE_LEN, stdin);
-        glineCounter++;
         sscanf(input, "%c", &temp);
         if (temp == quit)
         { // user is done giving input.
@@ -273,31 +295,41 @@ void getBestStudent()
                 gStudentList[gStudentCounter] = tempStu; // assign student into list.
                 gStudentCounter++;
             }
+            glineCounter++;
         }
     }
-    long bestStudentIndex = findBestRatio();
-    Student bestStudent = gStudentList[bestStudentIndex];
-    printf("best student info is: %ld,%s,%ld,%ld,%s,%s\n", bestStudent.ID, bestStudent.name,
-            bestStudent.grade, bestStudent.age, bestStudent.country, bestStudent.city);
+    if(gStudentCounter != 0)
+    {
+        long bestStudentIndex = findBestRatio();
+        Student bestStudent = gStudentList[bestStudentIndex];
+        printf("best student info is: %ld,%s,%ld,%ld,%s,%s\n", bestStudent.ID, bestStudent.name,
+               bestStudent.grade, bestStudent.age, bestStudent.country, bestStudent.city);
+    }
 }
 
 int main(int argc, char* argv[])
 {
-    if(argc == 1) //no arguments were given
+    if(argc == 1 || argc > 2) //no arguments/to many arguments were given.
+    {
+        return 1;
+    }
+
+    if(strcmp(BEST, argv[1]) == 0)
+    {
+        getBestStudent();
+        return 0;
+    }
+    else if(strcmp(MERGE, argv[1]) == 0)
     {
         return 0;
     }
-    if(strcmp(BEST,argv[1]) == 0)
-    {
-        getBestStudent();
-    }
-    else if(strcmp(MERGE,argv[1]) == 0)
-    {
-
-    }
     else if(strcmp(QUICK, argv[1]) == 0)
     {
-
+        return 0;
     }
-    return 0;
+    else // the input doesnt fit any of the options.
+    {
+        printf("USAGE: illegal input, choose between best, merge or quick\n");
+        return 1;
+    }
 }
