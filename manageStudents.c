@@ -27,65 +27,74 @@ const int maxAge = 120;
  * a Student struct, enveloping all relevant student information.
  */
 typedef struct Student{
-    char ID[MAX_FIELD_LEN];
+    double ID;
     long int grade, age;
     char name[MAX_FIELD_LEN], country[MAX_FIELD_LEN], city[MAX_FIELD_LEN];
     long int counter;
 }Student;
 
-
 int gStudentCounter = 0;
 int glineCounter = 0;
 Student gStudentList[MAX_STUDENT_NUM];
 
+
 /**
- * checks if a given input string contains only number.
- * @param input - a given string.
- * @return - 0 if string contains anything but numbers, else 1.
+ * returns the number of digits in a given integer.
  */
-int checkIfNum(char input[])
+int digitNum(long num)
 {
+    int counter = 0;
+    do
+    {
+        counter++;
+        num /= 10;
+    }while(num != 0);
+    return counter;
+}
+
+/**
+ * checks if given input contains onlu numbers.
+ * @param input
+ * @return 1 if input is a number, 0 otherwise.
+ */
+int checkIfNum(const char input[MAX_FIELD_LEN]){
     for(int i = 0; i < strlen(input); i++)
     {
-        if(input[i] < 48 || input[i] > 57) //ascii code for integers.
+        if((input[i] < 48) || (input[i] > 57))
         {
-            return 0;
+            return 0; //char is not a digit.
         }
     }
     return 1;
 }
 
+
 /**
- * checks if a given ID upholds all demands.
- * @param id ID to check.
- * @return 1 if the ID is legal 0 otherwise, also prints relevent informative error message.
+ * checks if id is a 10 digit number that doesnt start with a 0.
+ * @param id - input to check.
+ * @return - 1 if input is legal, 0 otherwise.
  */
-int checkID(char id[])
+int idCheck(char id[MAX_FIELD_LEN])
 {
-    int checkVal = checkIfNum(id);
-    if((checkVal == 0) || (strlen(id) != 10) || ((int)id[0] == 48))
+    long int converted = 0;
+    sscanf(id, "%li", &converted);
+    if((id[0] == 48) || (checkIfNum(id) == 0) || (digitNum(converted) != 10))
     {
         printf("ERROR: ID can only contain exactly 10 digits and the first digit must not be 0,"
                " in line %d\n", glineCounter);
-        return 0;
+        return 0; //first number is 0;
     }
     return 1;
 }
 
-/**
- * checks if a given name contains only the allowed characters.
- * @param name - name to check.
- * @return - 0 if an illegal character was found, 1 if name is legal.
- */
-int checkName(char name[])
+int nameCheck(char name[MAX_FIELD_LEN])
 {
-    for(int j = 0; j < strlen(name); j++)
+    for(int i = 0; i < strlen(name); i++)
     {
-        if((name[j] == 32) || (name[j] == 45) || (isalpha(name[j]) != 0))
+        if ((isalpha(name[i]) != 0) || (name[i] == 32) || (name[i] == 45))
         {
-            continue; // the values are legal.
-        }
-        else // found illegal value in the name.
+            continue;
+        } else
         {
             printf("ERROR: a name may only contain letter - both lower and upper case, "
                    "spaces and '-'. in line %d\n", glineCounter);
@@ -100,11 +109,11 @@ int checkName(char name[])
  * @param grade
  * @return 1 if the grade is legal, 0 otherwise.
  */
-int checkGrade(char grade[])
+int checkGrade(char grade[MAX_FIELD_LEN])
 {
-    char *remain;
-    long int convertedGrade = strtol(grade, &remain, 10); // convert str into a long.
-    if(convertedGrade > maxGrade || convertedGrade < minGrade)
+    long int converted = 0;
+    sscanf(grade, "%li", &converted);
+    if(converted < minGrade || converted > maxGrade || checkIfNum(grade) == 0)
     {
         printf("ERROR: grade may only be an integer from 0 to 100, including. "
                "in line %d\n", glineCounter);
@@ -118,121 +127,62 @@ int checkGrade(char grade[])
  * @param age
  * @return 1 if the given value is legal, 0 otherwise.
  */
-int checkAge(char age[])
+int checkAge(char age[MAX_FIELD_LEN])
 {
-    char *remain;
-    long int convertedAge = strtol(age, &remain, 10);
-    if(convertedAge < minAge || convertedAge > maxAge)
+    long int converted = 0;
+    sscanf(age, "%li", &converted);
+    if(converted < minAge || converted > maxAge || checkIfNum(age) == 0)
     {
-        printf("ERROR: age may only be an integer between 18 to 120."
-               " in line %d\n", glineCounter);
+        printf("ERROR: age may only be an integer from 18 to 120, including. "
+               "in line %d\n", glineCounter);
         return 0;
     }
     return 1;
 }
 
 /**
- * checks if a given string contain only letters or '-'.
- * @param string - string to check.
- * @return return 1 if the string is legal, 0 otherwise.
+ * calls all helper function which check legality of given input fields.
+ * @return returns 6(1 for each input field) if all input fields are legal. another integer
+ * otherwise.
  */
-int checkString(char input[])
-{
-    for(int i = 0; i < strlen(input); i++)
-    {
-        if((isalpha(input[i]) != 0) || (input[i] == 45))
+int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
+        char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
         {
-            continue;
+    return idCheck(id) + nameCheck(name) + checkGrade(grade) + checkAge(age);
+}
+
+
+/**
+ * read the input given by user, call relevant function to check input legality and return best
+ * student.
+ */
+void getBestStudent(){
+    char grade[MAX_FIELD_LEN], age[MAX_FIELD_LEN];
+    char id[MAX_FIELD_LEN], name[MAX_FIELD_LEN], country[MAX_FIELD_LEN], city[MAX_FIELD_LEN], input[MAX_LINE_LEN],
+    temp;
+    while(1) {
+        printf("Enter student info.  To exit press q, then enter\n");
+        fgets(input, MAX_LINE_LEN, stdin);
+        glineCounter++;
+        sscanf(input, "%c", &temp);
+        if (temp == quit) { // user is done giving input.
+            break;
         }
         else
         {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-/**
- * checks if the given country value is legal.
- * @param country - value to check.
- * @return 1 if the given value is legal, 0 otherwise.
- */
-int checkCountry(char country[])
-{
-    if(checkString(country))
-    {
-        return 1;
-    }
-    printf("ERROR: country may only contain lower and upper case letters and '-'."
-           " in line %d\n", glineCounter);
-    return 0;
-}
-
-/**
- * checks if the given city is legal.
- * @param country - value to check.
- * @return 1 if the value is lega, 0 otherwise.
- */
-int checkCity(char city[])
-{
-    if(checkString(city))
-    {
-        return 1;
-    }
-    printf("ERROR: city may only contain lower and upper case letters and '-'."
-           " in line %d\n", glineCounter);
-    return 0;
-}
-
-/**
- * This function checks that all given fields are legal.
- * @return 1 if an illegal input was found, 0 otherwise.
- */
-int checkInput(char name[], char id[], char city[], char country[], char age[], char grade[])
-{
-    return checkID(id) + checkName(name) + checkGrade(grade) + checkAge(age) +
-           checkCountry(country) + checkCity(city);
-}
-
-/**
- * read the input given by the user and returns best student info if such exists.
- */
-void getBestStudent()
-{
-    int stopFlag = 0;
-    while(stopFlag == 0) //user still gives input.
-    {
-        char input[MAX_LINE_LEN], city[MAX_FIELD_LEN], country[MAX_FIELD_LEN], name[MAX_FIELD_LEN],
-        id[MAX_FIELD_LEN], grade[MAX_FIELD_LEN], age[MAX_FIELD_LEN], temp;
-
-        printf("Enter student info.  To exit press q, then enter\n");
-
-        fgets(input, MAX_LINE_LEN, stdin); // get info from user.
-        glineCounter++;
-        if(strlen(input) == 1)
-        {
-            sscanf(input, "%c", &temp);
-            if(temp == quit)
+            sscanf(input, "%[^,], %[^,], %[^,], %[^,], %[^,], %[^\n]", id, name, grade, age,
+                    country, city);
+            printf("grade is %s and age is %s\n", grade, age);
+            if(legalCheck(id, grade, age, name, country, city) == LEGAL_INPUT)
             {
-                stopFlag = 1; // stop the loop.
-                continue;
+
             }
         }
-        sscanf(input, "%[^,], %[^,], %[^,], %[^,], %[^,], %[^,]",
-                id, name, grade, age, country, city);
-        if(checkInput(id, name, grade, age, country, city) == LEGAL_INPUT)
-        {
-            char *remain;
-            long int tempGrade = strtol(grade, &remain, 10);
-            long int tempAge = strtol(grade, &remain, 10);
-            Student tempStudent = {.name = (char)name, .ID = (char)id, .grade = tempGrade,
-                                   .age = tempAge, .country = (char)country, .city = (char)city,
-                                   .counter = gStudentCounter};
-            gStudentList[gStudentCounter] = tempStudent;
-            gStudentCounter++;
-        }
     }
+
 }
+
+
 
 int main(int argc, char* argv[])
 {
