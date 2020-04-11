@@ -371,8 +371,22 @@ void mergeSort(Student studentArray[], int left, int right)
     }
 }
 
-
-
+/**
+ * sorts students by grade using mergeSort and prints their info.
+ */
+void sortByGrade()
+{
+    int left = 0, right;
+    readStudents();
+    right = gStudentCounter;
+    mergeSort(gStudentList, left, right);
+    for(int i = 0; i < gStudentCounter; i++)
+    {
+        Student currStudent = gStudentList[i];
+        printf("%ld,%s,%ld,%ld,%s,%s\n", currStudent.ID, currStudent.name,
+               currStudent.grade, currStudent.age, currStudent.country, currStudent.city);
+    }
+}
 
 int main(int argc, char* argv[])
 {
@@ -388,6 +402,7 @@ int main(int argc, char* argv[])
     }
     else if(strcmp(MERGE, argv[1]) == 0) //sort according to grades.
     {
+        sortByGrade();
         return 0;
     }
     else if(strcmp(QUICK, argv[1]) == 0) // sort alphabetically by name.
