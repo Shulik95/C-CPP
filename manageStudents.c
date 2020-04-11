@@ -388,6 +388,57 @@ void sortByGrade()
     }
 }
 
+/**
+ * swaps between two students on the list according to given indices.
+ * @param index1 - index of the 1st student.
+ * @param index2 - index of the 2nd student.
+ */
+void studentSwap(int index1, int index2)
+{
+    Student temp = gStudentList[index1];
+    gStudentList[index1] = gStudentList[index2];
+    gStudentList[index2] = temp;
+}
+
+/**
+ * chooses a pivot and sets it in its final place in the sorted array where all lesser items are
+ * on the left and greater on the right.
+ * @param studentArr - array to sort.
+ * @param low - starting index.
+ * @param high - sort all the way to this index.
+ */
+int partition(Student studentArr[], int low, int high)
+{
+    int mid = (high + low) / 2;
+    Student pivot = studentArr[mid];
+    int lesser = low - 1; //index of a student which appears before the pivot
+    for(int i = 0; i < high; i ++)
+    {
+        if(strcmp(pivot.name, studentArr[i].name) > 0)
+        {
+            lesser++; // update number of students that appear before pivot.
+            studentSwap(mid, i); //pivot appears after current student, put him to the left.
+        }
+    }
+    studentSwap(mid, lesser + 1);
+    return (lesser + 1); // final index of the current pivot.
+}
+
+/**
+ * @param studentArr - array to sort.
+ * @param low - sort from this index.
+ * @param high  sort to this index.
+ */
+void quickSort(Student studentArr[], int low, int high)
+{
+    if(low < high)
+    {
+        int partIndex = partition(studentArr, low, high); // the item at the given index is at place so we split around.
+        quickSort(studentArr, low, partIndex - 1);
+        quickSort(studentArr,partIndex - 1, high);
+    }
+}
+
 int main(int argc, char* argv[])
 {
     if(argc == 1 || argc > 2) //no arguments/to many arguments were given.
