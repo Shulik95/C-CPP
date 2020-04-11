@@ -82,7 +82,7 @@ int idCheck(char id[MAX_FIELD_LEN])
     sscanf(id, "%li", &converted);
     if((id[0] == 48) || (checkIfNum(id) == 0) || (digitNum(converted) != 10))
     {
-        printf("ERROR: info must match specified format\n"
+        printf("ERROR: id must be exactly 10 digits and may not start with a 0\n"
                "in line %d\n", glineCounter);
         return 0; //first number is 0;
     }
@@ -207,27 +207,8 @@ int checkCity(char city[MAX_FIELD_LEN])
 int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
                 char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
 {
-    if(!idCheck(id))
-    {
-        return 0;
-    }
-    if(!nameCheck(name))
-    {
-        return 0;
-    }
-    if(!checkGrade(grade))
-    {
-        return 0;
-    }
-    if(!checkCountry(country))
-    {
-        return 0;
-    }
-    if(!checkAge(age))
-    {
-        return 0;
-    }
-    if(!checkCity(city))
+    if(!idCheck(id) || !nameCheck(name) || !checkGrade(grade) || !checkCountry(country) || !checkAge(age) ||
+    !checkCity(city))
     {
         return 0;
     }
@@ -259,16 +240,32 @@ long findBestRatio()
     return bestIndex;
 }
 
+/**
+ * signs up student, assumes legality has been checked before.
+ */
+void signStudent(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
+                char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
+{
+    char *remain;
+    long tempID = strtol(id, &remain, 10);
+    long int tempGrade = strtol(grade, &remain, 10);
+    long int tempAge = strtol(age, &remain, 10);
+    Student tempStu = {.ID = tempID, .counter = gStudentCounter, .grade = tempGrade, .age = tempAge};
+    strcpy(tempStu.name, name);
+    strcpy(tempStu.country, country);
+    strcpy(tempStu.city, city);
+    gStudentList[gStudentCounter] = tempStu; // assign student into list.
+    gStudentCounter++;
+}
 
 /**
- * read the input given by user, call relevant function to check input legality and return best
- * student.
+ * this function takes input from the user and checks legality, if the input is legal, the student is registered.
  */
-void getBestStudent()
+void readStudents()
 {
     char grade[MAX_FIELD_LEN], age[MAX_FIELD_LEN], id[MAX_FIELD_LEN], name[MAX_FIELD_LEN],
-    country[MAX_FIELD_LEN], city[MAX_FIELD_LEN], input[MAX_LINE_LEN],
-    temp;
+            country[MAX_FIELD_LEN], city[MAX_FIELD_LEN], input[MAX_LINE_LEN],
+            temp;
     while(1)
     {
         printf("Enter student info. To exit press q, then enter\n");
@@ -281,23 +278,23 @@ void getBestStudent()
         else
         {
             sscanf(input, "%[^,], %[^,], %[^,], %[^,], %[^,], %[^\n]", id, name, grade, age,
-                    country, city);
+                   country, city);
             if(legalCheck(id, grade, age, name, country, city) == LEGAL_INPUT)
             {
-                char *remain;
-                long tempID = strtol(id, &remain, 10);
-                long int tempGrade = strtol(grade, &remain, 10);
-                long int tempAge = strtol(age, &remain, 10);
-                Student tempStu = {.ID = tempID, .counter = gStudentCounter, .grade = tempGrade, .age = tempAge};
-                strcpy(tempStu.name, name);
-                strcpy(tempStu.country, country);
-                strcpy(tempStu.city, city);
-                gStudentList[gStudentCounter] = tempStu; // assign student into list.
-                gStudentCounter++;
+                signStudent(id, grade, age, name, country, city);
             }
             glineCounter++;
         }
     }
+}
+
+/**
+ * read the input given by user, call relevant function to check input legality and return best
+ * student.
+ */
+void getBestStudent()
+{
+    readStudents();
     if(gStudentCounter != 0)
     {
         long bestStudentIndex = findBestRatio();
@@ -306,6 +303,76 @@ void getBestStudent()
                bestStudent.grade, bestStudent.age, bestStudent.country, bestStudent.city);
     }
 }
+
+/**
+ * merges 2 sorted array of size n/2 into a sorted array of size n.
+ * @param studentList - array of student structs to sort.
+ * @param left - left index to start sorting from.
+ * @param mid - right index of left array part.
+ * @param right - right index of right array part.
+ */
+void merge(Student studentList[], int left, int mid, int right)
+{
+    int i = 0, j = 0, k = left; //i&j run through arrays. k keeps track of merged index.
+    int leftArrSize = mid - left + 1;
+    int rightArrSize = right - mid;
+
+    Student leftArr[MAX_STUDENT_NUM], rightArr[MAX_STUDENT_NUM]; //init subarrays of constant size.
+    for(int l = 0; l < rightArrSize; l++)
+    {
+        rightArr[l] = studentList[mid + 1 + l]; //copy data into right array, start from m+1 cause m is in leftArray.
+    }
+    for(int p = 0; p < leftArrSize; p++)
+    {
+        leftArr[p] = studentList[left + p]; // copy data into left array
+    }
+    while((i < leftArrSize) && (j< rightArrSize)) // there are still items in both arrays.
+    {
+        if(leftArr[i].grade < rightArr[j].grade)
+        {
+            studentList[k] = leftArr[i];
+            i++;
+        }
+        else // rightArr[j].grade <= leftArr[i].grade
+        {
+            studentList[k] = rightArr[j];
+            j++;
+        }
+        k++;
+    }
+    while(j < rightArrSize) //all elements from leftArr have been inserted, insert whats left in rightArr
+    {
+        studentList[k] = rightArr[j];
+        j++;
+        k++;
+    }
+    while( i < leftArrSize) //all elements from rightArr have been inserted, insert whats left in leftArr
+    {
+        studentList[k] = leftArr[i];
+        i++;
+        k++;
+    }
+}
+
+/**
+ * sorts a given array of student structs.
+ * @param studentArray - array to sort.
+ * @param left - left index to sort from.
+ * @param right - right index to sort to.
+ */
+void mergeSort(Student studentArray[], int left, int right)
+{
+    if(left < right) // checks for base case which is array of size 1.
+    {
+        int mid = (left + right) / 2;
+        mergeSort(studentArray, left, mid);
+        mergeSort(studentArray, mid + 1, right);
+        merge(studentArray, left, mid, right);
+    }
+}
+
+
+
 
 int main(int argc, char* argv[])
 {
@@ -319,11 +386,11 @@ int main(int argc, char* argv[])
         getBestStudent();
         return 0;
     }
-    else if(strcmp(MERGE, argv[1]) == 0)
+    else if(strcmp(MERGE, argv[1]) == 0) //sort according to grades.
     {
         return 0;
     }
-    else if(strcmp(QUICK, argv[1]) == 0)
+    else if(strcmp(QUICK, argv[1]) == 0) // sort alphabetically by name.
     {
         return 0;
     }
