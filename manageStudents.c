@@ -390,14 +390,12 @@ void sortByGrade()
 
 /**
  * swaps between two students on the list according to given indices.
- * @param index1 - index of the 1st student.
- * @param index2 - index of the 2nd student.
  */
-void studentSwap(int index1, int index2)
+void studentSwap(int student1, int student2)
 {
-    Student temp = gStudentList[index1];
-    gStudentList[index1] = gStudentList[index2];
-    gStudentList[index2] = temp;
+    Student temp = gStudentList[student1];
+    gStudentList[student1] = gStudentList[student2];
+    gStudentList[student2] = temp;
 }
 
 /**
@@ -409,18 +407,17 @@ void studentSwap(int index1, int index2)
  */
 int partition(Student studentArr[], int low, int high)
 {
-    int mid = (high + low) / 2;
-    Student pivot = studentArr[mid];
-    int lesser = low - 1; //index of a student which appears before the pivot
-    for(int i = 0; i < high; i ++)
+    Student pivot = studentArr[high];
+    int lesser = (low - 1); //index of a student which appears before the pivot
+    for(int i = low; i <= high - 1; i++)
     {
-        if(strcmp(pivot.name, studentArr[i].name) > 0)
+        if(strcmp(studentArr[i].name, pivot.name) < 0)
         {
             lesser++; // update number of students that appear before pivot.
-            studentSwap(mid, i); //pivot appears after current student, put him to the left.
+            studentSwap(lesser, i); //pivot appears after current student, put him to the left.
         }
     }
-    studentSwap(mid, lesser + 1);
+    studentSwap(high, lesser + 1);
     return (lesser + 1); // final index of the current pivot.
 }
 
@@ -435,7 +432,23 @@ void quickSort(Student studentArr[], int low, int high)
     {
         int partIndex = partition(studentArr, low, high); // the item at the given index is at place so we split around.
         quickSort(studentArr, low, partIndex - 1);
-        quickSort(studentArr,partIndex - 1, high);
+        quickSort(studentArr,partIndex + 1, high);
+    }
+}
+
+/**
+ * sorts student alphabetically according to their names, then prints list.
+ */
+void sortByName()
+{
+    readStudents();
+    int high = gStudentCounter - 1;
+    quickSort(gStudentList, 0, high);
+    for(int i = 0; i < gStudentCounter; i++)
+    {
+        Student currStudent = gStudentList[i];
+        printf("%ld,%s,%ld,%ld,%s,%s\n", currStudent.ID, currStudent.name,
+               currStudent.grade, currStudent.age, currStudent.country, currStudent.city);
     }
 }
 
@@ -451,13 +464,14 @@ int main(int argc, char* argv[])
         getBestStudent();
         return 0;
     }
-    else if(strcmp(MERGE, argv[1]) == 0) //sort according to grades.
+    if(strcmp(MERGE, argv[1]) == 0) //sort according to grades.
     {
         sortByGrade();
         return 0;
     }
-    else if(strcmp(QUICK, argv[1]) == 0) // sort alphabetically by name.
+    if(strcmp(QUICK, argv[1]) == 0) // sort alphabetically by name.
     {
+        sortByName();
         return 0;
     }
     else // the input doesnt fit any of the options.
