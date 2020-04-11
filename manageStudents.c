@@ -82,7 +82,7 @@ int idCheck(char id[MAX_FIELD_LEN])
     sscanf(id, "%li", &converted);
     if((id[0] == 48) || (checkIfNum(id) == 0) || (digitNum(converted) != 10))
     {
-        printf("ERROR: id must be exactly 10 digits and may not start with a 0\n"
+        printf("ERROR: id must be a 10 digits number that does not start with 0\n"
                "in line %d\n", glineCounter);
         return 0; //first number is 0;
     }
@@ -99,8 +99,8 @@ int nameCheck(char name[MAX_FIELD_LEN])
         }
         else
         {
-            printf("ERROR: a name may only contain letter - both lower and upper case, "
-                   "spaces and '-'.\n in line %d\n", glineCounter);
+            printf("ERROR: name can only contain alphabetic characters, whitespaces or '-'\n"
+                   "in line %d\n", glineCounter);
             return 0;
         }
     }
@@ -118,7 +118,7 @@ int checkGrade(char grade[MAX_FIELD_LEN])
     sscanf(grade, "%li", &converted);
     if(converted < minGrade || converted > maxGrade || checkIfNum(grade) == 0)
     {
-        printf("ERROR: grade may only be an integer from 0 to 100, including.\n "
+        printf("ERROR: grade must be an integer between 0 and 100\n"
                "in line %d\n", glineCounter);
         return 0;
     }
@@ -136,7 +136,7 @@ int checkAge(char age[MAX_FIELD_LEN])
     sscanf(age, "%li", &converted);
     if(converted < minAge || converted > maxAge || checkIfNum(age) == 0)
     {
-        printf("ERROR: age may only be an integer from 18 to 120, including.\n "
+        printf("ERROR: age must be an integer between 18 and 120\n"
                "in line %d\n", glineCounter);
         return 0;
     }
@@ -177,7 +177,7 @@ int checkCountry(char country[MAX_FIELD_LEN])
     }
     else
     {
-        printf("ERROR: country may only contain lower and upper case letters and '-'\n."
+        printf("ERROR: country can only contain alphabetic characters or '-'\n"
                "in line %d\n", glineCounter);
         return 0;
     }
@@ -194,7 +194,7 @@ int checkCity(char city[MAX_FIELD_LEN])
     {
         return 1;
     }
-    printf("ERROR: city may only contain lower and upper case letters and '-'.\n"
+    printf("ERROR: city can only contain alphabetic characters or '-'\n"
            "in line %d\n", glineCounter);
     return 0;
 }
@@ -205,10 +205,10 @@ int checkCity(char city[MAX_FIELD_LEN])
  * otherwise.
  */
 int legalCheck(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
-                char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
+               char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
 {
     if(!idCheck(id) || !nameCheck(name) || !checkGrade(grade) || !checkCountry(country) || !checkAge(age) ||
-    !checkCity(city))
+       !checkCity(city))
     {
         return 0;
     }
@@ -244,7 +244,7 @@ long findBestRatio()
  * signs up student, assumes legality has been checked before.
  */
 void signStudent(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX_FIELD_LEN],
-                char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
+                 char name[MAX_FIELD_LEN], char country[MAX_FIELD_LEN], char city[MAX_FIELD_LEN])
 {
     char *remain;
     long tempID = strtol(id, &remain, 10);
@@ -256,6 +256,28 @@ void signStudent(char id[MAX_FIELD_LEN], char grade[MAX_FIELD_LEN], char age[MAX
     strcpy(tempStu.city, city);
     gStudentList[gStudentCounter] = tempStu; // assign student into list.
     gStudentCounter++;
+}
+
+/**
+ * checks if the format is upheld. 6 arguments separated by ','. doesnt check the args themselves!
+ * @param input - input given by user.
+ */
+int formatCheck(char input[MAX_LINE_LEN])
+{
+    int counter = 0;
+    for(unsigned int j = 0; j < strlen(input); j++)
+    {
+        if(input[j] == ',')
+        {
+            counter++;
+        }
+    }
+    if(counter != 5)
+    {
+        printf("ERROR: info must match specified format\nin line %d\n", glineCounter);
+        return 1;
+    }
+    return 0;
 }
 
 /**
@@ -275,9 +297,13 @@ void readStudents()
         { // user is done giving input.
             break;
         }
+        if(formatCheck(input)) //format is not by the format
+        {
+            continue;
+        }
         else
         {
-            sscanf(input, "%[^,], %[^,], %[^,], %[^,], %[^,], %[^\n]", id, name, grade, age,
+            sscanf(input, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]", id, name, grade, age,
                    country, city);
             if(legalCheck(id, grade, age, name, country, city) == LEGAL_INPUT)
             {
@@ -432,7 +458,7 @@ void quickSort(Student studentArr[], int low, int high)
     {
         int partIndex = partition(studentArr, low, high); // the item at the given index is at place so we split around.
         quickSort(studentArr, low, partIndex - 1);
-        quickSort(studentArr,partIndex + 1, high);
+        quickSort(studentArr, partIndex + 1, high);
     }
 }
 
@@ -456,6 +482,7 @@ int main(int argc, char* argv[])
 {
     if(argc == 1 || argc > 2) //no arguments/to many arguments were given.
     {
+        printf("USAGE: sortStudents <action>\n");
         return 1;
     }
 
@@ -476,7 +503,7 @@ int main(int argc, char* argv[])
     }
     else // the input doesnt fit any of the options.
     {
-        printf("USAGE: illegal input, choose between best, merge or quick\n");
+        printf("USAGE: sortStudents <action>\n");
         return 1;
     }
 }
