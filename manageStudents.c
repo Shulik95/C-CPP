@@ -326,7 +326,7 @@ void merge(Student studentList[], int left, int mid, int right)
     {
         leftArr[p] = studentList[left + p]; // copy data into left array
     }
-    while((i < leftArrSize) && (j< rightArrSize)) // there are still items in both arrays.
+    while((i < leftArrSize) && (j < rightArrSize)) // there are still items in both arrays.
     {
         if(leftArr[i].grade < rightArr[j].grade)
         {
@@ -376,10 +376,10 @@ void mergeSort(Student studentArray[], int left, int right)
  */
 void sortByGrade()
 {
-    int left = 0, right;
+    int right;
     readStudents();
-    right = gStudentCounter;
-    mergeSort(gStudentList, left, right);
+    right = gStudentCounter - 1; // (studentArray size) - 1
+    mergeSort(gStudentList, 0, right);
     for(int i = 0; i < gStudentCounter; i++)
     {
         Student currStudent = gStudentList[i];
