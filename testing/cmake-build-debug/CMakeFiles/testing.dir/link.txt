@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/testing.dir/main.c.o  -o testing.exe -Wl,--out-implib,libtesting.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
