@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/C_project1.dir/manageStudents.c.o  -o C_project1.exe -Wl,--out-implib,libC_project1.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
