@@ -123,32 +123,32 @@ C_project2/fast:
 	$(MAKE) -f CMakeFiles/C_project2.dir/build.make CMakeFiles/C_project2.dir/build
 .PHONY : C_project2/fast
 
-main.o: main.c.o
+RailWayPlanner.o: RailWayPlanner.c.o
 
-.PHONY : main.o
+.PHONY : RailWayPlanner.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/C_project2.dir/build.make CMakeFiles/C_project2.dir/main.c.o
-.PHONY : main.c.o
+RailWayPlanner.c.o:
+	$(MAKE) -f CMakeFiles/C_project2.dir/build.make CMakeFiles/C_project2.dir/RailWayPlanner.c.o
+.PHONY : RailWayPlanner.c.o
 
-main.i: main.c.i
+RailWayPlanner.i: RailWayPlanner.c.i
 
-.PHONY : main.i
+.PHONY : RailWayPlanner.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/C_project2.dir/build.make CMakeFiles/C_project2.dir/main.c.i
-.PHONY : main.c.i
+RailWayPlanner.c.i:
+	$(MAKE) -f CMakeFiles/C_project2.dir/build.make CMakeFiles/C_project2.dir/RailWayPlanner.c.i
+.PHONY : RailWayPlanner.c.i
 
-main.s: main.c.s
+RailWayPlanner.s: RailWayPlanner.c.s
 
-.PHONY : main.s
+.PHONY : RailWayPlanner.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/C_project2.dir/build.make CMakeFiles/C_project2.dir/main.c.s
-.PHONY : main.c.s
+RailWayPlanner.c.s:
+	$(MAKE) -f CMakeFiles/C_project2.dir/build.make CMakeFiles/C_project2.dir/RailWayPlanner.c.s
+.PHONY : RailWayPlanner.c.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... C_project2"
 	@echo "... edit_cache"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... RailWayPlanner.o"
+	@echo "... RailWayPlanner.i"
+	@echo "... RailWayPlanner.s"
 .PHONY : help
 
 

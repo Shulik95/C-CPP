@@ -57,27 +57,27 @@ include CMakeFiles/C_project2.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/C_project2.dir/flags.make
 
-CMakeFiles/C_project2.dir/main.c.o: CMakeFiles/C_project2.dir/flags.make
-CMakeFiles/C_project2.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/C_project2.dir/main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project2.dir/main.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project2/main.c
+CMakeFiles/C_project2.dir/RailWayPlanner.c.o: CMakeFiles/C_project2.dir/flags.make
+CMakeFiles/C_project2.dir/RailWayPlanner.c.o: ../RailWayPlanner.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/C_project2.dir/RailWayPlanner.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project2.dir/RailWayPlanner.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project2/RailWayPlanner.c
 
-CMakeFiles/C_project2.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project2.dir/main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project2/main.c > CMakeFiles/C_project2.dir/main.c.i
+CMakeFiles/C_project2.dir/RailWayPlanner.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project2.dir/RailWayPlanner.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project2/RailWayPlanner.c > CMakeFiles/C_project2.dir/RailWayPlanner.c.i
 
-CMakeFiles/C_project2.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project2.dir/main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project2/main.c -o CMakeFiles/C_project2.dir/main.c.s
+CMakeFiles/C_project2.dir/RailWayPlanner.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project2.dir/RailWayPlanner.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project2/RailWayPlanner.c -o CMakeFiles/C_project2.dir/RailWayPlanner.c.s
 
 # Object files for target C_project2
 C_project2_OBJECTS = \
-"CMakeFiles/C_project2.dir/main.c.o"
+"CMakeFiles/C_project2.dir/RailWayPlanner.c.o"
 
 # External object files for target C_project2
 C_project2_EXTERNAL_OBJECTS =
 
-C_project2.exe: CMakeFiles/C_project2.dir/main.c.o
+C_project2.exe: CMakeFiles/C_project2.dir/RailWayPlanner.c.o
 C_project2.exe: CMakeFiles/C_project2.dir/build.make
 C_project2.exe: CMakeFiles/C_project2.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable C_project2.exe"

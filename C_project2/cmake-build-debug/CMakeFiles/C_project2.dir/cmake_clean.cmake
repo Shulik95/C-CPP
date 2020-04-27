@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/C_project2.dir/main.c.o"
+  "CMakeFiles/C_project2.dir/RailWayPlanner.c.o"
   "C_project2.exe"
   "C_project2.pdb"
   "libC_project2.dll.a"
