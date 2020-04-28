@@ -19,7 +19,7 @@ FILE* gOutFile; //declare output file.
 /**
  * This struct holds all information relevant to one railway part.
  */
-typedef struct railWayParts
+typedef struct RailWayParts
 {
     char start, end;
     int length;
@@ -103,12 +103,69 @@ void checkJoints(char* line)
 
 /**
  *
+ * @param start
+ * @param end
+ */
+bool partCheck(const char* start,const char* end)
+{
+    /*flags which indicate if start and end parts are legal*/
+    bool foundStart = false;
+    bool foundEnd = false;
+    for( int i = 0; i < gNumOfParts; i++)
+    {
+        if(railTypes[i] == *start)//checks if starting part in part list
+        {
+            foundStart++;
+        }
+        if(railTypes[i] == *end)//checks if ending part is in part list.
+        {
+            foundEnd++;
+        }
+    }
+    if(foundEnd && foundStart)
+    {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * reads all lines
+ * @param inFile
+ */
+void saveParts(FILE *inFile) {
+    char tempLine[gMaxLineLen];
+    while(fgets(tempLine, gMaxLineLen, inFile) != NULL)
+    {
+        /*temp variable used for validity check*/
+        char* start = NULL;
+        char *end = NULL;
+        char* tempLength = NULL;
+        char* tempPrice = NULL;
+        long int length, price;
+        sscanf(tempLine, "%[^,],%[^,],%[^,],%[^\n]", start, end, tempLength, tempPrice);
+        checkIfNum(tempLength, &length);
+        checkIfNum(tempPrice, &price);
+        if(strlen(start) == 1 && strlen(end) == 1 && tempLength > 0)
+        {
+            if(!partCheck(start, end))
+            {
+                printInvalidInput();
+            }
+            Part newPart = {.start = *start, .end = *end, }; 
+        }
+
+    }
+}
+
+/**
+ *
  * @param arr
  */
 void openFile(char const *const arr) //1st const locks the values, 2nd one locks the file pointer
 {
     char tempLine[gMaxLineLen];
-    FILE* inFile = fopen(arr, "r");
+    FILE* const inFile = fopen(arr, "r");
     gOutFile = fopen("railway_planner_output.txt", "w");
     if(inFile == NULL) //failed to open file for some reason
     {
@@ -130,6 +187,8 @@ void openFile(char const *const arr) //1st const locks the values, 2nd one locks
     }
     checkJoints(tempLine);
     gLineCounter++;
+    saveParts(inFile);
+    free(railTypes);
     printf("Length is: %ld\n", gLength);
     printf("number of parts is: %ld\n", gNumOfParts);
     fclose(inFile);
