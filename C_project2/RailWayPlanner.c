@@ -9,7 +9,11 @@
 #include <ctype.h>
 
 const int gMaxLineLen =  1024;
+
+long int gLength, gNumOfParts;
 int gLineCounter = 1;
+char* railTypes;
+
 FILE* gOutFile; //declare output file.
 
 /**
@@ -28,7 +32,7 @@ typedef struct railWayParts
  */
 void printInvalidInput()
 {
-    fprintf(gOutFile, "Invalid input in line %d", gLineCounter);
+    fprintf(gOutFile, "Invalid input in line: %d", gLineCounter);
     exit(EXIT_FAILURE);
 }
 
@@ -54,18 +58,46 @@ void checkEmpty(FILE* inputFile)
 }
 
 /**
- * checks if given length is legal - a non-negative integer. if the line is illegal, prints error into file and exists
- * program with EXIT_FAILURE code.
- * @param line - line containing the length.
+ * checks if values given for length and number of parts are non-negative values.
+ * @param line - line containing the gLength.
+ * @param ptr - pointer to integer value to change.
  */
-void checkIfNum(const char* line)
+void checkIfNum(const char* line, long int* ptr)
 {
+    char* dispose;
+    long int temp;
     for (int i = 0; i < strlen(line) - 1; i++)
     {
         if((line[i] < 48 || line[i] > 57)) //char isn't an integer.
         {
             printInvalidInput();
         }
+    }
+    temp = strtol(line, &dispose, 10);
+    if(temp >= 0)
+    {
+        *ptr = temp;
+    }
+}
+
+/**
+ * checks if given rail joints are legal and appends them into an array for keeping.
+ * @param line - line containing joins separated by commas.
+ */
+void checkJoints(char* line)
+{
+    const char* delimiter = ",";
+    char* token = strtok(line, delimiter); //get first token.
+    int i = 0;
+    while (token != NULL)
+    {
+        if (strlen(token) != 1 && (token[1] != '\n')) //contains more than a single char, illegal.
+        {
+            printInvalidInput();
+        }
+        railTypes[i] = *token;
+        i++;
+        token = strtok(NULL, delimiter);
     }
 }
 
@@ -75,8 +107,7 @@ void checkIfNum(const char* line)
  */
 void openFile(char const *const arr) //1st const locks the values, 2nd one locks the file pointer
 {
-    char* ptr;
-    long int length, numOfParts;
+    char tempLine[gMaxLineLen];
     FILE* inFile = fopen(arr, "r");
     gOutFile = fopen("railway_planner_output.txt", "w");
     if(inFile == NULL) //failed to open file for some reason
@@ -85,25 +116,30 @@ void openFile(char const *const arr) //1st const locks the values, 2nd one locks
         exit(EXIT_FAILURE);
     }
     checkEmpty(inFile); // check if file is empty, prints error and exits.
-    char tempLine[gMaxLineLen];
-    fgets(tempLine, gMaxLineLen, inFile);
-    checkIfNum(tempLine);
-    length = strtol(tempLine, &ptr, 10); //length is legal, keep it.
+    fgets(tempLine, gMaxLineLen, inFile); //gets length of rail
+    checkIfNum(tempLine, &gLength);
     gLineCounter++;
-    fgets(tempLine, gMaxLineLen,inFile);
-    checkIfNum(tempLine);
-    numOfParts = strtol(tempLine, &ptr,10);
-    printf("Length is: %ld\n", length);
-    printf("number of parts is: %ld\n", numOfParts);
+    fgets(tempLine, gMaxLineLen,inFile); //gets number of parts.
+    checkIfNum(tempLine, &gNumOfParts);
+    gLineCounter++;
+    fgets(tempLine, gMaxLineLen,inFile); //gets list of joints.
+    railTypes = (char*)malloc(gNumOfParts * sizeof(char)); //init array for all types.
+    if(railTypes == NULL) //allocation failed for some reason.
+    {
+        exit(EXIT_FAILURE);
+    }
+    checkJoints(tempLine);
+    gLineCounter++;
+    printf("Length is: %ld\n", gLength);
+    printf("number of parts is: %ld\n", gNumOfParts);
     fclose(inFile);
 }
-
 
 
 int main(int argc, char* argv[]) {
     if(argc != 2)
     {
-        fprintf(stderr,"Usage: RailWayPlanner <InputFile>"); /// change to print into output file~!
+        fprintf(gOutFile,"Usage: RailWayPlanner <InputFile>\n"); /// change to print into output file~!
         exit(EXIT_FAILURE);
     }
     char const *const fName = argv[1];
