@@ -9,6 +9,7 @@
 #include <ctype.h>
 
 #define LINE_OFFSET 4
+#define BASE_SIZE 10
 #define MINIMAL_PRICE_MSG = "The minimal price is: %d"
 const int gMaxLineLen =  1024;
 
@@ -159,6 +160,7 @@ void saveParts(char* line)
  */
 void parseFile(char const *const arr) //1st const locks the values, 2nd one locks the file pointer
 {
+    int capacity = BASE_SIZE;
     char tempLine[gMaxLineLen];
     FILE* const inFile = fopen(arr, "r");
     gOutFile = fopen("railway_planner_output.txt", "w");
@@ -182,13 +184,21 @@ void parseFile(char const *const arr) //1st const locks the values, 2nd one lock
     }
     checkJoints(tempLine);
     gLineCounter++;
-    parts = (Part*)malloc(gNumOfParts * sizeof(Part)); // init array for keeping parts.
+    parts = (Part*)malloc(capacity * sizeof(Part)); // init array for keeping parts.
     if(parts == NULL) //allocation failed for some reason.
     {
         exit(EXIT_FAILURE);
     }
     while(fgets(tempLine, gMaxLineLen, inFile) != NULL)
     {
+        if (gLineCounter - LINE_OFFSET == capacity) { //array is full, reallocation needed.
+            capacity += BASE_SIZE;
+            parts = (Part *) realloc(parts, sizeof(Part) * capacity);
+            if(parts == NULL)
+            {
+                exit(EXIT_FAILURE);
+            }
+        }
         saveParts(tempLine);
         gLineCounter++;
     }
@@ -225,6 +235,7 @@ int** buildTable()
 void getMinCost()
 {
     int** table = buildTable();
+
     free(parts); //free array of Parts, no longer needed.
     fclose(gOutFile); //close the output file program is done.
 }
