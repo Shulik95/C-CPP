@@ -15,7 +15,7 @@ const int gMaxLineLen =  1024;
 
 long int gLength, gNumOfParts;
 int gLineCounter = 1;
-char* railTypes;
+char* railTypes = NULL;
 
 FILE* gOutFile; //declare output file.
 
@@ -28,7 +28,7 @@ typedef struct RailWayParts
     long int length, price;
 }Part;
 
-Part* parts; //an array which will hold all given parts.
+Part* parts = NULL; //an array which will hold all given parts.
 
 /**
  * if an illegal input was found in the file, this function is called. prints relevant error and exits program
@@ -37,6 +37,14 @@ Part* parts; //an array which will hold all given parts.
 void printInvalidInput()
 {
     fprintf(gOutFile, "Invalid input in line: %d", gLineCounter);
+    if(parts != NULL)
+    {
+        free(parts);
+    }
+    else if (railTypes != NULL)
+    {
+        free(railTypes);
+    }
     exit(EXIT_FAILURE);
 }
 
@@ -202,7 +210,6 @@ void parseFile(char const *const arr) //1st const locks the values, 2nd one lock
         saveParts(tempLine);
         gLineCounter++;
     }
-    free(railTypes);//de-allocs the memory.
     fclose(inFile);
 }
 
@@ -228,15 +235,81 @@ int** buildTable()
  return arr;
 }
 
+/**
+ * helper method for the main algorithm. finds the column of given part.
+ * @param input - char to find
+ * @return index representing the column to search.
+ */
+int getIndex(char input)
+{
+    int idx = 0;
+    for(int i = 0; i < gNumOfParts; i++)
+    {
+        if(railTypes[i] == input)
+        {
+            idx = i;
+        }
+    }
+    return idx;
+}
+
 
 /**
- *
+ * inits a table of size length+1 X K and extracts the minimal price for a railway of size length. result is printed
+ * into output file.
  */
 void getMinCost()
 {
+    int minVal = INT_MAX;
     int** table = buildTable();
-
+    for(int l = 0; l < gLength + 1; l ++)
+    {
+        for(int k = 0; k < gNumOfParts; k ++)
+        {
+            if(l == 0) //base case, l is 0 min cost for all parts is 0
+            {
+                table[l][k] = 0;
+            }
+            else //get minimal rail so far.
+            {
+                for(int p = 0; p < gLineCounter -LINE_OFFSET; p++)
+                {
+                    if(parts[p].end == railTypes[k] && l - parts[p].length >= 0)
+                    {
+                        const int tempLen = l - (int)parts[p].length; //row to search
+                        const int col = getIndex(parts[p].start); //column to search
+                        int tempVal = (int)parts[p].price +table[tempLen][col];
+                        if(tempVal < 0)
+                        {
+                            tempVal = INT_MAX;
+                        }
+                        else if(tempVal < minVal)
+                        {
+                            minVal = tempVal;
+                        }
+                    }
+                }
+                table[l][k] = minVal;
+            }
+        }
+    }
+    for(int t = 0; t < gNumOfParts; t++)
+    {
+        if (table[gLength][t] < minVal)
+        {
+            minVal = table[gLength][t];
+        }
+    }
+    fprintf(gOutFile, "The minimal price is: %d", minVal);
+    free(railTypes);//de-allocs the memory.
     free(parts); //free array of Parts, no longer needed.
+    for(int j = 0; j < gLength + 1; j++)
+    {
+        free(table[j]);
+        table[j] = NULL;
+    }
+    free(table);
+    table = NULL;
     fclose(gOutFile); //close the output file program is done.
 }
 
