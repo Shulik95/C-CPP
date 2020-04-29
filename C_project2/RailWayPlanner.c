@@ -262,9 +262,9 @@ void getMinCost()
 {
     int minVal = INT_MAX;
     int** table = buildTable();
-    for(int l = 0; l < gLength + 1; l ++)
+    for(int l = 0; l < gLength + 1; l ++) //iterates of different lengths.
     {
-        for(int k = 0; k < gNumOfParts; k ++)
+        for(int k = 0; k < gNumOfParts; k ++) //iterates over different connections.
         {
             if(l == 0) //base case, l is 0 min cost for all parts is 0
             {
@@ -279,17 +279,18 @@ void getMinCost()
                         const int tempLen = l - (int)parts[p].length; //row to search
                         const int col = getIndex(parts[p].start); //column to search
                         int tempVal = (int)parts[p].price +table[tempLen][col];
-                        if(tempVal < 0)
+                        if(tempVal < 0) //checks overflow
                         {
                             tempVal = INT_MAX;
                         }
-                        else if(tempVal < minVal)
+                        if(tempVal < minVal)
                         {
                             minVal = tempVal;
                         }
                     }
                 }
-                table[l][k] = minVal;
+                table[l][k] = minVal; //assign min value
+                minVal = INT_MAX; //restart val
             }
         }
     }
