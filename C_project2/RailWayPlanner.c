@@ -9,6 +9,7 @@
 #include <ctype.h>
 
 #define LINE_OFFSET 4
+#define MINIMAL_PRICE_MSG = "The minimal price is: %d"
 const int gMaxLineLen =  1024;
 
 long int gLength, gNumOfParts;
@@ -119,7 +120,7 @@ bool partCheck(const char* start,const char* end)
         {
             foundStart = true;
         }
-        if(railTypes[i] == *end)//checks if ending part is in part list.
+        if(railTypes[i] == *end && strlen(end) == 1)//checks if ending part is in part list.
         {
             foundEnd = true;
         }
@@ -152,7 +153,8 @@ void saveParts(char* line)
 
 
 /**
- *
+ * parses the given file into an array of structs of type Part. allocates memory for a Part array and does not free it!
+ * prints first encountered error into output file
  * @param arr
  */
 void parseFile(char const *const arr) //1st const locks the values, 2nd one locks the file pointer
@@ -185,7 +187,6 @@ void parseFile(char const *const arr) //1st const locks the values, 2nd one lock
     {
         exit(EXIT_FAILURE);
     }
-    int i = 0;
     while(fgets(tempLine, gMaxLineLen, inFile) != NULL)
     {
         saveParts(tempLine);
@@ -195,21 +196,48 @@ void parseFile(char const *const arr) //1st const locks the values, 2nd one lock
     fclose(inFile);
 }
 
+/**
+ * initializes a 2 dimensional array of pointers, does not free the memory!
+ * @return - returns a pointer to a 2 dim array.
+ */
+int** buildTable()
+{
+ int** arr = (int**)malloc((gLength + 1) * sizeof(int*)); //allocates rows.
+ if(arr == NULL)
+ {
+     exit(EXIT_FAILURE);
+ }
+ for(int i = 0; i < gLength + 1; i++)
+ {
+     arr[i] = (int*)malloc(gNumOfParts * sizeof(int)); //columns
+     if(arr[i] == NULL)
+     {
+         exit(EXIT_FAILURE);
+     }
+ }
+ return arr;
+}
+
+
+/**
+ *
+ */
+void getMinCost()
+{
+    int** table = buildTable();
+    free(parts); //free array of Parts, no longer needed.
+    fclose(gOutFile); //close the output file program is done.
+}
+
 
 int main(int argc, char* argv[]) {
     if(argc != 2)
     {
-        fprintf(gOutFile,"Usage: RailWayPlanner <InputFile>\n"); /// change to print into output file~!
+        fprintf(gOutFile,"Usage: RailWayPlanner <InputFile>\n");
         exit(EXIT_FAILURE);
     }
     char const *const fName = argv[1];
     parseFile(fName);
-    printf("rail length is: %ld\n", gLength);
-    printf("number of parts is: %ld\n", gNumOfParts);
-    for (int i = 0; i < gLineCounter-4; i++)
-    {
-        printf("part number %d: start - %c, end - %c, length - %ld, price - %ld\n", i+1, parts[i].start, parts[i].end,
-                parts[i].length, parts[i].price);
-    }
+    getMinCost();
     return 0;
 }
