@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#define LINE_OFFSET 4
 const int gMaxLineLen =  1024;
 
 long int gLength, gNumOfParts;
@@ -22,9 +23,10 @@ FILE* gOutFile; //declare output file.
 typedef struct RailWayParts
 {
     char start, end;
-    int length;
-    int price;
+    long int length, price;
 }Part;
+
+Part* parts; //an array which will hold all given parts.
 
 /**
  * if an illegal input was found in the file, this function is called. prints relevant error and exits program
@@ -58,7 +60,7 @@ void checkEmpty(FILE* inputFile)
 }
 
 /**
- * checks if values given for length and number of parts are non-negative values.
+ * checks if values given for length and number of parts are non-negative values. assumes that line ends with "\n".
  * @param line - line containing the gLength.
  * @param ptr - pointer to integer value to change.
  */
@@ -102,9 +104,9 @@ void checkJoints(char* line)
 }
 
 /**
- *
- * @param start
- * @param end
+ * checks if both parts given are legal.
+ * @param start - a char representing the left joint.
+ * @param end - a char representing the right joint.
  */
 bool partCheck(const char* start,const char* end)
 {
@@ -113,56 +115,47 @@ bool partCheck(const char* start,const char* end)
     bool foundEnd = false;
     for( int i = 0; i < gNumOfParts; i++)
     {
-        if(railTypes[i] == *start)//checks if starting part in part list
+        if(railTypes[i] == *start && strlen(start) == 1)//checks if starting part in part list
         {
-            foundStart++;
+            foundStart = true;
         }
         if(railTypes[i] == *end)//checks if ending part is in part list.
         {
-            foundEnd++;
+            foundEnd = true;
         }
     }
-    if(foundEnd && foundStart)
-    {
-        return true;
-    }
-    return false;
+    return (foundEnd && foundStart);
 }
 
 /**
- * reads all lines
+ * reads all lines describing parts, checks legality and add them into a part array.
  * @param inFile
  */
-void saveParts(FILE *inFile) {
-    char tempLine[gMaxLineLen];
-    while(fgets(tempLine, gMaxLineLen, inFile) != NULL)
+void saveParts(char* line)
+{
+    long int length, price;
+    const char* const helper = "\n"; //helps support restrictions.
+    char tempLength[gMaxLineLen], tempPrice[gMaxLineLen], start[gMaxLineLen], end[gMaxLineLen];
+    sscanf(line, "%[^,],%[^,],%[^,],%[^\n]", start, end, tempLength, tempPrice);
+    checkIfNum(strcat(tempLength, helper), &length);
+    checkIfNum(strcat(tempPrice, helper), &price);
+    if(partCheck(start, end) && price > 0)
     {
-        /*temp variable used for validity check*/
-        char* start = NULL;
-        char *end = NULL;
-        char* tempLength = NULL;
-        char* tempPrice = NULL;
-        long int length, price;
-        sscanf(tempLine, "%[^,],%[^,],%[^,],%[^\n]", start, end, tempLength, tempPrice);
-        checkIfNum(tempLength, &length);
-        checkIfNum(tempPrice, &price);
-        if(strlen(start) == 1 && strlen(end) == 1 && tempLength > 0)
-        {
-            if(!partCheck(start, end))
-            {
-                printInvalidInput();
-            }
-            Part newPart = {.start = *start, .end = *end, }; 
-        }
-
+        Part newPart = {.start = *start, .end = *end, .length = length, .price = price};
+        parts[gLineCounter - LINE_OFFSET] = newPart;
+    }
+    else
+    {
+        printInvalidInput();
     }
 }
+
 
 /**
  *
  * @param arr
  */
-void openFile(char const *const arr) //1st const locks the values, 2nd one locks the file pointer
+void parseFile(char const *const arr) //1st const locks the values, 2nd one locks the file pointer
 {
     char tempLine[gMaxLineLen];
     FILE* const inFile = fopen(arr, "r");
@@ -187,10 +180,18 @@ void openFile(char const *const arr) //1st const locks the values, 2nd one locks
     }
     checkJoints(tempLine);
     gLineCounter++;
-    saveParts(inFile);
-    free(railTypes);
-    printf("Length is: %ld\n", gLength);
-    printf("number of parts is: %ld\n", gNumOfParts);
+    parts = (Part*)malloc(gNumOfParts * sizeof(Part)); // init array for keeping parts.
+    if(parts == NULL) //allocation failed for some reason.
+    {
+        exit(EXIT_FAILURE);
+    }
+    int i = 0;
+    while(fgets(tempLine, gMaxLineLen, inFile) != NULL)
+    {
+        saveParts(tempLine);
+        gLineCounter++;
+    }
+    free(railTypes);//de-allocs the memory.
     fclose(inFile);
 }
 
@@ -202,6 +203,13 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
     char const *const fName = argv[1];
-    openFile(fName);
+    parseFile(fName);
+    printf("rail length is: %ld\n", gLength);
+    printf("number of parts is: %ld\n", gNumOfParts);
+    for (int i = 0; i < gLineCounter-4; i++)
+    {
+        printf("part number %d: start - %c, end - %c, length - %ld, price - %ld\n", i+1, parts[i].start, parts[i].end,
+                parts[i].length, parts[i].price);
+    }
     return 0;
 }
