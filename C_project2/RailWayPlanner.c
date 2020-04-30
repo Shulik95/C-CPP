@@ -25,7 +25,7 @@ FILE* inFile; //declare input file.
 typedef struct RailWayParts
 {
     char start, end;
-    long int length, price;
+    long int length, price, startIdx;
 }Part;
 
 Part* parts = NULL; //an array which will hold all given parts.
@@ -190,6 +190,29 @@ void checkPriceAndLen(const char* line, long int* ptr)
     {
         *ptr = temp;
     }
+    else
+    {
+        fprintf(gOutFile, "Invalid input in line: %d.", gLineCounter);
+        closeProgram(); //releases both prev allocs and closes files.
+    }
+}
+
+/**
+ * helper method for the main algorithm. finds the column of given part.
+ * @param input - char to find
+ * @return index representing the column to search.
+ */
+int getIndex(char input)
+{
+    int idx = 0;
+    for(int i = 0; i < gNumOfParts; i++)
+    {
+        if(railTypes[i] == input)
+        {
+            idx = i;
+        }
+    }
+    return idx;
 }
 
 /**
@@ -198,15 +221,16 @@ void checkPriceAndLen(const char* line, long int* ptr)
  */
 void saveParts(char* line)
 {
-    long int length, price;
+    long int length, price, idx;
     const char* const helper = "\n"; //helps create expected format..
     char tempLength[MAX_LINE_LEN], tempPrice[MAX_LINE_LEN], start[MAX_LINE_LEN], end[MAX_LINE_LEN];
     sscanf(line, "%[^,],%[^,],%[^,],%[^\n]", start, end, tempLength, tempPrice);
     checkPriceAndLen(strcat(tempLength, helper), &length);
     checkPriceAndLen(strcat(tempPrice, helper), &price);
-    if(partCheck(start, end) && length > 0 && price > 0)
+    if(partCheck(start, end))
     {
-        Part newPart = {.start = *start, .end = *end, .length = length, .price = price};
+        idx = getIndex(*start); //get the index which represents the
+        Part newPart = {.start = *start, .end = *end, .length = length, .price = price, .startIdx = idx};
         parts[gLineCounter - LINE_OFFSET] = newPart;
     }
     else
@@ -296,25 +320,6 @@ int** buildTable()
 }
 
 /**
- * helper method for the main algorithm. finds the column of given part.
- * @param input - char to find
- * @return index representing the column to search.
- */
-int getIndex(char input)
-{
-    int idx = 0;
-    for(int i = 0; i < gNumOfParts; i++)
-    {
-        if(railTypes[i] == input)
-        {
-            idx = i;
-        }
-    }
-    return idx;
-}
-
-
-/**
  * inits a table of size length+1 X K and extracts the minimal price for a railway of size length. result is printed
  * into output file.
  */
@@ -337,8 +342,7 @@ void getMinCost()
                     if(parts[p].end == railTypes[k] && l - parts[p].length >= 0)
                     {
                         const int tempLen = l - (int)parts[p].length; //row to search
-                        const int col = getIndex(parts[p].start); //column to search
-                        int tempVal = (int)parts[p].price +table[tempLen][col];
+                        int tempVal = (int)parts[p].price +table[tempLen][parts[p].startIdx];
                         if(tempVal < 0) //checks overflow
                         {
                             tempVal = INT_MAX;
@@ -394,6 +398,9 @@ int main(int argc, char* argv[]) {
     }
     parseFile();
     getMinCost();
-    closeProgram(); //program ran successfully, close both files and free memory.
+    free(parts); //program ran successfully, close both files and free memory.
+    free(railTypes);
+    fclose(gOutFile);
+    fclose(inFile);
     exit(EXIT_SUCCESS);
 }
