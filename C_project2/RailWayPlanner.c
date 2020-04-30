@@ -17,6 +17,7 @@ int gLineCounter = 1;
 char* railTypes = NULL;
 
 FILE* gOutFile; //declare output file.
+FILE* inFile; //declare input file.
 
 /**
  * This struct holds all information relevant to one railway part.
@@ -30,20 +31,26 @@ typedef struct RailWayParts
 Part* parts = NULL; //an array which will hold all given parts.
 
 /**
+ * closes all open files and frees allocated memory.
+ */
+void closeProgram()
+{
+    if(gLineCounter >= 3) //first allocation happens after line 3 has been read.
+    {
+        free(parts);
+        free(railTypes);
+    }
+    fclose(inFile);
+    fclose(gOutFile);
+}
+/**
  * if an illegal input was found in the file, this function is called. prints relevant error and exits program
  * with EXIT_FAILURE code.
  */
 void printInvalidInput()
 {
     fprintf(gOutFile, "Invalid input in line: %d.", gLineCounter);
-    if(parts != NULL)
-    {
-        free(parts);
-    }
-    if (railTypes != NULL)
-    {
-        free(railTypes);
-    }
+    closeProgram();
     exit(EXIT_FAILURE);
 }
 
@@ -63,6 +70,7 @@ void checkEmpty(FILE* inputFile)
     else //file is empty, print error into file and exit.
     {
         fprintf(gOutFile, "File is empty.");
+        closeProgram();
         exit(EXIT_FAILURE);
     }
 }
@@ -147,7 +155,7 @@ void saveParts(char* line)
     sscanf(line, "%[^,],%[^,],%[^,],%[^\n]", start, end, tempLength, tempPrice);
     checkIfNum(strcat(tempLength, helper), &length);
     checkIfNum(strcat(tempPrice, helper), &price);
-    if(partCheck(start, end) && length > 0)
+    if(partCheck(start, end) && length > 0 && price > 0)
     {
         Part newPart = {.start = *start, .end = *end, .length = length, .price = price};
         parts[gLineCounter - LINE_OFFSET] = newPart;
@@ -164,15 +172,16 @@ void saveParts(char* line)
  * prints first encountered error into output file
  * @param arr
  */
-void parseFile(char const *const arr) //1st const locks the values, 2nd one locks the file pointer
+void parseFile() //1st const locks the values, 2nd one locks the file pointer
 {
     int capacity = BASE_SIZE;
     char tempLine[MAX_LINE_LEN];
-    FILE* const inFile = fopen(arr, "r");
-    gOutFile = fopen("/cs/usr/shulik10/C_ex2/RailWayPlannerTests/railway_planner_output.txt", "w");
+    //FILE* const inFile = fopen(arr, "r");
+    gOutFile = fopen("railway_planner_output.txt", "w");
     if(inFile == NULL) //failed to open file for some reason
     {
-        fprintf(gOutFile, "File doesn't exist\n"); /// change to print into output file~!
+        fprintf(gOutFile, "File doesn't exist.");
+        closeProgram();
         exit(EXIT_FAILURE);
     }
     checkEmpty(inFile); // check if file is empty, prints error and exits.
@@ -181,11 +190,16 @@ void parseFile(char const *const arr) //1st const locks the values, 2nd one lock
     gLineCounter++;
     fgets(tempLine, MAX_LINE_LEN, inFile); //gets number of parts.
     checkIfNum(tempLine, &gNumOfParts);
+    if(gNumOfParts <= 0) //number of parts has to positive according to school sol
+    {
+        printInvalidInput();
+    }
     gLineCounter++;
     fgets(tempLine, MAX_LINE_LEN, inFile); //gets list of joints.
     railTypes = (char*)malloc(gNumOfParts * sizeof(char)); //init array for all types.
     if(railTypes == NULL) //allocation failed for some reason.
     {
+        closeProgram();
         exit(EXIT_FAILURE);
     }
     checkJoints(tempLine);
@@ -193,22 +207,23 @@ void parseFile(char const *const arr) //1st const locks the values, 2nd one lock
     parts = (Part*)malloc(capacity * sizeof(Part)); // init array for keeping parts.
     if(parts == NULL) //allocation failed for some reason.
     {
+        closeProgram();
         exit(EXIT_FAILURE);
     }
     while(fgets(tempLine, MAX_LINE_LEN, inFile) != NULL)
     {
         if (gLineCounter - LINE_OFFSET == capacity) { //array is full, reallocation needed.
             capacity += BASE_SIZE;
-            parts = (Part *) realloc(parts, sizeof(Part) * capacity);
+            parts = (Part*) realloc(parts, sizeof(Part) * capacity);
             if(parts == NULL)
             {
+                closeProgram();
                 exit(EXIT_FAILURE);
             }
         }
         saveParts(tempLine);
         gLineCounter++;
     }
-    fclose(inFile);
 }
 
 /**
@@ -220,6 +235,7 @@ int** buildTable()
  int** arr = (int**)malloc((gLength + 1) * sizeof(int*)); //allocates rows.
  if(arr == NULL)
  {
+     closeProgram();
      exit(EXIT_FAILURE);
  }
  for(int i = 0; i < gLength + 1; i++)
@@ -227,6 +243,7 @@ int** buildTable()
      arr[i] = (int*)malloc(gNumOfParts * sizeof(int)); //columns
      if(arr[i] == NULL)
      {
+         closeProgram();
          exit(EXIT_FAILURE);
      }
  }
@@ -304,8 +321,6 @@ void getMinCost()
         minVal = NO_MIN;
     }
     fprintf(gOutFile, "The minimal price is: %d", minVal);
-    free(railTypes);//de-allocs the memory.
-    free(parts); //free array of Parts, no longer needed.
     for(int j = 0; j < gLength + 1; j++)
     {
         free(table[j]);
@@ -313,7 +328,7 @@ void getMinCost()
     }
     free(table);
     table = NULL;
-    fclose(gOutFile); //close the output file program is done.
+    closeProgram();
 }
 
 
@@ -324,7 +339,8 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
     char const *const fName = argv[1];
-    parseFile(fName);
+    inFile = fopen(fName, "r");
+    parseFile();
     getMinCost();
     exit(EXIT_SUCCESS);
 }
