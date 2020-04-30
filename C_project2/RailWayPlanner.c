@@ -149,7 +149,7 @@ void checkJoints(char* line)
  * @param start - a char representing the left joint.
  * @param end - a char representing the right joint.
  */
-bool partCheck(const char* start,const char* end)
+bool partCheck(const char* start, const char* end)
 {
     /*flags which indicate if start and end parts are legal*/
     bool foundStart = false;
@@ -275,6 +275,8 @@ void parseFile() //1st const locks the values, 2nd one locks the file pointer
         free(railTypes); //only memory allocated so far.
         closeFiles(); // close input and output and exit.
     }
+
+    /*iterate over remaining lines and create parts accordingly*/
     while(fgets(tempLine, MAX_LINE_LEN, inFile) != NULL)
     {
         if (gLineCounter - LINE_OFFSET == capacity) //array is full, reallocation needed.
@@ -319,6 +321,26 @@ int** buildTable()
  return arr;
 }
 
+void findMinVal(int len, int k, int* currMinVal, int** table)
+{
+    for(int p = 0; p < gLineCounter -LINE_OFFSET; p++)
+    {
+        if(parts[p].end == railTypes[k] && len - parts[p].length >= 0)
+        {
+            const int tempLen = len - (int)parts[p].length; //row to search
+            int tempVal = (int)parts[p].price + table[tempLen][parts[p].startIdx];
+            if(tempVal < 0) //checks overflow
+            {
+                tempVal = INT_MAX;
+            }
+            if(tempVal < *currMinVal)
+            {
+                *currMinVal = tempVal;
+            }
+        }
+    }
+}
+
 /**
  * inits a table of size length+1 X K and extracts the minimal price for a railway of size length. result is printed
  * into output file.
@@ -337,27 +359,14 @@ void getMinCost()
             }
             else //get minimal rail so far.
             {
-                for(int p = 0; p < gLineCounter -LINE_OFFSET; p++)
-                {
-                    if(parts[p].end == railTypes[k] && l - parts[p].length >= 0)
-                    {
-                        const int tempLen = l - (int)parts[p].length; //row to search
-                        int tempVal = (int)parts[p].price +table[tempLen][parts[p].startIdx];
-                        if(tempVal < 0) //checks overflow
-                        {
-                            tempVal = INT_MAX;
-                        }
-                        if(tempVal < minVal)
-                        {
-                            minVal = tempVal;
-                        }
-                    }
-                }
+                findMinVal(l, k, &minVal, table); // changes minVal
                 table[l][k] = minVal; //assign min value
                 minVal = INT_MAX; //restart val
             }
         }
     }
+
+    /*get minimal value from top row in table*/
     for(int t = 0; t < gNumOfParts; t++)
     {
         if (table[gLength][t] < minVal)
@@ -381,12 +390,18 @@ void getMinCost()
     table = NULL;
 }
 
-
-int main(int argc, char* argv[]) {
+/**
+ * main function, runs all program.
+ * @param argc - amount of arguments given by user.
+ * @param argv - program variables
+ * @return  - 0 if program was successfull, 1 otherwise.
+ */
+int main(int argc, char* argv[])
+{
     gOutFile = fopen("railway_planner_output.txt", "w");
     if(argc != 2)
     {
-        fprintf(gOutFile,"Usage: RailWayPlanner <InputFile>");
+        fprintf(gOutFile, "Usage: RailWayPlanner <InputFile>");
         inputFail();
     }
     char const *const fName = argv[1];
