@@ -73,6 +73,7 @@ int insertToRBTree(RBTree *tree, void *data)
     else
     {
         Node* parent = findNode(tree->root, data, tree->compFunc); //find the future parent of the node
+        if
     }
     return 0;
 }
@@ -119,7 +120,6 @@ Node* findNode(Node* node, const void* data, CompareFunc cmp_func)
         }
     }
 }
-
 
 
 int main() {
