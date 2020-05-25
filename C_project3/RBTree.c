@@ -20,9 +20,24 @@
 #include <stdlib.h>
 
 // -------------------------- const definitions -------------------------
+/**
+ * deals with creating the new node according to given side, balances tree after addition.
+ */
+#define CREATE_NODE(leftOrRight)\
+Node* newNode = (Node*)malloc(sizeof(Node));\
+parent->leftOrRight = newNode;\
+newNode->color = RED;\
+newNode->parent = parent;\
+newNode->left = NULL;\
+newNode->right = NULL;\
+newNode->data = data;\
+fixTree(newNode);
+
+
 long unsigned const EMPTY_TREE_SIZE = 0;
 int const ADD_SUCCESS = 1;
 int const EQUAL = 0;
+int const FAILED = 0;
 
 // ------------------------------ functions -----------------------------
 
@@ -35,6 +50,12 @@ int const EQUAL = 0;
  * @return - pointer to node/
  */
 Node* findNode(Node* node, const void* data, CompareFunc cmp_func);
+
+/**
+ * balanced a RB tree after insertion.
+ * @param node - the inserted node.
+ */
+void fixTree(Node* node);
 
 /**
  * constructs a new RBTree with the given CompareFunc.
@@ -73,8 +94,24 @@ int insertToRBTree(RBTree *tree, void *data)
     else
     {
         Node* parent = findNode(tree->root, data, tree->compFunc); //find the future parent of the node
-        if
+        int cmpVal = tree->compFunc(data, parent->data); //decide left or right.
+        if(cmpVal == EQUAL) //value is already in tree
+        {
+            return FAILED;
+        }
+        else if (cmpVal > EQUAL) //node should be added on the right
+        {
+            CREATE_NODE(right);
+        }
+        else // node should be added as left son
+        {
+            CREATE_NODE(left);
+        }
+        tree->size++; //update tree size
+
+
     }
+#undef CREATE_NODE
     return 0;
 }
 
@@ -119,6 +156,11 @@ Node* findNode(Node* node, const void* data, CompareFunc cmp_func)
             return node;
         }
     }
+}
+
+void fixTree(Node* node)
+{
+    
 }
 
 
