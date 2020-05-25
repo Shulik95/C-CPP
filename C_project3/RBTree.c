@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include "RBTree.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
 // -------------------------- const definitions -------------------------
 /**
@@ -33,6 +34,10 @@ newNode->right = NULL;\
 newNode->data = data;\
 fixTree(newNode);
 
+#define FIRST_C 1
+#define SECOND_C 2
+#define THIRD_C 3
+#define FORTH_C 4
 
 long unsigned const EMPTY_TREE_SIZE = 0;
 int const ADD_SUCCESS = 1;
@@ -57,6 +62,18 @@ Node* findNode(Node* node, const void* data, CompareFunc cmp_func);
  */
 void fixTree(Node* node);
 
+bool isLeftChild(Node* node)
+{
+    if(node->parent == NULL || node == NULL)
+    {
+        return false;
+    }
+    else
+    {
+        return (node->parent->left == node) ? true:false;
+    }
+}
+
 /**
  * constructs a new RBTree with the given CompareFunc.
  * comp: a function to compare two variables.
@@ -72,7 +89,7 @@ RBTree *newRBTree(CompareFunc compFunc, FreeFunc freeFunc)
 }
 
 /**
- * add an item to the tree
+ * add an item to the tree, doesnt assume tree is not empty.
  * @param tree: the tree to add an item to.
  * @param data: item to add to the tree.
  * @return: 0 on failure, other on success. (if the item is already in the tree - failure).
@@ -158,9 +175,40 @@ Node* findNode(Node* node, const void* data, CompareFunc cmp_func)
     }
 }
 
+int getCase(Node* node)
+{
+    Node* parent, grandParent;
+    if(node->parent == NULL)
+    {
+        return FIRST_C;
+    }
+    else if(node->parent->color == BLACK)
+    {
+        return SECOND_C;
+    }
+#define  checkParent(isLeft)\
+
+    if(isLeftChild(node->parent))
+    {
+
+    }
+}
+
+/**
+ * balances the tree from inserted node all the way up.
+ * @param node - start balancing from here.
+ */
 void fixTree(Node* node)
 {
-    
+    Node* parent, grandParent;
+    switch (getCase(node))
+    {
+        case FIRST_C: // node is root
+            node->color = RED;
+            break;
+        case SECOND_C: // parent is black
+            break;
+    }
 }
 
 
