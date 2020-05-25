@@ -123,6 +123,33 @@ C_project3/fast:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/build
 .PHONY : C_project3/fast
 
+ProductExample.o: ProductExample.c.o
+
+.PHONY : ProductExample.o
+
+# target to build an object file
+ProductExample.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.o
+.PHONY : ProductExample.c.o
+
+ProductExample.i: ProductExample.c.i
+
+.PHONY : ProductExample.i
+
+# target to preprocess a source file
+ProductExample.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.i
+.PHONY : ProductExample.c.i
+
+ProductExample.s: ProductExample.c.s
+
+.PHONY : ProductExample.s
+
+# target to generate assembly for a file
+ProductExample.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.s
+.PHONY : ProductExample.c.s
+
 RBTree.o: RBTree.c.o
 
 .PHONY : RBTree.o
@@ -186,6 +213,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... C_project3"
 	@echo "... edit_cache"
+	@echo "... ProductExample.o"
+	@echo "... ProductExample.i"
+	@echo "... ProductExample.s"
 	@echo "... RBTree.o"
 	@echo "... RBTree.i"
 	@echo "... RBTree.s"

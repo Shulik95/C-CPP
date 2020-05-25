@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/C_project3.dir/ProductExample.c.o"
   "CMakeFiles/C_project3.dir/RBTree.c.o"
   "CMakeFiles/C_project3.dir/Structs.c.o"
   "C_project3.exe"
