@@ -74,7 +74,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/main.c">
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.c">
+			<Option target="C_project3"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h">
+			<Option target="C_project3"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.c">
+			<Option target="C_project3"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.h">
 			<Option target="C_project3"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/CMakeLists.txt">

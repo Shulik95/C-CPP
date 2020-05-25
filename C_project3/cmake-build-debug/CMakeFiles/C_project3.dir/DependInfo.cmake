@@ -4,7 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/cygdrive/c/Users/user/CLionProjects/C_project3/main.c" "/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles/C_project3.dir/main.c.o"
+  "/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.c" "/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles/C_project3.dir/RBTree.c.o"
+  "/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.c" "/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles/C_project3.dir/Structs.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

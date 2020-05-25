@@ -123,32 +123,59 @@ C_project3/fast:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/build
 .PHONY : C_project3/fast
 
-main.o: main.c.o
+RBTree.o: RBTree.c.o
 
-.PHONY : main.o
+.PHONY : RBTree.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/main.c.o
-.PHONY : main.c.o
+RBTree.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/RBTree.c.o
+.PHONY : RBTree.c.o
 
-main.i: main.c.i
+RBTree.i: RBTree.c.i
 
-.PHONY : main.i
+.PHONY : RBTree.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/main.c.i
-.PHONY : main.c.i
+RBTree.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/RBTree.c.i
+.PHONY : RBTree.c.i
 
-main.s: main.c.s
+RBTree.s: RBTree.c.s
 
-.PHONY : main.s
+.PHONY : RBTree.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/main.c.s
-.PHONY : main.c.s
+RBTree.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/RBTree.c.s
+.PHONY : RBTree.c.s
+
+Structs.o: Structs.c.o
+
+.PHONY : Structs.o
+
+# target to build an object file
+Structs.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.o
+.PHONY : Structs.c.o
+
+Structs.i: Structs.c.i
+
+.PHONY : Structs.i
+
+# target to preprocess a source file
+Structs.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.i
+.PHONY : Structs.c.i
+
+Structs.s: Structs.c.s
+
+.PHONY : Structs.s
+
+# target to generate assembly for a file
+Structs.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.s
+.PHONY : Structs.c.s
 
 # Help Target
 help:
@@ -159,9 +186,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... C_project3"
 	@echo "... edit_cache"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... RBTree.o"
+	@echo "... RBTree.i"
+	@echo "... RBTree.s"
+	@echo "... Structs.o"
+	@echo "... Structs.i"
+	@echo "... Structs.s"
 .PHONY : help
 
 
