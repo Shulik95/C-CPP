@@ -34,13 +34,9 @@ newNode->right = NULL;\
 newNode->data = data;\
 fixTree(newNode);
 
-#define FIRST_C 1
-#define SECOND_C 2
-#define THIRD_C 3
-#define FORTH_C 4
 
 long unsigned const EMPTY_TREE_SIZE = 0;
-int const ADD_SUCCESS = 1;
+int const SUCCESS = 1;
 int const EQUAL = 0;
 int const FAILED = 0;
 
@@ -52,9 +48,21 @@ int const FAILED = 0;
  * @param node - starts searching from this node downwards.
  * @param data - the data to search for/
  * @param cmp_func - functions which compares data of nodes.
- * @return - pointer to node/
+ * @return - pointer to node.
  */
 Node* findNode(Node* node, const void* data, CompareFunc cmp_func);
+
+/**
+ * left rotation according to different cases.
+ * @param node
+ */
+void rotateLeft(Node* node);
+
+/**
+ * right rotation according to given cases.
+ * @param node
+ */
+void rotateRight(Node* node);
 
 /**
  * balanced a RB tree after insertion.
@@ -62,15 +70,37 @@ Node* findNode(Node* node, const void* data, CompareFunc cmp_func);
  */
 void fixTree(Node* node);
 
-bool isLeftChild(Node* node)
+/**
+ * checks if the given node is the left child.
+ * @param node - node to check.
+ * @return - 1 if is left child, otherwise 0.
+ */
+int isLeftChild(Node* node)
 {
     if(node->parent == NULL || node == NULL)
     {
-        return false;
+        return FAILED;
     }
     else
     {
-        return (node->parent->left == node) ? true:false;
+        return (node->parent->left == node) ? SUCCESS:FAILED;
+    }
+}
+
+/**
+ * checks if the given node a right child.
+ * @param node - node to check.
+ * @return - 1 if right child, 0 otherwise.
+ */
+int isRightChild(Node* node)
+{
+    if(node->parent == NULL || node == NULL)
+    {
+        return FAILED;
+    }
+    else
+    {
+        return (node->parent->right == node) ? SUCCESS:FAILED;
     }
 }
 
@@ -106,7 +136,7 @@ int insertToRBTree(RBTree *tree, void *data)
         root->data = data;
         tree->root = root;
         tree->size++;
-        return ADD_SUCCESS;
+        return SUCCESS;
     }
     else
     {
@@ -128,7 +158,6 @@ int insertToRBTree(RBTree *tree, void *data)
 
 
     }
-#undef CREATE_NODE
     return 0;
 }
 
@@ -175,41 +204,125 @@ Node* findNode(Node* node, const void* data, CompareFunc cmp_func)
     }
 }
 
-int getCase(Node* node)
-{
-    Node* parent, grandParent;
-    if(node->parent == NULL)
-    {
-        return FIRST_C;
-    }
-    else if(node->parent->color == BLACK)
-    {
-        return SECOND_C;
-    }
-#define  checkParent(isLeft)\
-
-    if(isLeftChild(node->parent))
-    {
-
-    }
-}
-
 /**
  * balances the tree from inserted node all the way up.
  * @param node - start balancing from here.
  */
 void fixTree(Node* node)
 {
-    Node* parent, grandParent;
-    switch (getCase(node))
+    Node* parent = node->parent;
+    Node* grandParent = parent->parent;
+    Node* uncle = grandParent->left;
+    if(isLeftChild(parent) == SUCCESS)
     {
-        case FIRST_C: // node is root
-            node->color = RED;
-            break;
-        case SECOND_C: // parent is black
-            break;
+        uncle = grandParent->right;
+    }
+
+    if(node)
+    {
+        if(node->parent == NULL) //node is root.
+        {
+            node->color = BLACK;
+            return;
+        }
+        else if(node->parent->color == BLACK) //2nd case - do nothing.
+        {
+            /*do nothing*/
+            return;
+        }
+        else if (parent->color == RED && uncle->color == RED) //3rd case - parent and uncle are red.
+        {
+            parent->color = BLACK;
+            uncle->color = BLACK;
+            grandParent->color = RED;
+            fixTree(grandParent); //run algorithm from grandparent
+        }
+        else //4th case - parent is red, uncle is black.
+        {
+            if(isLeftChild(node) == SUCCESS && isRightChild(parent) == SUCCESS) //left child of right child, 4.a
+            {
+                rotateRight(parent);
+            }
+            else if(isRightChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) //right child of left child, 4.a
+            {
+                rotateLeft(parent);
+            }
+            else // case 4.b
+            {
+                if(isLeftChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) // left child of left child, 4.b
+                {
+                    rotateRight(grandParent);
+                }
+                else if (isRightChild(node) == SUCCESS && isRightChild(parent) == SUCCESS)//right child of right child
+                {
+                    rotateLeft(grandParent);
+
+                }
+            }
+            parent->color = BLACK;
+            grandParent->color = RED;
+        }
     }
 }
+
+/**
+ * rotates given tree to the left.
+ * @param node -assumes this node is root of subtree to rotate, meaning this node will go down a level in the tree.
+ */
+void rotateLeft(Node* node)
+{
+    Node* keepNode = node->right->left;
+    node->right->left = node;
+
+    if(keepNode != NULL)
+    {
+        keepNode->parent = node;
+    }
+
+    if(isLeftChild(node) == SUCCESS)
+    {
+        node->parent->left = node->right;
+    }
+
+    else if(isRightChild(node) == SUCCESS)
+    {
+        node->parent->right = node->right;
+    }
+
+    node->parent = node->right;
+    node->right = keepNode;
+
+}
+
+/**
+ * rotates tree to the right.
+ * @param node - assumes this node is root of subtree to rotate, meaning this node will go down a level in the tree.
+ */
+void rotateRight(Node* node)
+{
+    Node* keepNode = node->left->right;
+    node->left->right = node;
+
+    if(keepNode != NULL)
+    {
+        keepNode->parent = node;
+    }
+
+    if(isLeftChild(node) == SUCCESS)
+    {
+        node->parent->left = node->left;
+    }
+
+    else if(isRightChild(node) == SUCCESS)
+    {
+        node->parent->right = node->left;
+    }
+
+    node->parent = node->left;
+    node->left = keepNode;
+}
+
+
 
 
 int main() {
