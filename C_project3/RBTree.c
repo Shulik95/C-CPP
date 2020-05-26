@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include "RBTree.h"
 #include <stdlib.h>
+#include "utilities/RBUtilities.h"
 #include <stdbool.h>
 
 // -------------------------- const definitions -------------------------
@@ -75,7 +76,7 @@ void fixTree(Node* node);
  * @param node - node to check.
  * @return - 1 if is left child, otherwise 0.
  */
-int isLeftChild(Node* node)
+int isLeftChild(Node* const node)
 {
     if(node->parent == NULL || node == NULL)
     {
@@ -168,7 +169,7 @@ int insertToRBTree(RBTree *tree, void *data)
  * @param cmp_func
  * @return
  */
-Node* findNode(Node* node, const void* data, CompareFunc cmp_func)
+Node* findNode(Node* const node, const void* data, const CompareFunc cmp_func)
 {
 
     if (node == NULL)
@@ -208,7 +209,7 @@ Node* findNode(Node* node, const void* data, CompareFunc cmp_func)
  * balances the tree from inserted node all the way up.
  * @param node - start balancing from here.
  */
-void fixTree(Node* node)
+void fixTree(Node* const node)
 {
     Node* parent = node->parent;
     Node* grandParent = parent->parent;
@@ -269,7 +270,7 @@ void fixTree(Node* node)
  * rotates given tree to the left.
  * @param node -assumes this node is root of subtree to rotate, meaning this node will go down a level in the tree.
  */
-void rotateLeft(Node* node)
+void rotateLeft(Node* const node)
 {
     Node* keepNode = node->right->left;
     node->right->left = node;
