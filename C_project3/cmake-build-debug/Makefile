@@ -123,33 +123,6 @@ C_project3/fast:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/build
 .PHONY : C_project3/fast
 
-ProductExample.o: ProductExample.c.o
-
-.PHONY : ProductExample.o
-
-# target to build an object file
-ProductExample.c.o:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.o
-.PHONY : ProductExample.c.o
-
-ProductExample.i: ProductExample.c.i
-
-.PHONY : ProductExample.i
-
-# target to preprocess a source file
-ProductExample.c.i:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.i
-.PHONY : ProductExample.c.i
-
-ProductExample.s: ProductExample.c.s
-
-.PHONY : ProductExample.s
-
-# target to generate assembly for a file
-ProductExample.c.s:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.s
-.PHONY : ProductExample.c.s
-
 RBTree.o: RBTree.c.o
 
 .PHONY : RBTree.o
@@ -204,6 +177,60 @@ Structs.c.s:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.s
 .PHONY : Structs.c.s
 
+tests.o: tests.c.o
+
+.PHONY : tests.o
+
+# target to build an object file
+tests.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.o
+.PHONY : tests.c.o
+
+tests.i: tests.c.i
+
+.PHONY : tests.i
+
+# target to preprocess a source file
+tests.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.i
+.PHONY : tests.c.i
+
+tests.s: tests.c.s
+
+.PHONY : tests.s
+
+# target to generate assembly for a file
+tests.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.s
+.PHONY : tests.c.s
+
+utilities/RButilities.o: utilities/RButilities.c.o
+
+.PHONY : utilities/RButilities.o
+
+# target to build an object file
+utilities/RButilities.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/utilities/RButilities.c.o
+.PHONY : utilities/RButilities.c.o
+
+utilities/RButilities.i: utilities/RButilities.c.i
+
+.PHONY : utilities/RButilities.i
+
+# target to preprocess a source file
+utilities/RButilities.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/utilities/RButilities.c.i
+.PHONY : utilities/RButilities.c.i
+
+utilities/RButilities.s: utilities/RButilities.c.s
+
+.PHONY : utilities/RButilities.s
+
+# target to generate assembly for a file
+utilities/RButilities.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/utilities/RButilities.c.s
+.PHONY : utilities/RButilities.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -213,15 +240,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... C_project3"
 	@echo "... edit_cache"
-	@echo "... ProductExample.o"
-	@echo "... ProductExample.i"
-	@echo "... ProductExample.s"
 	@echo "... RBTree.o"
 	@echo "... RBTree.i"
 	@echo "... RBTree.s"
 	@echo "... Structs.o"
 	@echo "... Structs.i"
 	@echo "... Structs.s"
+	@echo "... tests.o"
+	@echo "... tests.i"
+	@echo "... tests.s"
+	@echo "... utilities/RButilities.o"
+	@echo "... utilities/RButilities.i"
+	@echo "... utilities/RButilities.s"
 .PHONY : help
 
 

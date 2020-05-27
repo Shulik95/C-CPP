@@ -15,11 +15,10 @@
  */
 
 // ------------------------------ includes ------------------------------
-#include <stdio.h>
 #include "RBTree.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include "utilities/RBUtilities.h"
-#include <stdbool.h>
 
 // -------------------------- const definitions -------------------------
 /**
@@ -84,7 +83,7 @@ int isLeftChild(Node* const node)
     }
     else
     {
-        return (node->parent->left == node) ? SUCCESS:FAILED;
+        return (node->parent->left == node) ? SUCCESS : FAILED;
     }
 }
 
@@ -101,7 +100,7 @@ int isRightChild(Node* node)
     }
     else
     {
-        return (node->parent->right == node) ? SUCCESS:FAILED;
+        return (node->parent->right == node) ? SUCCESS : FAILED;
     }
 }
 
@@ -326,7 +325,7 @@ void rotateRight(Node* node)
 
 
 
-int main() {
-
-    return 0;
-}
+//int main() {
+//
+//    return 0;
+//}

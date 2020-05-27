@@ -24,7 +24,7 @@
 #define LESSER -1
 #define EQUAL 0
 const char* NEW_LINE = "\n";
-const int SUCCESS = 1;
+const int CONT_SUCC = 1;
 const int FAIL = 0;
 
 
@@ -64,7 +64,7 @@ int concatenate(const void *word, void *pConcatenated)
 
     else
     {
-        return SUCCESS;
+        return CONT_SUCC;
     }
 }
 
@@ -123,49 +123,49 @@ void freeVector(void *pVector)
     ((Vector*)pVector)->vector = NULL;
 }
 
-int main() {
-    Vector v1, v2, v3;
-    v1.len = 3;
-    v2.len = 3;
-    v3.len = 3;
-    v1.vector = (double*)malloc(sizeof(double)*v1.len);
-    v2.vector = (double*)malloc(sizeof(double)*v2.len);
-    v3.vector = (double*)malloc(sizeof(double)*v3.len);
-    for(int i = 0; i < 3; i++)
-    {
-        v1.vector[i] = i;
-        v2.vector[i] = i;
-        v3.vector[i] = i;
-    }
-    if(vectorCompare1By1(&v1, &v2) != EQUAL)
-    {
-        printf("vectors v1 and v2 should be equal - compare function malfunction\n");
-        printf("");
-    }
-    if(vectorCompare1By1(&v2,&v3) != EQUAL)
-    {
-        printf("vectors v2 and v3 should be equal - compare function malfunction\n");
-        printf("");
-    }
-    if(vectorCompare1By1(&v1,&v3) != EQUAL)
-    {
-        printf("vectors v1 and v3 should be equal - compare function malfunction\n");
-        printf("");
-    }
-    else
-    {
-        printf("identical vector test - passed\n");
-        printf("");
-    }
-
-    for(int j = 0; j < 3; j++) //{0,1,2}, {1,2,3},
-    {
-        v1.vector[j] = j;
-        v1.vector[j] = j+1;
-        v1.vector[j] = j+2;
-    }
-
-    return 0;
-}
+//int main() {
+//    Vector v1, v2, v3;
+//    v1.len = 3;
+//    v2.len = 3;
+//    v3.len = 3;
+//    v1.vector = (double*)malloc(sizeof(double)*v1.len);
+//    v2.vector = (double*)malloc(sizeof(double)*v2.len);
+//    v3.vector = (double*)malloc(sizeof(double)*v3.len);
+//    for(int i = 0; i < 3; i++)
+//    {
+//        v1.vector[i] = i;
+//        v2.vector[i] = i;
+//        v3.vector[i] = i;
+//    }
+//    if(vectorCompare1By1(&v1, &v2) != EQUAL)
+//    {
+//        printf("vectors v1 and v2 should be equal - compare function malfunction\n");
+//        printf("");
+//    }
+//    if(vectorCompare1By1(&v2,&v3) != EQUAL)
+//    {
+//        printf("vectors v2 and v3 should be equal - compare function malfunction\n");
+//        printf("");
+//    }
+//    if(vectorCompare1By1(&v1,&v3) != EQUAL)
+//    {
+//        printf("vectors v1 and v3 should be equal - compare function malfunction\n");
+//        printf("");
+//    }
+//    else
+//    {
+//        printf("identical vector test - passed\n");
+//        printf("");
+//    }
+//
+//    for(int j = 0; j < 3; j++) //{0,1,2}, {1,2,3},
+//    {
+//        v1.vector[j] = j;
+//        v1.vector[j] = j+1;
+//        v1.vector[j] = j+2;
+//    }
+//
+//    return 0;
+//}
 
 

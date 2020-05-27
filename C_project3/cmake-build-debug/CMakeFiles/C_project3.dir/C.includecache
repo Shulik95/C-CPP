@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
+
+/cygdrive/c/Users/user/CLionProjects/C_project3/tests.c
+stdbool.h
+-
+stdlib.h
+-
+stdio.h
+-
+RBTree.h
+/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
+utilities/RBUtilities.h
+/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RBUtilities.h
+
+/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RBUtilities.h
+../RBTree.h
+/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
+
