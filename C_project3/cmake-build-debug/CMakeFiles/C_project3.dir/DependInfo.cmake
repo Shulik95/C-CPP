@@ -6,7 +6,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.c" "/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles/C_project3.dir/RBTree.c.o"
   "/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.c" "/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles/C_project3.dir/Structs.c.o"
-  "/cygdrive/c/Users/user/CLionProjects/C_project3/inserttionTest.c" "/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles/C_project3.dir/inserttionTest.c.o"
   "/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RButilities.c" "/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles/C_project3.dir/utilities/RButilities.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

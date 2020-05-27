@@ -103,17 +103,17 @@ int isProperRBtree(RBTree* T)
     isProperRBTreePT2(T->root);
 }
 
-int cmp(const void* a, const void* b)
-{
-    int* i = (int*)a;
-    int* j = (int*)b;
-
-    if (*i > *j) return 1;
-    if (*i < *j) return -1;
-    if (*i == *j) return 0;
-}
-
-void freeint(void* n) {}
+//int cmp(const void* a, const void* b)
+//{
+//    int* i = (int*)a;
+//    int* j = (int*)b;
+//
+//    if (*i > *j) return 1;
+//    if (*i < *j) return -1;
+//    if (*i == *j) return 0;
+//}
+//
+//void freeint(void* n) {}
 
 void testInsert(int n)
 {
@@ -139,7 +139,7 @@ void testInsert(int n)
 
 }
 
-int main()
-{
-    testInsert(40);
-}
+//int main()
+//{
+//    testInsert(40);
+//}

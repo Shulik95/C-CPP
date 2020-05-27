@@ -158,10 +158,8 @@ int insertToRBTree(RBTree *tree, void *data)
             CREATE_NODE(left, tree);
         }
         tree->size++; //update tree size
-
-
+        return SUCCESS;
     }
-    return 0;
 }
 
 /**
@@ -171,7 +169,7 @@ int insertToRBTree(RBTree *tree, void *data)
  * @param cmp_func
  * @return
  */
-Node* findNode(Node* const node, const void* data, const CompareFunc cmp_func)
+Node* findNode(Node* node, const void* data, const CompareFunc cmp_func)
 {
 
     if (node == NULL)
@@ -254,8 +252,8 @@ void fixTree(Node* const node, RBTree* tree)
             return;
         }
         else if(node->parent->color == BLACK) //2nd case - do nothing.
-            {
-                /*do nothing*/
+        {
+          /*do nothing*/
             return;
         }
         parent = node->parent;
@@ -305,8 +303,8 @@ void fixTree(Node* const node, RBTree* tree)
  */
 void rotateLeft(Node* const node)
 {
-    Node* keepNode = node->right->left;
-    node->right->left = node;
+    Node* keepNode = node->right->left; //save data
+    node->right->left = node; //set node to correct place
 
     if(keepNode != NULL)
     {
@@ -324,9 +322,9 @@ void rotateLeft(Node* const node)
         node->parent->right = node->right;
     }
 
-    node->right->parent = node->parent;
-    node->parent = node->right;
-    node->right = keepNode;
+    node->right->parent = node->parent; //change parent of son
+    node->parent = node->right; //change parent of rotated node.
+    node->right = keepNode; //assign value - might be null but were okay
 
 }
 
@@ -360,22 +358,30 @@ void rotateRight(Node* node)
     node->left = keepNode;
 }
 
+/**
+ * check whether the tree RBTreeContains this item.
+ * @param tree: the tree to check an item in.
+ * @param data: item to check.
+ * @return: 0 if the item is not in the tree, other if it is.
+ */
+int RBTreeContains(const RBTree *tree, const void *data)
+{
+    Node* tempNode = findNode(tree->root, data, tree->compFunc); //returns same node or parent of data
+    return tree->compFunc(tempNode->data, data);
+}
 
-/*functions for testing purposes*/
+/***/
+int cmp(const void* a, const void* b)
+{
+    int* i = (int*)a;
+    int* j = (int*)b;
 
+    if (*i > *j) return 1;
+    if (*i < *j) return -1;
+    if (*i == *j) return 0;
+}
 
-//int cmp(const void* a, const void* b)
-//{
-//    int* i = (int*)a;
-//    int* j = (int*)b;
-//
-//    if (*i > *j) return 1;
-//    if (*i < *j) return -1;
-//    if (*i == *j) return 0;
-//}
-//
-//void freeint(void* n) {}
-
+void freeint(void* n) {}
 
 
 //int main() {
@@ -387,26 +393,13 @@ void rotateRight(Node* node)
 //    int* p3 = &temp1;
 //    int temp4 = 4;
 //    int* p4 = &temp4;
-//    int temp0 = 0;
-//    int* p0 = &temp0;
-//    int temp5 = 5;
-//    int* p5 = &temp5;
-//    int temp6 = 6;
-//    int* p6 = &temp6;
 //    RBTree* T = newRBTree(&cmp, &freeint);
 //    insertToRBTree(T, (void*)p1);
 //    printRBTree(T->root);
 //    insertToRBTree(T,(void*)p2);
 //    printRBTree(T->root);
 //    insertToRBTree(T,(void*)p3);
-//    printRBTree(T->root);
-//    insertToRBTree(T,(void*)p4);
-//    printRBTree(T->root);
-//    insertToRBTree(T,(void*)p0);
-//    printRBTree(T->root);
-//    insertToRBTree(T,(void*)p5);
-//    printRBTree(T->root);
-//    insertToRBTree(T,(void*)p6);
-//    printRBTree(T->root);
+//    int c = insertToRBTree(T,(void*)p3);
+//    printf("%d", c);
 //    return 0;
 //}

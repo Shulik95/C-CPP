@@ -1,7 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/C_project3.dir/RBTree.c.o"
   "CMakeFiles/C_project3.dir/Structs.c.o"
-  "CMakeFiles/C_project3.dir/inserttionTest.c.o"
   "CMakeFiles/C_project3.dir/utilities/RButilities.c.o"
   "C_project3.exe"
   "C_project3.pdb"

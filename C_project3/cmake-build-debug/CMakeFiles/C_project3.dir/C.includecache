@@ -17,7 +17,27 @@ utilities/RBUtilities.h
 /cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RBUtilities.h
 stdbool.h
 -
+inspectable.h
+/cygdrive/c/Users/user/CLionProjects/C_project3/inspectable.h
 
+/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
+
+/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.c
+Structs.h
+/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.h
+string.h
+-
+math.h
+-
+stdlib.h
+-
+stdio.h
+-
+RBTree.h
+/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
+
+/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.h
+RBTree.h
 /cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
 
 /cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RBUtilities.h

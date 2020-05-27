@@ -177,33 +177,6 @@ Structs.c.s:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.s
 .PHONY : Structs.c.s
 
-inserttionTest.o: inserttionTest.c.o
-
-.PHONY : inserttionTest.o
-
-# target to build an object file
-inserttionTest.c.o:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/inserttionTest.c.o
-.PHONY : inserttionTest.c.o
-
-inserttionTest.i: inserttionTest.c.i
-
-.PHONY : inserttionTest.i
-
-# target to preprocess a source file
-inserttionTest.c.i:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/inserttionTest.c.i
-.PHONY : inserttionTest.c.i
-
-inserttionTest.s: inserttionTest.c.s
-
-.PHONY : inserttionTest.s
-
-# target to generate assembly for a file
-inserttionTest.c.s:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/inserttionTest.c.s
-.PHONY : inserttionTest.c.s
-
 utilities/RButilities.o: utilities/RButilities.c.o
 
 .PHONY : utilities/RButilities.o
@@ -246,9 +219,6 @@ help:
 	@echo "... Structs.o"
 	@echo "... Structs.i"
 	@echo "... Structs.s"
-	@echo "... inserttionTest.o"
-	@echo "... inserttionTest.i"
-	@echo "... inserttionTest.s"
 	@echo "... utilities/RButilities.o"
 	@echo "... utilities/RButilities.i"
 	@echo "... utilities/RButilities.s"
