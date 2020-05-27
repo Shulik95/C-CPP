@@ -19,12 +19,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "utilities/RBUtilities.h"
+#include <stdbool.h>
 
 // -------------------------- const definitions -------------------------
 /**
  * deals with creating the new node according to given side, balances tree after addition.
  */
-#define CREATE_NODE(leftOrRight)\
+#define CREATE_NODE(leftOrRight, tree)\
 Node* newNode = (Node*)malloc(sizeof(Node));\
 parent->leftOrRight = newNode;\
 newNode->color = RED;\
@@ -32,13 +33,15 @@ newNode->parent = parent;\
 newNode->left = NULL;\
 newNode->right = NULL;\
 newNode->data = data;\
-fixTree(newNode);
+fixTree(newNode, tree);
 
 
 long unsigned const EMPTY_TREE_SIZE = 0;
 int const SUCCESS = 1;
 int const EQUAL = 0;
 int const FAILED = 0;
+int NO_UNCLE = false;
+int helper = 0;
 
 // ------------------------------ functions -----------------------------
 
@@ -67,8 +70,9 @@ void rotateRight(Node* node);
 /**
  * balanced a RB tree after insertion.
  * @param node - the inserted node.
+ * @param tree - RB tree were working on.
  */
-void fixTree(Node* node);
+void fixTree(Node* node, RBTree* tree);
 
 /**
  * checks if the given node is the left child.
@@ -148,11 +152,11 @@ int insertToRBTree(RBTree *tree, void *data)
         }
         else if (cmpVal > EQUAL) //node should be added on the right
         {
-            CREATE_NODE(right);
+            CREATE_NODE(right,tree);
         }
         else // node should be added as left son
         {
-            CREATE_NODE(left);
+            CREATE_NODE(left, tree);
         }
         tree->size++; //update tree size
 
@@ -205,19 +209,61 @@ Node* findNode(Node* const node, const void* data, const CompareFunc cmp_func)
 }
 
 /**
+ * checks if given node has an existing uncle and updates boolean indicator accordingly.
+ * @param node - the parent of the node - meaning the brother of the uncle.
+ */
+void checkUncle(Node* node)
+{
+    if(isLeftChild(node))
+    {
+        if(!(node->parent->right)) //uncle doesnt exists = black uncle
+        {
+            NO_UNCLE = true;
+        }
+    }
+    else if(isRightChild(node))
+    {
+        if(!(node->parent->left))
+        {
+            NO_UNCLE = true;
+        }
+    }
+}
+
+/**
+ * checks if both right and left child of given node are red.
+ * @param node - parent of both nodes.
+ * @return - 1 if both are red 0 otherwise.
+ */
+int bothRed(Node* const node)
+{
+    return (node->left->color == RED && node->right->color == RED) ? SUCCESS:FAILED;
+}
+
+/**
+ * updates root of tree in case the root was rotated
+ * @param tree
+ * @param node
+ */
+void updateRoot(RBTree* tree, Node* node)
+{
+    if(node == tree->root)
+    {
+        tree->root = node->parent;
+        tree->root->color = BLACK;
+    }
+
+}
+
+/**
  * balances the tree from inserted node all the way up.
  * @param node - start balancing from here.
  */
-void fixTree(Node* const node)
+void fixTree(Node* const node, RBTree* tree)
 {
-    Node* parent = node->parent;
-    Node* grandParent = parent->parent;
-    Node* uncle = grandParent->left;
-    if(isLeftChild(parent) == SUCCESS)
-    {
-        uncle = grandParent->right;
-    }
-
+    helper++;
+    Node* parent;
+    Node* grandParent;
     if(node)
     {
         if(node->parent == NULL) //node is root.
@@ -226,42 +272,53 @@ void fixTree(Node* const node)
             return;
         }
         else if(node->parent->color == BLACK) //2nd case - do nothing.
-        {
-            /*do nothing*/
+            {
+                /*do nothing*/
             return;
         }
-        else if (parent->color == RED && uncle->color == RED) //3rd case - parent and uncle are red.
+        parent = node->parent;
+        grandParent = parent->parent;
+        checkUncle(parent);
+        if (parent->color == RED && !NO_UNCLE) //3rd case - parent and uncle are red.
         {
-            parent->color = BLACK;
-            uncle->color = BLACK;
-            grandParent->color = RED;
-            fixTree(grandParent); //run algorithm from grandparent
+            /*two uncle exist so both might be RED, check it.*/
+            if(bothRed(grandParent))
+            {
+                grandParent->left->color = BLACK;
+                grandParent->right->color = BLACK;
+                grandParent->color = RED;
+                fixTree(grandParent, tree); //run algorithm from grandparent
+            }
         }
         else //4th case - parent is red, uncle is black.
         {
             if(isLeftChild(node) == SUCCESS && isRightChild(parent) == SUCCESS) //left child of right child, 4.a
             {
                 rotateRight(parent);
+                updateRoot(tree, parent);
             }
             else if(isRightChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) //right child of left child, 4.a
             {
                 rotateLeft(parent);
+                updateRoot(tree, parent);
             }
             else // case 4.b
             {
                 if(isLeftChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) // left child of left child, 4.b
                 {
                     rotateRight(grandParent);
+                    updateRoot(tree, grandParent);
                 }
                 else if (isRightChild(node) == SUCCESS && isRightChild(parent) == SUCCESS)//right child of right child
                 {
                     rotateLeft(grandParent);
-
+                    updateRoot(tree, grandParent);
                 }
             }
             parent->color = BLACK;
             grandParent->color = RED;
         }
+        NO_UNCLE = false;
     }
 }
 
@@ -287,6 +344,10 @@ void rotateLeft(Node* const node)
     else if(isRightChild(node) == SUCCESS)
     {
         node->parent->right = node->right;
+    }
+    else
+    {
+        node->right->parent = node->parent;
     }
 
     node->parent = node->right;
@@ -317,15 +378,49 @@ void rotateRight(Node* node)
     {
         node->parent->right = node->left;
     }
-
+    else //node parent is null - rotating root
+    {
+        node->left->parent = node->parent;
+    }
     node->parent = node->left;
     node->left = keepNode;
 }
 
 
+/*functions for testing purposes*/
 
 
-//int main() {
-//
-//    return 0;
-//}
+int cmp(const void* a, const void* b)
+{
+    int* i = (int*)a;
+    int* j = (int*)b;
+
+    if (*i > *j) return 1;
+    if (*i < *j) return -1;
+    if (*i == *j) return 0;
+}
+
+void freeint(void* n) {}
+
+
+
+int main() {
+    int temp = 3;
+    int* p1 = &temp;
+    int temp2 = 2;
+    int* p2 = &temp2;
+    int temp1 = 1;
+    int* p3 = &temp1;
+    int temp4 = 4;
+    int* p4 = &temp4;
+    RBTree* T = newRBTree(&cmp, &freeint);
+    insertToRBTree(T, (void*)p1);
+    printRBTree(T->root);
+    insertToRBTree(T,(void*)p2);
+    printRBTree(T->root);
+    insertToRBTree(T,(void*)p3);
+    printRBTree(T->root);
+    insertToRBTree(T,(void*)p4);
+    printRBTree(T->root);
+    return 0;
+}

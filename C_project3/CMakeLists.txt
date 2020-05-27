@@ -3,4 +3,4 @@ project(C_project3 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(C_project3 RBTree.c Structs.h RBTree.h Structs.c utilities/RButilities.c tests.c)
+add_executable(C_project3 RBTree.c Structs.h RBTree.h Structs.c utilities/RButilities.c )
