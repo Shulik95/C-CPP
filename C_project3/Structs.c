@@ -173,88 +173,111 @@ int copyIfNormIsLarger(const void *pVector, void *pMaxVector)
     }
 }
 
-
-
-
-
-int main() {
-    Vector v1, v2, v3;
-    v1.len = 3;
-    v2.len = 3;
-    v3.len = 3;
-    v1.vector = (double*)malloc(sizeof(double)*v1.len);
-    v2.vector = (double*)malloc(sizeof(double)*v2.len);
-    v3.vector = (double*)malloc(sizeof(double)*v3.len);
-    for(int i = 0; i < 3; i++)
+/**
+ * This function allocates memory it does not free.
+ * @param tree a pointer to a tree of Vectors
+ * @return pointer to a *copy* of the vector that has the largest norm (L2 Norm), NULL on failure.
+ */
+Vector *findMaxNormVectorInTree(RBTree *tree)
+{
+    if(!tree || !(tree->root))
     {
-        v1.vector[i] = i;
-        v2.vector[i] = i;
-        v3.vector[i] = i;
-    }
-    //test 1:
-    if(vectorCompare1By1(&v1, &v2) != EQUAL)
-    {
-        printf("vectors v1 and v2 should be equal - compare function malfunction test 1\n");
-        printf("");
-    }
-    //test 2:
-    if(vectorCompare1By1(&v2,&v3) != EQUAL)
-    {
-        printf("vectors v2 and v3 should be equal - compare function malfunction test2\n");
-        printf("");
-    }
-    //test 3:
-    if(vectorCompare1By1(&v1,&v3) != EQUAL)
-    {
-        printf("vectors v1 and v3 should be equal - compare function malfunction test 3\n");
-        printf("");
+        return NULL;
     }
     else
     {
-        printf("identical vector test - passed\n");
-        printf("");
+        Vector* maxVec = (Vector*)malloc(sizeof(Vector));
+        maxVec->len = ((Vector*)tree->root->data)->len;
+        maxVec->vector = (double*)calloc(maxVec->len, sizeof(double));
+        forEachRBTree(tree, copyIfNormIsLarger, NULL);
+        return maxVec;
     }
-
-    for(int j = 0; j < 3; j++) //{0,1,2}, {1,2,3},{2,3,4}
-    {
-        v1.vector[j] = j;
-        v2.vector[j] = j+1;
-        v3.vector[j] = j+2;
-    }
-    //test 4:
-    if(vectorCompare1By1(&v1, &v2) != LESSER)
-    {
-        printf("v1 is lesser than v2, comparison failure test 4\n");
-        printf("");
-    }
-    //test 5:
-    if(vectorCompare1By1(&v1, &v3) != LESSER)
-    {
-        printf("v1 is lesser than v2, comparison failure test 5\n");
-        printf("");
-    }
-    //test 6:
-    if(vectorCompare1By1(&v3, &v1) != GREATER)
-    {
-        printf("v3 is greater than v1, comparison failure test 5\n");
-        printf("");
-    }
-    if(vectorCompare1By1(&v3, &v2) != GREATER)
-    {
-        printf("v3 is greater than v2, comparison failure test 5\n");
-        printf("");
-    }
-    else
-    {
-        printf("basic comparison for not identical vectors - passed \n");
-        printf("");
-    }
-
-
-    printf("***************************\n");
-    printf("*** FUK YUUU SHIMOONNN! ***\n");
-    printf("***************************\n");
-    return 0;
 }
+
+
+
+
+
+
+//
+//int main() {
+//    Vector v1, v2, v3;
+//    v1.len = 3;
+//    v2.len = 3;
+//    v3.len = 3;
+//    v1.vector = (double*)malloc(sizeof(double)*v1.len);
+//    v2.vector = (double*)malloc(sizeof(double)*v2.len);
+//    v3.vector = (double*)malloc(sizeof(double)*v3.len);
+//    for(int i = 0; i < 3; i++)
+//    {
+//        v1.vector[i] = i;
+//        v2.vector[i] = i;
+//        v3.vector[i] = i;
+//    }
+//    //test 1:
+//    if(vectorCompare1By1(&v1, &v2) != EQUAL)
+//    {
+//        printf("vectors v1 and v2 should be equal - compare function malfunction test 1\n");
+//        printf("");
+//    }
+//    //test 2:
+//    if(vectorCompare1By1(&v2,&v3) != EQUAL)
+//    {
+//        printf("vectors v2 and v3 should be equal - compare function malfunction test2\n");
+//        printf("");
+//    }
+//    //test 3:
+//    if(vectorCompare1By1(&v1,&v3) != EQUAL)
+//    {
+//        printf("vectors v1 and v3 should be equal - compare function malfunction test 3\n");
+//        printf("");
+//    }
+//    else
+//    {
+//        printf("identical vector test - passed\n");
+//        printf("");
+//    }
+//
+//    for(int j = 0; j < 3; j++) //{0,1,2}, {1,2,3},{2,3,4}
+//    {
+//        v1.vector[j] = j;
+//        v2.vector[j] = j+1;
+//        v3.vector[j] = j+2;
+//    }
+//    //test 4:
+//    if(vectorCompare1By1(&v1, &v2) != LESSER)
+//    {
+//        printf("v1 is lesser than v2, comparison failure test 4\n");
+//        printf("");
+//    }
+//    //test 5:
+//    if(vectorCompare1By1(&v1, &v3) != LESSER)
+//    {
+//        printf("v1 is lesser than v2, comparison failure test 5\n");
+//        printf("");
+//    }
+//    //test 6:
+//    if(vectorCompare1By1(&v3, &v1) != GREATER)
+//    {
+//        printf("v3 is greater than v1, comparison failure test 5\n");
+//        printf("");
+//    }
+//    if(vectorCompare1By1(&v3, &v2) != GREATER)
+//    {
+//        printf("v3 is greater than v2, comparison failure test 5\n");
+//        printf("");
+//    }
+//    else
+//    {
+//        printf("basic comparison for not identical vectors - passed \n");
+//        printf("");
+//    }
+//
+//
+//    printf("***************************\n");
+//    printf("*** FUK YUUU SHIMOONNN! ***\n");
+//    printf("***************************\n");
+//    return 0;
+//}
 
 
