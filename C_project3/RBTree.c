@@ -74,13 +74,20 @@ void rotateRight(Node* node);
 void fixTree(Node* node, RBTree* tree);
 
 /**
+ * helper function for traversal memory freeing.
+ * @param node - starting node.
+ * @param freeFunc.
+ */
+void freeRBHelper(Node** node, FreeFunc freeFunc);
+
+/**
  * checks if the given node is the left child.
  * @param node - node to check.
  * @return - 1 if is left child, otherwise 0.
  */
 int isLeftChild(Node* const node)
 {
-    if(node->parent == NULL || node == NULL)
+    if(node == NULL || node->parent == NULL)
     {
         return FAILED;
     }
@@ -97,7 +104,7 @@ int isLeftChild(Node* const node)
  */
 int isRightChild(Node* node)
 {
-    if(node->parent == NULL || node == NULL)
+    if(node == NULL || node->parent == NULL)
     {
         return FAILED;
     }
@@ -151,11 +158,11 @@ int insertToRBTree(RBTree *tree, void *data)
         }
         else if (cmpVal > EQUAL) //node should be added on the right
         {
-            CREATE_NODE(right,tree);
+            CREATE_NODE(right,tree)
         }
         else // node should be added as left son
         {
-            CREATE_NODE(left, tree);
+            CREATE_NODE(left, tree)
         }
         tree->size++; //update tree size
         return SUCCESS;
@@ -366,40 +373,91 @@ void rotateRight(Node* node)
  */
 int RBTreeContains(const RBTree *tree, const void *data)
 {
+    if(tree == NULL)
+    {
+        return FAILED;
+    }
     Node* tempNode = findNode(tree->root, data, tree->compFunc); //returns same node or parent of data
-    return tree->compFunc(tempNode->data, data);
+    if(tempNode == NULL) //findNode function failed :(
+    {
+        return FAILED;
+    }
+    return tree->compFunc(tempNode->data, data) == EQUAL;
 }
 
-/***/
-int cmp(const void* a, const void* b)
+/**
+ * helper function which activates a function on all node in-order.
+ * @param node - starting node.
+ * @param func - function to activate.
+ * @param args - more optional args.
+ * @return- 1 if all goes well, 0 otherwise.
+ */
+int forEachHelper(Node* node, forEachFunc func, void *args)
 {
-    int* i = (int*)a;
-    int* j = (int*)b;
-
-    if (*i > *j) return 1;
-    if (*i < *j) return -1;
-    if (*i == *j) return 0;
+    if(!node)
+    {
+        return SUCCESS;
+    }
+    int lSubTreeSuccess = forEachHelper(node->left, func, args);
+    int rootSuccess = func(node->data, args);
+    int rSubTreeSuccess = forEachHelper(node->right, func, args);
+    return (rootSuccess && lSubTreeSuccess && rSubTreeSuccess);
 }
 
-void freeint(void* n) {}
+/**
+ * Activate a function on each item of the tree. the order is an ascending order. if one of the activations of the
+ * function returns 0, the process stops.
+ * @param tree: the tree with all the items.
+ * @param func: the function to activate on all items.
+ * @param args: more optional arguments to the function (may be null if the given function support it).
+ * @return: 0 on failure, other on success.
+ */
+
+int forEachRBTree(const RBTree *tree, forEachFunc func, void *args)
+{
+    if(tree == NULL)
+    {
+        return SUCCESS;
+    }
+    return  forEachHelper(tree->root, func, args);
+}
+
+/**
+ * helper for freeRBTree, traverses both subtrees and free memory using given function.
+ * @param node - startin node.
+ * @param freeFunc - funtion for freeing given data type.
+ */
+void freeRBHelper(Node** node, FreeFunc freeFunc)
+{
+    if((*node) == NULL)
+    {
+        /*base case*/
+        return;
+    }
+    else
+    {
+        freeRBHelper(&(*node)->right, freeFunc); //free left subtree
+        freeRBHelper(&(*node)->left, freeFunc); //free right subtree
+        freeFunc((*node)->data); //free data
+        freeFunc((*node)); //free the node itself.
+    }
+}
+
+/**
+ * free all memory of the data structure.
+ * @param tree: pointer to the tree to free.
+ */
+void freeRBTree(RBTree **tree)
+{
+    freeRBHelper(&(*(tree))->root, (*tree)->freeFunc);
+    free((*tree));
+}
 
 
-//int main() {
-//    int temp = 3;
-//    int* p1 = &temp;
-//    int temp2 = 2;
-//    int* p2 = &temp2;
-//    int temp1 = 1;
-//    int* p3 = &temp1;
-//    int temp4 = 4;
-//    int* p4 = &temp4;
-//    RBTree* T = newRBTree(&cmp, &freeint);
-//    insertToRBTree(T, (void*)p1);
-//    printRBTree(T->root);
-//    insertToRBTree(T,(void*)p2);
-//    printRBTree(T->root);
-//    insertToRBTree(T,(void*)p3);
-//    int c = insertToRBTree(T,(void*)p3);
-//    printf("%d", c);
-//    return 0;
-//}
+
+int main()
+{
+    return 0;
+}
+
+
