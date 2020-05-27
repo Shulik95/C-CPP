@@ -177,32 +177,32 @@ Structs.c.s:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.s
 .PHONY : Structs.c.s
 
-tests.o: tests.c.o
+inserttionTest.o: inserttionTest.c.o
 
-.PHONY : tests.o
+.PHONY : inserttionTest.o
 
 # target to build an object file
-tests.c.o:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.o
-.PHONY : tests.c.o
+inserttionTest.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/inserttionTest.c.o
+.PHONY : inserttionTest.c.o
 
-tests.i: tests.c.i
+inserttionTest.i: inserttionTest.c.i
 
-.PHONY : tests.i
+.PHONY : inserttionTest.i
 
 # target to preprocess a source file
-tests.c.i:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.i
-.PHONY : tests.c.i
+inserttionTest.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/inserttionTest.c.i
+.PHONY : inserttionTest.c.i
 
-tests.s: tests.c.s
+inserttionTest.s: inserttionTest.c.s
 
-.PHONY : tests.s
+.PHONY : inserttionTest.s
 
 # target to generate assembly for a file
-tests.c.s:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.s
-.PHONY : tests.c.s
+inserttionTest.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/inserttionTest.c.s
+.PHONY : inserttionTest.c.s
 
 utilities/RButilities.o: utilities/RButilities.c.o
 
@@ -246,9 +246,9 @@ help:
 	@echo "... Structs.o"
 	@echo "... Structs.i"
 	@echo "... Structs.s"
-	@echo "... tests.o"
-	@echo "... tests.i"
-	@echo "... tests.s"
+	@echo "... inserttionTest.o"
+	@echo "... inserttionTest.i"
+	@echo "... inserttionTest.s"
 	@echo "... utilities/RButilities.o"
 	@echo "... utilities/RButilities.i"
 	@echo "... utilities/RButilities.s"

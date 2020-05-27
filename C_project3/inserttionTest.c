@@ -129,11 +129,11 @@ void testInsert(int n)
     {
         printf("insertion attempt %d: insert %d\n", i, input[i]);
         insertToRBTree(T, &input[i]);
-        printRBTree(T->root);
         isProperRBtree(T);
     }
     if (isProperRBtree(T))
     {
+        printRBTree(T->root);
         printf("Insertion successful! :D");
     }
 
@@ -141,5 +141,5 @@ void testInsert(int n)
 
 int main()
 {
-    testInsert(500);
+    testInsert(40);
 }
