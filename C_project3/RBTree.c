@@ -419,7 +419,7 @@ int forEachRBTree(const RBTree *tree, forEachFunc func, void *args)
     {
         return SUCCESS;
     }
-    return  forEachHelper(tree->root, func, args);
+    return forEachHelper(tree->root, func, args);
 }
 
 /**
@@ -455,9 +455,9 @@ void freeRBTree(RBTree **tree)
 
 
 
-int main()
-{
-    return 0;
-}
-
-
+//int main()
+//{
+//    return 0;
+//}
+//
+//
