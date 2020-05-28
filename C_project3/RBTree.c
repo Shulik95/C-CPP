@@ -35,6 +35,9 @@ newNode->right = NULL;\
 newNode->data = data;\
 fixTree(newNode, tree);
 
+#define M_IS_RED 0
+#define M_BLACK_C_RED 1
+
 
 long unsigned const EMPTY_TREE_SIZE = 0;
 int const SUCCESS = 1;
@@ -453,11 +456,143 @@ void freeRBTree(RBTree **tree)
     free((*tree));
 }
 
+/**
+ * finds the successor of a given node, assumes right child exists.
+ * @param node - find a successor for.
+ * @return - a pointer to the successor node.
+ */
+Node* findSuccessor(Node* node)
+{
+    /*right subtree exists, get minimal value in it*/
+    Node* curr = node->right;
+    while(curr->left)
+    {
+        curr = curr->left;
+    }
+    return curr;
+
+}
+
+int getDeletionCase(Node* node)
+{
+    if(node->color == RED)
+    {
+        return M_IS_RED;
+    }
+    else if(node->color == BLACK && (node->right && node->right->color == RED))
+    {
+        return M_BLACK_C_RED;
+    }
+    return 0;
+}
+
+/**
+ * remove an item from the tree
+ * @param tree: the tree to remove an item from.
+ * @param data: item to remove from the tree.
+ * @return: 0 on failure, other on success. (if data is not in the tree - failure).
+ */
+int deleteFromRBTree(RBTree *tree, void *data)
+{
+    /*first stage of deletion*/
+    Node* toRemove = findNode(tree->root, data, tree->compFunc);
+    if(tree->compFunc(data, toRemove->data) != EQUAL) //this data is not in the tree.
+    {
+        return FAILED;
+    }
+    Node* succ = findSuccessor(toRemove);
+    void* tempData = succ->data;
+    succ->data = toRemove->data;
+    toRemove->data = tempData;
+    switch(getDeletionCase(succ))
+    {
+        case M_IS_RED:
+            tree->freeFunc(succ->data); //free the nodes data
+            if(isLeftChild(succ))
+            {
+                succ->parent->left = NULL;
+            }
+            else
+            {
+                succ->parent->right = NULL;
+            }
+            free(succ);
+            return SUCCESS;
+        case M_BLACK_C_RED:
+            /*switch between C and M, delete M*/
+            tempData = succ->right->data;
+            succ->right->data = succ->data;
+            succ->data = tempData;
+            tree->freeFunc(succ->right->data); // free data memory
+            free(succ->right);
+            succ->right = NULL;
+            return SUCCESS;
+    }
+    return 0;
+}
 
 
-//int main()
-//{
-//    return 0;
-//}
+
+
+
+////////////////////TEST///////////////
+int sumTree(const void *object, void *args)
+{
+    if(object==NULL||args==NULL)
+    {
+        return 0;
+    }
+    int *sum=(int *)args;
+    int const *data = (int*)object;
+    *sum+=*data;
+    return 1;
+}
+int cmp(const void* a, const void* b)
+{
+    int* i = (int*)a;
+    int* j = (int*)b;
+
+    if (*i > *j) return 1;
+    if (*i < *j) return -1;
+    if (*i == *j) return 0;
+}
+
+void freeint(void* n) {}
+////////////////////////////////////////
+int main()
+{
+    int temp = 10;
+    int* p1 = &temp;
+    int temp2 = 6;
+    int* p2 = &temp2;
+    int temp1 = 3;
+    int* p3 = &temp1;
+    int temp4 = 20;
+    int* p4 = &temp4;
+    int temp5 = 25;
+    int* p5 = &temp5;
+    int temp6 = 50;
+    int* p6 = &temp6;
+    int temp7 = 70;
+    int* p7 = &temp7;
+    RBTree* T = newRBTree(&cmp, &freeint);
+    insertToRBTree(T, (void*)p1);
+    //printRBTree(T->root);
+    insertToRBTree(T,(void*)p2);
+    //printRBTree(T->root);
+    insertToRBTree(T,(void*)p3);
+    //printRBTree(T->root);
+    insertToRBTree(T,(void*)p4);
+    //printRBTree(T->root);
+    insertToRBTree(T,(void*)p5);
+    //printRBTree(T->root);
+    insertToRBTree(T,(void*)p6);
+    insertToRBTree(T,(void*)p7);
+    printRBTree(T->root);
+    int * res = malloc(sizeof(int));
+    *res=0;
+    forEachRBTree(T,sumTree,res);
+    printf("%d",*res);
 //
-//
+    return 0;
+}
