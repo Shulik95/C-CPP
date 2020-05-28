@@ -35,14 +35,16 @@ newNode->right = NULL;\
 newNode->data = data;\
 fixTree(newNode, tree);
 
-#define M_IS_RED 0
+#define M_RED 0
 #define M_BLACK_C_RED 1
-
+#define M_BLACK_C_BLACK 2
 
 long unsigned const EMPTY_TREE_SIZE = 0;
 int const SUCCESS = 1;
 int const EQUAL = 0;
 int const FAILED = 0;
+int const RIGHT = 1;
+int const LEFT = -1;
 
 
 // ------------------------------ functions -----------------------------
@@ -463,6 +465,11 @@ void freeRBTree(RBTree **tree)
  */
 Node* findSuccessor(Node* node)
 {
+
+    if(!node->right)
+    {
+        return node;
+    }
     /*right subtree exists, get minimal value in it*/
     Node* curr = node->right;
     while(curr->left)
@@ -470,7 +477,6 @@ Node* findSuccessor(Node* node)
         curr = curr->left;
     }
     return curr;
-
 }
 
 /**
@@ -482,14 +488,177 @@ int getDeletionCase(Node* node)
 {
     if(node->color == RED)
     {
-        return M_IS_RED;
+        return M_RED;
     }
-    else if(node->color == BLACK && (node->right && node->right->color == RED))
+    else if(node->color == BLACK && ((node->right && node->right->color == RED) ||
+            (node->left && node->left->color == RED)))
     {
         return M_BLACK_C_RED;
     }
-    return 0;
+    else
+    {
+        return M_BLACK_C_BLACK;
+    }
 }
+
+/**
+ * implements the first part of delete in RB tree, treats it like a BST and finds replacment node
+ * according to different cases.
+ * @param node - node to be deleted.
+ * @return - pointer to a node if one exits, NULL otherwise.
+ */
+Node* firstPartDelete(Node* node)
+{
+    if(node->left && node->right) //M has two children
+    {
+        return findSuccessor(node);
+    }
+    else if(!node->left && !node->right) //M is a leaf
+    {
+        return NULL;
+    }
+    if(node->left) //M has 1 child, return it.
+    {
+        return node->left;
+    }
+    else
+    {
+        return node->right;
+    }
+}
+
+/**
+ * checks if both children are black (NULL counts as black).
+ * @return - 1 if both are black 0 otherwise.
+ */
+int bothBlack(Node* node)
+{
+    if((node->right && node->right->color == RED) || (node->left && node->left->color == RED))
+    {
+        return FAILED;
+    }
+    return SUCCESS;
+}
+
+int redChildIsClose(Node* sibling)
+{
+
+}
+
+
+/**
+ * fixes a DB problem in RB tree.
+ * @param parent - parent of the DB.
+ * @param sibling - sibling of the DB- NULL if it doesnt exist.
+ */
+void fixDB(Node* parent, Node* sibling)
+{
+    if((!sibling || (sibling->color == BLACK && bothBlack(sibling))))
+    {
+        /*case 3.b.i*/
+        if(parent->color == RED)
+        {
+            parent->color = BLACK;
+            if(sibling)
+            {
+                sibling->color = RED;
+            }
+        }
+        /*case 3.b.ii*/
+        else if(parent->color == BLACK)
+        {
+            if(sibling) //make sibling red
+            {
+                sibling->color = RED;
+            }
+            if(isLeftChild(parent)) //update sibling
+            {
+                sibling = parent->right;
+            }
+            else
+            {
+                sibling = parent->left;
+            }
+            parent = parent->parent; //P=C
+            fixDB(parent, sibling);
+        }
+    }
+    else if(sibling->color == RED)
+    {
+        parent->color = RED;
+        sibling->color = BLACK;
+        if(isLeftChild(sibling))
+        {
+            rotateRight(parent);
+        }
+        else
+        {
+            rotateLeft(parent);
+        }
+        if(isRightChild(sibling))
+        {
+            fixDB(parent, parent->right);
+        }
+        else
+        {
+            fixDB(parent, parent->left);
+        }
+    }
+    else if(sibling->color == BLACK && )
+
+}
+
+/**
+ * changes the right/left child to null, depending on which will be removed.
+ * @param node
+ */
+void nullifyParent(Node* node)
+{
+    if(node->parent->left == node)
+    {
+        node->parent->left = NULL;
+    }
+    node->parent->right = NULL;
+}
+
+/**
+ * sets parent pointers.
+ * @param node1 - node to be removed.
+ * @param node2 - node to replace node 1.
+ */
+void setParent(Node* node1, Node* node2)
+{
+    if(isLeftChild(node1))
+    {
+        node1->parent->left = node2;
+
+    }
+    else if(isRightChild(node1))
+    {
+        node1->parent->right = node2;
+
+    }
+    if(node2)
+    {
+        node2->parent = NULL;
+    }
+
+}
+
+/**
+ * get sibling of given node if it exists, NULL otherwise.
+ * @param node - get sibling of this node.
+ * @return - a Node pointer.
+ */
+Node* getSibling(Node* node)
+{
+    if(node->right)
+    {
+        return node->right;
+    }
+    return node->left;
+}
+
 
 /**
  * remove an item from the tree
@@ -499,45 +668,68 @@ int getDeletionCase(Node* node)
  */
 int deleteFromRBTree(RBTree *tree, void *data)
 {
+    void* tempData;
+    Node* parent;
     /*first stage of deletion*/
-    fprintf(stderr,"data is: %d\n", *(int*)data);
     Node* toRemove = findNode(tree->root, data, tree->compFunc);
-    if(tree->compFunc(data, toRemove->data) != EQUAL) //this data is not in the tree.
+    if(tree->compFunc(toRemove->data, data) != EQUAL) //data is not in tree
     {
         return FAILED;
     }
-    Node* succ = findSuccessor(toRemove);
-    void* tempData = succ->data;
-    succ->data = toRemove->data;
-    toRemove->data = tempData;
-    switch(getDeletionCase(succ))
+    Node* replaceNode = firstPartDelete(toRemove);
+    if(replaceNode)
     {
-        case M_IS_RED:
-            tree->freeFunc(succ->data); //free the nodes data
-            if(isLeftChild(succ))
-            {
-                succ->parent->left = NULL;
-            }
-            else
-            {
-                succ->parent->right = NULL;
-            }
-            free(succ);
+        tempData = replaceNode->data;
+        replaceNode->data = toRemove->data;
+        toRemove->data = tempData;
+        toRemove = replaceNode; //for readability.
+    }
+    switch(getDeletionCase(toRemove))
+    {
+        case M_RED:
+            nullifyParent(toRemove);
+            tree->freeFunc(toRemove->data);
+            free(toRemove);
             return SUCCESS;
         case M_BLACK_C_RED:
-            /*switch between C and M, delete M*/
-            tempData = succ->right->data;
-            succ->right->data = succ->data;
-            succ->data = tempData;
-            tree->freeFunc(succ->right->data); // free data memory
-            free(succ->right);
-            succ->right = NULL;
-            return SUCCESS;
+            nullifyParent(toRemove);
+            tree->freeFunc(toRemove->data);
+            free(toRemove);
+            Node* temp = findNode(tree->root, tempData, tree->compFunc);
+            temp->color = BLACK;
+            /*might delete root, check and fix*/
+            if(tree->root->parent != NULL)
+            {
+                tree->root->parent = NULL;
+            }
+            return  SUCCESS;
+        case M_BLACK_C_BLACK:
+            /*double black*/
+            parent = toRemove->parent; //save parent before deleting and replacing
+            /*set C instead of M*/
+            /*delete M*/
+            nullifyParent(toRemove);
+            tree->freeFunc(toRemove->data);
+            free(toRemove);
+            toRemove = NULL;
+            if(parent == NULL) //C is now root
+                {
+                  if(replaceNode != NULL) //C is NULL pointer
+                  {
+                      tree->freeFunc(replaceNode->data);
+                      free(replaceNode);
+                  }
+                  tree->root = NULL;
+                  return SUCCESS;
+                }
+            else
+            {
+                  fixDB(parent,getSibling(parent));
+                  return SUCCESS;
+            }
     }
-    return 0;
+    return FAILED;
 }
-
-
 
 
 
@@ -566,20 +758,24 @@ void freeint(void* n) {}
 ////////////////////////////////////////
 int main()
 {
-    int temp = 10;
+    int temp = 20;
     int* p1 = &temp;
-    int temp2 = 20;
+    int temp2 = 10;
     int* p2 = &temp2;
-    int temp1 = 7;
+    int temp1 = 5;
     int* p3 = &temp1;
-    int temp4 = 30;
+    int temp4 = 22;
     int* p4 = &temp4;
-    int temp5 = 25;
+    int temp5 = 30;
     int* p5 = &temp5;
-    int temp6 = 50;
+    int temp6 = 31;
     int* p6 = &temp6;
-    int temp7 = 70;
+    int temp7 = 32;
     int* p7 = &temp7;
+    int temp8 = 34;
+    int* p8 = &temp8;
+    int temp9 = 35;
+    int* p9 = &temp9;
     RBTree* T = newRBTree(&cmp, &freeint);
     insertToRBTree(T, (void*)p1);
     //printRBTree(T->root);
@@ -589,21 +785,30 @@ int main()
     //printRBTree(T->root);
     insertToRBTree(T,(void*)p4);
     //printRBTree(T->root);
-//    insertToRBTree(T,(void*)p5);
+    insertToRBTree(T,(void*)p5);
 //    //printRBTree(T->root);
-//    insertToRBTree(T,(void*)p6);
-//    insertToRBTree(T,(void*)p7);
+    insertToRBTree(T,(void*)p6);
+    insertToRBTree(T,(void*)p7);
+    insertToRBTree(T,(void*)p8);
+    insertToRBTree(T,(void*)p9);
     printf("** Tree after inserting nodes **\n");
     printRBTree(T->root);
+    Node* n = findNode(T->root,(void*)p2,cmp);
+    printf("%d\n", *((int*)n->parent->data));
 //    int * res = malloc(sizeof(int));
 //    *res=0;
 //    forEachRBTree(T,sumTree,res);
 //    printf("%d",*res);
-//
-    int te = 20;
-    int* testVal = &te;
+
+    int del1 = 10;
+    int* testVal = &del1;
     deleteFromRBTree(T,(void*)testVal);
-    printf("** Tree after deleting data = %d **\n", te);
-    printRBTree(T->root);
+    printf("** Tree after deleting data = %d **\n", del1);
+   printRBTree(T->root);
+//    int del2 = 20;
+//    int* testVal2 = &del2;
+//    deleteFromRBTree(T,(void*)testVal2);
+//    printf("** Tree after deleting data = %d **\n", del2);
+//    printRBTree(T->root);
     return 0;
 }
