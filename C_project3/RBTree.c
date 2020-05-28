@@ -540,9 +540,19 @@ int bothBlack(Node* node)
     return SUCCESS;
 }
 
+/**
+ * checks if the red node is close to our DB or not.
+ * @param sibling - sibling of the DB.
+ * @return - 1 if red is close 0 if far.
+ */
 int redChildIsClose(Node* sibling)
 {
-
+    if((isLeftChild(sibling) && sibling->right->color == RED) ||
+            (isRightChild(sibling) && sibling->left->color == RED))
+    {
+        return SUCCESS;
+    }
+    return  FAILED;
 }
 
 
@@ -564,6 +574,7 @@ void fixDB(Node* parent, Node* sibling)
                 sibling->color = RED;
             }
         }
+
         /*case 3.b.ii*/
         else if(parent->color == BLACK)
         {
@@ -573,16 +584,17 @@ void fixDB(Node* parent, Node* sibling)
             }
             if(isLeftChild(parent)) //update sibling
             {
-                sibling = parent->right;
+                sibling = parent->parent->right;
             }
             else
             {
-                sibling = parent->left;
+                sibling = parent->parent->left;
             }
             parent = parent->parent; //P=C
             fixDB(parent, sibling);
         }
     }
+    /*case 3.c*/
     else if(sibling->color == RED)
     {
         parent->color = RED;
@@ -604,8 +616,41 @@ void fixDB(Node* parent, Node* sibling)
             fixDB(parent, parent->left);
         }
     }
-    else if(sibling->color == BLACK && )
+    /*case 3.d*/
+    else if(sibling->color == BLACK && redChildIsClose(sibling))
+    {
 
+        sibling->color = RED;
+        if(isRightChild(sibling))
+        {
+            sibling->left->color = BLACK;
+            rotateRight(sibling);
+            fixDB(parent, parent->right);
+        }
+        else
+        {
+            sibling->right->color = RED;
+            rotateLeft(sibling);
+            fixDB(parent, parent->left);
+        }
+    }
+    /*case 3.e*/
+    else if(sibling->color == BLACK && !redChildIsClose(sibling))
+    {
+        Color temp = sibling->color;
+        sibling->color = parent->color;
+        parent->color = temp;
+        if(isRightChild(sibling))
+        {
+            rotateLeft(parent);
+            sibling->right->color = BLACK;
+        }
+        else
+        {
+            rotateRight(parent);
+            sibling->left->color = BLACK;
+        }
+    }
 }
 
 /**
