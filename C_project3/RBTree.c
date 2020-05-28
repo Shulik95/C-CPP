@@ -473,6 +473,11 @@ Node* findSuccessor(Node* node)
 
 }
 
+/**
+ * checks which case of the deletion we are in.
+ * @param node - node to delete.
+ * @return - an integer describing the case.
+ */
 int getDeletionCase(Node* node)
 {
     if(node->color == RED)
@@ -495,6 +500,7 @@ int getDeletionCase(Node* node)
 int deleteFromRBTree(RBTree *tree, void *data)
 {
     /*first stage of deletion*/
+    fprintf(stderr,"data is: %d\n", *(int*)data);
     Node* toRemove = findNode(tree->root, data, tree->compFunc);
     if(tree->compFunc(data, toRemove->data) != EQUAL) //this data is not in the tree.
     {
@@ -551,7 +557,6 @@ int cmp(const void* a, const void* b)
 {
     int* i = (int*)a;
     int* j = (int*)b;
-
     if (*i > *j) return 1;
     if (*i < *j) return -1;
     if (*i == *j) return 0;
@@ -563,11 +568,11 @@ int main()
 {
     int temp = 10;
     int* p1 = &temp;
-    int temp2 = 6;
+    int temp2 = 20;
     int* p2 = &temp2;
-    int temp1 = 3;
+    int temp1 = 7;
     int* p3 = &temp1;
-    int temp4 = 20;
+    int temp4 = 30;
     int* p4 = &temp4;
     int temp5 = 25;
     int* p5 = &temp5;
@@ -584,15 +589,21 @@ int main()
     //printRBTree(T->root);
     insertToRBTree(T,(void*)p4);
     //printRBTree(T->root);
-    insertToRBTree(T,(void*)p5);
-    //printRBTree(T->root);
-    insertToRBTree(T,(void*)p6);
-    insertToRBTree(T,(void*)p7);
+//    insertToRBTree(T,(void*)p5);
+//    //printRBTree(T->root);
+//    insertToRBTree(T,(void*)p6);
+//    insertToRBTree(T,(void*)p7);
+    printf("** Tree after inserting nodes **\n");
     printRBTree(T->root);
-    int * res = malloc(sizeof(int));
-    *res=0;
-    forEachRBTree(T,sumTree,res);
-    printf("%d",*res);
+//    int * res = malloc(sizeof(int));
+//    *res=0;
+//    forEachRBTree(T,sumTree,res);
+//    printf("%d",*res);
 //
+    int te = 20;
+    int* testVal = &te;
+    deleteFromRBTree(T,(void*)testVal);
+    printf("** Tree after deleting data = %d **\n", te);
+    printRBTree(T->root);
     return 0;
 }
