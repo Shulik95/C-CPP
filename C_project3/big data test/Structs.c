@@ -16,7 +16,6 @@
 // ------------------------------ includes ------------------------------
 #include "Structs.h"
 #include <string.h>
-#include <math.h>
 #include <stdlib.h>
 #include "RBTree.h"
 // -------------------------- const definitions -------------------------
@@ -77,6 +76,14 @@ void freeString(void *s)
 }
 
 /**
+ * returns the minimal of 2 given values.
+ */
+int findMin(double a, double b)
+{
+    return (int)((a > b) ? b : a);
+}
+
+/**
  * CompFunc for Vectors, compares element by element, the vector that has the first larger
  * element is considered larger. If vectors are of different lengths and identify for the length
  * of the shorter vector, the shorter vector is considered smaller.
@@ -89,7 +96,7 @@ int vectorCompare1By1(const void *a, const void *b)
     const Vector* vec1 = (const Vector*)a;
     const Vector* vec2 = (const Vector*)b;
     /*get minimal length for number of iteration needed*/
-    int minLen = (int) fmin((double)vec1->len, (double)vec2->len);
+    int minLen = findMin((double)vec1->len, (double)vec2->len);
     for(int i = 0; i < minLen; i++)
     {
         if(vec1->vector[i] - vec2->vector[i] < 0) //a[i] < b[i] -> a < b

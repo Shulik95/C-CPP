@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define LAST_NUMBER_OF_NODES_TO_CHECK 2000
+#define LAST_NUMBER_OF_NODES_TO_CHECK 20
 
 #define MAX_STRING_LENGTH_CHECK 50
 #define MAX_VECTOR_DATA_VALUE 10000

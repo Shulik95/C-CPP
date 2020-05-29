@@ -17,7 +17,7 @@
 // ------------------------------ includes ------------------------------
 #include "RBTree.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 // -------------------------- const definitions -------------------------
 /**
  * deals with creating the new node according to given side, balances tree after addition.
@@ -562,13 +562,27 @@ int redChildIsClose(Node* sibling)
     return  FAILED;
 }
 
+/**
+ * checks if the far child of a sibling is black.
+ * @return 1 if far child is black 0 if not.
+ */
+int farChildIsBlack(Node* sibling)
+{
+    if((isRightChild(sibling) && sibling->right && sibling->right->color == BLACK) ||
+            (isLeftChild(sibling) && sibling->left && sibling->left->color == BLACK))
+    {
+        return SUCCESS;
+    }
+    return FAILED;
+}
+
 
 /**
  * fixes a DB problem in RB tree.
  * @param parent - parent of the DB.
  * @param sibling - sibling of the DB- NULL if it doesnt exist.
  */
-void fixDB(Node* parent, Node* sibling)
+void fixDB(Node* parent, Node* sibling, RBTree* tree)
 {
     if(!parent) //C is now the root, DB doesnt matter
     {
@@ -602,7 +616,7 @@ void fixDB(Node* parent, Node* sibling)
                 sibling = parent->parent->left;
             }
             parent = parent->parent; //P=C
-            fixDB(parent, sibling);
+            fixDB(parent, sibling, tree);
         }
     }
     /*case 3.c*/
@@ -618,17 +632,17 @@ void fixDB(Node* parent, Node* sibling)
         {
             rotateLeft(parent);
         }
-        if(isRightChild(sibling))
+        if(parent->right)
         {
-            fixDB(parent, parent->right);
+            fixDB(parent, parent->right, tree);
         }
-        else
+        else if(parent->left)
         {
-            fixDB(parent, parent->left);
+            fixDB(parent, parent->left, tree);
         }
     }
     /*case 3.d*/
-    else if(sibling->color == BLACK && redChildIsClose(sibling))
+    else if(sibling->color == BLACK && redChildIsClose(sibling) && farChildIsBlack(sibling))
     {
 
         sibling->color = RED;
@@ -636,17 +650,17 @@ void fixDB(Node* parent, Node* sibling)
         {
             sibling->left->color = BLACK;
             rotateRight(sibling);
-            fixDB(parent, parent->right);
+            fixDB(parent, parent->right, tree);
         }
         else
         {
             sibling->right->color = RED;
             rotateLeft(sibling);
-            fixDB(parent, parent->left);
+            fixDB(parent, parent->left, tree);
         }
     }
     /*case 3.e*/
-    else if(sibling->color == BLACK && !redChildIsClose(sibling))
+    else //if(sibling->color == BLACK && !redChildIsClose(sibling))
     {
         Color temp = sibling->color;
         sibling->color = parent->color;
@@ -654,11 +668,19 @@ void fixDB(Node* parent, Node* sibling)
         if(isRightChild(sibling))
         {
             rotateLeft(parent);
+            if(!(sibling->parent)) //rotated root
+            {
+                tree->root = sibling;
+            }
             sibling->right->color = BLACK;
         }
         else
         {
             rotateRight(parent);
+            if(!sibling->parent) //rotated root
+            {
+                tree->root = sibling;
+            }
             sibling->left->color = BLACK;
         }
     }
@@ -697,6 +719,59 @@ Node* getSibling(Node* node)
     return node->left;
 }
 
+/**
+ * sets parent and son pointers in case 2 of deletion (one son)
+ * @param toRemove - node to remove, connect children with parent.
+ */
+void setParents(Node* toRemove)
+{
+    if(isLeftChild(toRemove))
+    {
+        if(toRemove->right)
+        {
+            toRemove->parent->left = toRemove->right;
+            toRemove->right->parent = toRemove->parent;
+        }
+        else
+        {
+            toRemove->parent->left = toRemove->left;
+            toRemove->left->parent = toRemove->parent;
+        }
+        toRemove->parent->left->color = BLACK;
+
+    }
+    else
+    {
+        if(toRemove->right)
+        {
+            toRemove->parent->right = toRemove->right;
+            toRemove->right->parent = toRemove->parent;
+        }
+        else
+        {
+            toRemove->parent->right = toRemove->left;
+            toRemove->left->parent = toRemove->parent;
+        }
+        toRemove->parent->right->color = BLACK;
+    }
+}
+
+/**
+ * updates root if needed after action.
+ * @param tree - tree to check.
+ */
+void checkRoot(RBTree* tree)
+{
+    if(tree->root && tree->root->parent != NULL)
+    {
+        Node* temp = tree->root;
+        while(temp->parent)
+        {
+            temp = temp->parent;
+        }
+        tree->root = temp;
+    }
+}
 
 /**
  * remove an item from the tree
@@ -710,8 +785,8 @@ int deleteFromRBTree(RBTree *tree, void *data)
     {
         return FAILED;
     }
-    void* tempData;
-    Node* parent;
+    void* tempData = NULL;
+    Node* parent = NULL;
     /*first stage of deletion*/
     Node* toRemove = findNode(tree->root, data, tree->compFunc);
     if(tree->compFunc(toRemove->data, data) != EQUAL) //data is not in tree
@@ -735,11 +810,10 @@ int deleteFromRBTree(RBTree *tree, void *data)
             tree->size--;
             return SUCCESS;
         case M_BLACK_C_RED:
-            nullifyParent(toRemove);
+            setParents(toRemove); //connect son to parent before removing node
+            // nullifyParent(toRemove);
             tree->freeFunc(toRemove->data);
             free(toRemove);
-            Node* temp = findNode(tree->root, tempData, tree->compFunc);
-            temp->color = BLACK;
             /*might delete root, check and fix*/
             if(tree->root->parent != NULL)
             {
@@ -769,8 +843,9 @@ int deleteFromRBTree(RBTree *tree, void *data)
             }
             else
             {
-                fixDB(parent,getSibling(parent));
+                fixDB(parent,getSibling(parent), tree);
                 tree->size--;
+                checkRoot(tree);
                 return SUCCESS;
             }
     }

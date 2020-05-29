@@ -655,7 +655,7 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
         }
         else
         {
-            sibling->right->color = RED;
+            sibling->right->color = BLACK;
             rotateLeft(sibling);
             fixDB(parent, parent->left, tree);
         }

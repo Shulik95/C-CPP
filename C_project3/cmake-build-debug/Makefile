@@ -177,6 +177,60 @@ Structs.c.s:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.s
 .PHONY : Structs.c.s
 
+myTest.o: myTest.c.o
+
+.PHONY : myTest.o
+
+# target to build an object file
+myTest.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/myTest.c.o
+.PHONY : myTest.c.o
+
+myTest.i: myTest.c.i
+
+.PHONY : myTest.i
+
+# target to preprocess a source file
+myTest.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/myTest.c.i
+.PHONY : myTest.c.i
+
+myTest.s: myTest.c.s
+
+.PHONY : myTest.s
+
+# target to generate assembly for a file
+myTest.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/myTest.c.s
+.PHONY : myTest.c.s
+
+tests.o: tests.c.o
+
+.PHONY : tests.o
+
+# target to build an object file
+tests.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.o
+.PHONY : tests.c.o
+
+tests.i: tests.c.i
+
+.PHONY : tests.i
+
+# target to preprocess a source file
+tests.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.i
+.PHONY : tests.c.i
+
+tests.s: tests.c.s
+
+.PHONY : tests.s
+
+# target to generate assembly for a file
+tests.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.s
+.PHONY : tests.c.s
+
 utilities/RButilities.o: utilities/RButilities.c.o
 
 .PHONY : utilities/RButilities.o
@@ -219,6 +273,12 @@ help:
 	@echo "... Structs.o"
 	@echo "... Structs.i"
 	@echo "... Structs.s"
+	@echo "... myTest.o"
+	@echo "... myTest.i"
+	@echo "... myTest.s"
+	@echo "... tests.o"
+	@echo "... tests.i"
+	@echo "... tests.s"
 	@echo "... utilities/RButilities.o"
 	@echo "... utilities/RButilities.i"
 	@echo "... utilities/RButilities.s"
