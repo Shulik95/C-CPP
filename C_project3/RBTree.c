@@ -140,6 +140,10 @@ RBTree *newRBTree(CompareFunc compFunc, FreeFunc freeFunc)
  */
 int insertToRBTree(RBTree *tree, void *data)
 {
+    if(!data || !tree)
+    {
+        return FAILED;
+    }
     if(tree->root == NULL) //the tree is empty, create root.
     {
         Node* root = (Node*)malloc(sizeof(Node));
@@ -383,7 +387,7 @@ void rotateRight(Node* node)
  */
 int RBTreeContains(const RBTree *tree, const void *data)
 {
-    if(tree == NULL)
+    if(tree == NULL || data == NULL)
     {
         return FAILED;
     }
@@ -427,7 +431,7 @@ int forEachRBTree(const RBTree *tree, forEachFunc func, void *args)
 {
     if(tree == NULL)
     {
-        return SUCCESS;
+        return FAILED;
     }
     return forEachHelper(tree->root, func, args);
 }
@@ -727,6 +731,10 @@ Node* getSibling(Node* node)
  */
 int deleteFromRBTree(RBTree *tree, void *data)
 {
+    if(!tree || !data)
+    {
+        return FAILED;
+    }
     void* tempData;
     Node* parent;
     /*first stage of deletion*/
@@ -761,6 +769,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
             {
                 tree->root->parent = NULL;
             }
+            tree->size--;
             return  SUCCESS;
         case M_BLACK_C_BLACK:
             /*double black*/
@@ -772,19 +781,21 @@ int deleteFromRBTree(RBTree *tree, void *data)
             free(toRemove);
             toRemove = NULL;
             if(parent == NULL) //C is now root
+            {
+                if(replaceNode != NULL) //C is NULL pointer
                 {
-                  if(replaceNode != NULL) //C is NULL pointer
-                  {
-                      tree->freeFunc(replaceNode->data);
-                      free(replaceNode);
-                  }
-                  tree->root = NULL;
-                  return SUCCESS;
+                  tree->freeFunc(replaceNode->data);
+                  free(replaceNode);
                 }
+                tree->root = NULL;
+                tree->size--;
+                return SUCCESS;
+            }
             else
             {
-                  fixDB(parent,getSibling(parent));
-                  return SUCCESS;
+                fixDB(parent,getSibling(parent));
+                tree->size--;
+                return SUCCESS;
             }
     }
     return FAILED;
