@@ -18,7 +18,6 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include "RBTree.h"
 // -------------------------- const definitions -------------------------
 #define GREATER 1
@@ -203,12 +202,4 @@ Vector *findMaxNormVectorInTree(RBTree *tree)
         return maxVec;
     }
 }
-
-
-
-//int main() {
-//
-//    return 0;
-//}
-//
 

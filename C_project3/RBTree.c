@@ -17,7 +17,6 @@
 // ------------------------------ includes ------------------------------
 #include "RBTree.h"
 #include <stdlib.h>
-#include "utilities/RBUtilities.h"
 #include <stdio.h>
 
 // -------------------------- const definitions -------------------------
@@ -283,7 +282,6 @@ void fixTree(Node* const node, RBTree* tree)
             {
                 rotateRight(parent);
                 DOUBLE_ROT++;
-                printRBTree(tree->root);
                 updateRoot(tree, parent);
             }
             else if(isRightChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) //right child of left child, 4.a
@@ -297,7 +295,7 @@ void fixTree(Node* const node, RBTree* tree)
             {
                 parent = node;
             }
-            
+
             // case 4.b
             if(isLeftChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) // left child of left child, 4.b
             {
@@ -784,43 +782,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
 
 
 
-////////////////////TEST///////////////
-int sumTree(const void *object, void *args)
-{
-    if(object==NULL||args==NULL)
-    {
-        return 0;
-    }
-    int *sum=(int *)args;
-    int const *data = (int*)object;
-    *sum+=*data;
-    return 1;
-}
-int cmp(const void* a, const void* b)
-{
-    int* i = (int*)a;
-    int* j = (int*)b;
-    if (*i > *j) return 1;
-    if (*i < *j) return -1;
-    if (*i == *j) return 0;
-}
-
-void freeint(void* n) {}
-////////////////////////////////////////
 int main()
 {
-    int temp1 = 1;
-    int *p1 = &temp1;
-    int temp2 = 5;
-    int *p2 = &temp2;
-    int temp3 = 4;
-    int *p3 = &temp3;
-    RBTree *T = newRBTree(&cmp, &freeint);
-    insertToRBTree(T, (void *) p1);
-    insertToRBTree(T, (void *) p2);
-    printRBTree(T->root);
-    insertToRBTree(T, (void *) p3);
-    printf("** Tree after inserting nodes **\n");
-    printRBTree(T->root);
     return 0;
 }
