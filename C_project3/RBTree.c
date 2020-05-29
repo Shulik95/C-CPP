@@ -448,10 +448,10 @@ void freeRBHelper(Node** node, FreeFunc freeFunc)
     }
     else
     {
-        freeRBHelper(&(*node)->right, freeFunc); //free left subtree
-        freeRBHelper(&(*node)->left, freeFunc); //free right subtree
+        freeRBHelper(&(*node)->left, freeFunc); //free left subtree
+        freeRBHelper(&(*node)->right, freeFunc); //free right subtree
         freeFunc((*node)->data); //free data
-        freeFunc((*node)); //free the node itself.
+        free((*node)); //free the node itself.
     }
 }
 
@@ -554,7 +554,7 @@ int bothBlack(Node* node)
 int redChildIsClose(Node* sibling)
 {
     if((isLeftChild(sibling) &&  sibling->right && sibling->right->color == RED) ||
-            (isRightChild(sibling) && sibling->left &&sibling->left->color == RED))
+        (isRightChild(sibling) && sibling->left && sibling->left->color == RED))
     {
         return SUCCESS;
     }
@@ -846,7 +846,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
             }
             else
             {
-                fixDB(parent,getSibling(parent), tree);
+                fixDB(parent, getSibling(parent), tree);
                 tree->size--;
                 checkRoot(tree);
                 return SUCCESS;
@@ -854,5 +854,3 @@ int deleteFromRBTree(RBTree *tree, void *data)
     }
     return FAILED;
 }
-
-

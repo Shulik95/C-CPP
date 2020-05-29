@@ -141,7 +141,7 @@ double calcNorm(const Vector* vec)
     double norm = 0;
     for(int i = 0; i < vec->len; i++)
     {
-        norm +=(vec->vector[i] * vec->vector[i]);
+        norm += (vec->vector[i] * vec->vector[i]);
     }
     return norm;
 }
@@ -173,7 +173,7 @@ int copyIfNormIsLarger(const void *pVector, void *pMaxVector)
             return FAIL;
         }
         ((Vector*)pMaxVector)->vector = \
-        (double*)memcpy(((Vector*)pMaxVector)->vector,((Vector*)pVector)->vector,
+        (double*)memcpy(((Vector*)pMaxVector)->vector, ((Vector*)pVector)->vector,
                 sizeof(double)*((Vector*)pVector)->len);
         return CONT_SUCC;
     }
