@@ -472,6 +472,7 @@ void freeRBTree(RBTree **tree)
  */
 Node* findSuccessor(Node* node)
 {
+
     if(!node->right)
     {
         return node;
@@ -567,8 +568,8 @@ int redChildIsClose(Node* sibling)
  */
 int farChildIsBlack(Node* sibling)
 {
-    if((isRightChild(sibling) && (!sibling->right || (sibling->right && sibling->right->color == BLACK))) ||
-            (isLeftChild(sibling) && (!sibling->left || (sibling->left && sibling->left->color == BLACK))))
+    if((isRightChild(sibling) && sibling->right && sibling->right->color == BLACK) ||
+            (isLeftChild(sibling) && sibling->left && sibling->left->color == BLACK))
     {
         return SUCCESS;
     }
@@ -617,7 +618,6 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
             parent = parent->parent; //P=C
             fixDB(parent, sibling, tree);
         }
-        return;
     }
     /*case 3.c*/
     else if(sibling->color == RED)
@@ -640,7 +640,6 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
         {
             fixDB(parent, parent->left, tree);
         }
-        return;
     }
     /*case 3.d*/
     else if(sibling->color == BLACK && redChildIsClose(sibling) && farChildIsBlack(sibling))
@@ -659,7 +658,6 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
             rotateLeft(sibling);
             fixDB(parent, parent->left, tree);
         }
-        return;
     }
     /*case 3.e*/
     else //if(sibling->color == BLACK && !redChildIsClose(sibling))
@@ -685,7 +683,6 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
             }
             sibling->left->color = BLACK;
         }
-        return;
     }
 }
 
@@ -818,7 +815,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
             tree->freeFunc(toRemove->data);
             free(toRemove);
             /*might delete root, check and fix*/
-            if(tree->root && tree->root->parent != NULL)
+            if(tree->root->parent != NULL)
             {
                 tree->root->parent = NULL;
             }
