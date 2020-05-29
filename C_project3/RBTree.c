@@ -282,13 +282,13 @@ void fixTree(Node* const node, RBTree* tree)
             if(isLeftChild(node) == SUCCESS && isRightChild(parent) == SUCCESS) //left child of right child, 4.a
             {
                 rotateRight(parent);
-                DOUBLE_ROT++;
+                DOUBLE_ROT = 1;
                 updateRoot(tree, parent);
             }
             else if(isRightChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) //right child of left child, 4.a
             {
                 rotateLeft(parent);
-                DOUBLE_ROT++;
+                DOUBLE_ROT = 1;
                 updateRoot(tree, parent);
             }
 
@@ -310,7 +310,7 @@ void fixTree(Node* const node, RBTree* tree)
             }
             parent->color = BLACK;
             grandParent->color = RED;
-            DOUBLE_ROT--;
+            DOUBLE_ROT = 0;
         }
     }
 }
