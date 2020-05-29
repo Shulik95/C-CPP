@@ -17,9 +17,8 @@
 // ------------------------------ includes ------------------------------
 #include "RBTree.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include "utilities/RBUtilities.h"
-#include <stdbool.h>
+#include <stdio.h>
 
 // -------------------------- const definitions -------------------------
 /**
@@ -45,7 +44,7 @@ int const EQUAL = 0;
 int const FAILED = 0;
 int const RIGHT = 1;
 int const LEFT = -1;
-
+int DOUBLE_ROT = 0;
 
 // ------------------------------ functions -----------------------------
 
@@ -283,28 +282,36 @@ void fixTree(Node* const node, RBTree* tree)
             if(isLeftChild(node) == SUCCESS && isRightChild(parent) == SUCCESS) //left child of right child, 4.a
             {
                 rotateRight(parent);
+                DOUBLE_ROT++;
+                printRBTree(tree->root);
                 updateRoot(tree, parent);
             }
             else if(isRightChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) //right child of left child, 4.a
             {
                 rotateLeft(parent);
+                DOUBLE_ROT++;
                 updateRoot(tree, parent);
             }
-            else // case 4.b
+
+            if (DOUBLE_ROT)
             {
-                if(isLeftChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) // left child of left child, 4.b
-                {
-                    rotateRight(grandParent);
-                    updateRoot(tree, grandParent);
-                }
-                else if (isRightChild(node) == SUCCESS && isRightChild(parent) == SUCCESS)//right child of right child
-                {
-                    rotateLeft(grandParent);
-                    updateRoot(tree, grandParent);
-                }
+                parent = node;
+            }
+            
+            // case 4.b
+            if(isLeftChild(node) == SUCCESS && isLeftChild(parent) == SUCCESS) // left child of left child, 4.b
+            {
+                rotateRight(grandParent);
+                updateRoot(tree, grandParent);
+            }
+            else if (isRightChild(node) == SUCCESS && isRightChild(parent) == SUCCESS)//right child of right child
+            {
+                rotateLeft(grandParent);
+                updateRoot(tree, grandParent);
             }
             parent->color = BLACK;
             grandParent->color = RED;
+            DOUBLE_ROT--;
         }
     }
 }
@@ -357,7 +364,6 @@ void rotateRight(Node* node)
     if(isLeftChild(node) == SUCCESS)
     {
         node->parent->left = node->left;
-
     }
 
     else if(isRightChild(node) == SUCCESS)
@@ -803,57 +809,18 @@ void freeint(void* n) {}
 ////////////////////////////////////////
 int main()
 {
-    int temp = 20;
-    int* p1 = &temp;
-    int temp2 = 10;
-    int* p2 = &temp2;
-    int temp1 = 5;
-    int* p3 = &temp1;
-    int temp4 = 22;
-    int* p4 = &temp4;
-    int temp5 = 30;
-    int* p5 = &temp5;
-    int temp6 = 31;
-    int* p6 = &temp6;
-    int temp7 = 32;
-    int* p7 = &temp7;
-    int temp8 = 34;
-    int* p8 = &temp8;
-    int temp9 = 35;
-    int* p9 = &temp9;
-    RBTree* T = newRBTree(&cmp, &freeint);
-    insertToRBTree(T, (void*)p1);
-    //printRBTree(T->root);
-    insertToRBTree(T,(void*)p2);
-    //printRBTree(T->root);
-    insertToRBTree(T,(void*)p3);
-    //printRBTree(T->root);
-    insertToRBTree(T,(void*)p4);
-    //printRBTree(T->root);
-    insertToRBTree(T,(void*)p5);
-//    //printRBTree(T->root);
-    insertToRBTree(T,(void*)p6);
-    insertToRBTree(T,(void*)p7);
-    insertToRBTree(T,(void*)p8);
-    insertToRBTree(T,(void*)p9);
+    int temp1 = 1;
+    int *p1 = &temp1;
+    int temp2 = 5;
+    int *p2 = &temp2;
+    int temp3 = 4;
+    int *p3 = &temp3;
+    RBTree *T = newRBTree(&cmp, &freeint);
+    insertToRBTree(T, (void *) p1);
+    insertToRBTree(T, (void *) p2);
+    printRBTree(T->root);
+    insertToRBTree(T, (void *) p3);
     printf("** Tree after inserting nodes **\n");
     printRBTree(T->root);
-    Node* n = findNode(T->root,(void*)p2,cmp);
-    printf("%d\n", *((int*)n->parent->data));
-//    int * res = malloc(sizeof(int));
-//    *res=0;
-//    forEachRBTree(T,sumTree,res);
-//    printf("%d",*res);
-
-    int del1 = 10;
-    int* testVal = &del1;
-    deleteFromRBTree(T,(void*)testVal);
-    printf("** Tree after deleting data = %d **\n", del1);
-   printRBTree(T->root);
-//    int del2 = 20;
-//    int* testVal2 = &del2;
-//    deleteFromRBTree(T,(void*)testVal2);
-//    printf("** Tree after deleting data = %d **\n", del2);
-//    printRBTree(T->root);
     return 0;
 }
