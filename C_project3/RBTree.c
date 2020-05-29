@@ -164,7 +164,7 @@ int insertToRBTree(RBTree *tree, void *data)
         }
         else if (cmpVal > EQUAL) //node should be added on the right
         {
-            CREATE_NODE(right,tree)
+            CREATE_NODE(right, tree)
         }
         else // node should be added as left son
         {
@@ -554,7 +554,7 @@ int bothBlack(Node* node)
 int redChildIsClose(Node* sibling)
 {
     if((isLeftChild(sibling) &&  sibling->right && sibling->right->color == RED) ||
-        (isRightChild(sibling) && sibling->left && sibling->left->color == RED))
+       (isRightChild(sibling) && sibling->left && sibling->left->color == RED))
     {
         return SUCCESS;
     }
@@ -568,7 +568,7 @@ int redChildIsClose(Node* sibling)
 int farChildIsBlack(Node* sibling)
 {
     if((isRightChild(sibling) && (!sibling->right || (sibling->right && sibling->right->color == BLACK))) ||
-            (isLeftChild(sibling) && (!sibling->left || (sibling->left && sibling->left->color == BLACK))))
+       (isLeftChild(sibling) && (!sibling->left || (sibling->left && sibling->left->color == BLACK))))
     {
         return SUCCESS;
     }
