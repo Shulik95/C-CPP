@@ -568,7 +568,7 @@ int redChildIsClose(Node* sibling)
  * @param parent - parent of the DB.
  * @param sibling - sibling of the DB- NULL if it doesnt exist.
  */
-void fixDB(Node* parent, Node* sibling)
+void fixDB(Node* parent, Node* sibling, RBTree* tree)
 {
     if(!parent) //C is now the root, DB doesnt matter
     {
@@ -602,7 +602,7 @@ void fixDB(Node* parent, Node* sibling)
                 sibling = parent->parent->left;
             }
             parent = parent->parent; //P=C
-            fixDB(parent, sibling);
+            fixDB(parent, sibling, tree);
         }
     }
     /*case 3.c*/
@@ -620,11 +620,11 @@ void fixDB(Node* parent, Node* sibling)
         }
         if(isRightChild(sibling))
         {
-            fixDB(parent, parent->right);
+            fixDB(parent, parent->right, tree);
         }
         else
         {
-            fixDB(parent, parent->left);
+            fixDB(parent, parent->left, tree);
         }
     }
     /*case 3.d*/
@@ -636,13 +636,13 @@ void fixDB(Node* parent, Node* sibling)
         {
             sibling->left->color = BLACK;
             rotateRight(sibling);
-            fixDB(parent, parent->right);
+            fixDB(parent, parent->right, tree);
         }
         else
         {
             sibling->right->color = RED;
             rotateLeft(sibling);
-            fixDB(parent, parent->left);
+            fixDB(parent, parent->left, tree);
         }
     }
     /*case 3.e*/
@@ -654,11 +654,19 @@ void fixDB(Node* parent, Node* sibling)
         if(isRightChild(sibling))
         {
             rotateLeft(parent);
+            if(!(sibling->parent)) //rotated root
+            {
+                tree->root = sibling;
+            }
             sibling->right->color = BLACK;
         }
         else
         {
             rotateRight(parent);
+            if(!sibling->parent) //rotated root
+            {
+                tree->root = sibling;
+            }
             sibling->left->color = BLACK;
         }
     }
@@ -769,7 +777,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
             }
             else
             {
-                fixDB(parent,getSibling(parent));
+                fixDB(parent,getSibling(parent), tree);
                 tree->size--;
                 return SUCCESS;
             }

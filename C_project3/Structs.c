@@ -78,7 +78,7 @@ void freeString(void *s)
 /**
  * returns the minimal of 2 given values.
  */
-int inline findMin(double a, double b)
+int findMin(double a, double b)
 {
     return (int)((a > b) ? b : a);
 }
