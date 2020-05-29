@@ -18,6 +18,7 @@
 #include "RBTree.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 // -------------------------- const definitions -------------------------
 /**
@@ -551,8 +552,8 @@ int bothBlack(Node* node)
  */
 int redChildIsClose(Node* sibling)
 {
-    if((isLeftChild(sibling) && sibling->right->color == RED) ||
-            (isRightChild(sibling) && sibling->left->color == RED))
+    if((isLeftChild(sibling) &&  sibling->right && sibling->right->color == RED) ||
+            (isRightChild(sibling) && sibling->left &&sibling->left->color == RED))
     {
         return SUCCESS;
     }
@@ -567,6 +568,10 @@ int redChildIsClose(Node* sibling)
  */
 void fixDB(Node* parent, Node* sibling)
 {
+    if(!parent) //C is now the root, DB doesnt matter
+    {
+        return;
+    }
     if((!sibling || (sibling->color == BLACK && bothBlack(sibling))))
     {
         /*case 3.b.i*/
@@ -590,7 +595,7 @@ void fixDB(Node* parent, Node* sibling)
             {
                 sibling = parent->parent->right;
             }
-            else
+            else if(isRightChild(parent))
             {
                 sibling = parent->parent->left;
             }
@@ -663,9 +668,14 @@ void fixDB(Node* parent, Node* sibling)
  */
 void nullifyParent(Node* node)
 {
+    if(!node->parent)
+    {
+        return;
+    }
     if(node->parent->left == node)
     {
         node->parent->left = NULL;
+        return;
     }
     node->parent->right = NULL;
 }
@@ -782,7 +792,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
 
 
 
-int main()
-{
-    return 0;
-}
+//int main()
+//{
+//    return 0;
+//}
