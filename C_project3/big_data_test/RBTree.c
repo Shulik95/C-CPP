@@ -40,8 +40,8 @@ long unsigned const EMPTY_TREE_SIZE = 0;
 int const SUCCESS = 1;
 int const EQUAL = 0;
 int const FAILED = 0;
-int IS_LEFT = 0;
-int IS_RIGHT = 0;
+int const RIGHT = 1;
+int const LEFT = -1;
 int DOUBLE_ROT = 0;
 
 // ------------------------------ functions -----------------------------
@@ -164,7 +164,7 @@ int insertToRBTree(RBTree *tree, void *data)
         }
         else if (cmpVal > EQUAL) //node should be added on the right
         {
-            CREATE_NODE(right, tree)
+            CREATE_NODE(right,tree)
         }
         else // node should be added as left son
         {
@@ -448,10 +448,10 @@ void freeRBHelper(Node** node, FreeFunc freeFunc)
     }
     else
     {
-        freeRBHelper(&(*node)->left, freeFunc); //free left subtree
-        freeRBHelper(&(*node)->right, freeFunc); //free right subtree
+        freeRBHelper(&(*node)->right, freeFunc); //free left subtree
+        freeRBHelper(&(*node)->left, freeFunc); //free right subtree
         freeFunc((*node)->data); //free data
-        free((*node)); //free the node itself.
+        freeFunc((*node)); //free the node itself.
     }
 }
 
@@ -472,6 +472,7 @@ void freeRBTree(RBTree **tree)
  */
 Node* findSuccessor(Node* node)
 {
+
     if(!node->right)
     {
         return node;
@@ -554,7 +555,7 @@ int bothBlack(Node* node)
 int redChildIsClose(Node* sibling)
 {
     if((isLeftChild(sibling) &&  sibling->right && sibling->right->color == RED) ||
-       (isRightChild(sibling) && sibling->left && sibling->left->color == RED))
+            (isRightChild(sibling) && sibling->left &&sibling->left->color == RED))
     {
         return SUCCESS;
     }
@@ -567,8 +568,8 @@ int redChildIsClose(Node* sibling)
  */
 int farChildIsBlack(Node* sibling)
 {
-    if((isRightChild(sibling) && (!sibling->right || (sibling->right && sibling->right->color == BLACK))) ||
-       (isLeftChild(sibling) && (!sibling->left || (sibling->left && sibling->left->color == BLACK))))
+    if((isRightChild(sibling) && sibling->right && sibling->right->color == BLACK) ||
+            (isLeftChild(sibling) && sibling->left && sibling->left->color == BLACK))
     {
         return SUCCESS;
     }
@@ -617,7 +618,6 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
             parent = parent->parent; //P=C
             fixDB(parent, sibling, tree);
         }
-        return;
     }
     /*case 3.c*/
     else if(sibling->color == RED)
@@ -627,24 +627,19 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
         if(isLeftChild(sibling))
         {
             rotateRight(parent);
-            IS_LEFT = 1;
         }
         else
         {
             rotateLeft(parent);
-            IS_RIGHT = 1;
         }
-        if(IS_LEFT)
+        if(parent->right)
         {
-            IS_LEFT = 0;
-            fixDB(parent, parent->left, tree);
-        }
-        else if(IS_RIGHT)
-        {
-            IS_RIGHT = 0;
             fixDB(parent, parent->right, tree);
         }
-        return;
+        else if(parent->left)
+        {
+            fixDB(parent, parent->left, tree);
+        }
     }
     /*case 3.d*/
     else if(sibling->color == BLACK && redChildIsClose(sibling) && farChildIsBlack(sibling))
@@ -659,11 +654,10 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
         }
         else
         {
-            sibling->right->color = BLACK;
+            sibling->right->color = RED;
             rotateLeft(sibling);
             fixDB(parent, parent->left, tree);
         }
-        return;
     }
     /*case 3.e*/
     else //if(sibling->color == BLACK && !redChildIsClose(sibling))
@@ -689,7 +683,6 @@ void fixDB(Node* parent, Node* sibling, RBTree* tree)
             }
             sibling->left->color = BLACK;
         }
-        return;
     }
 }
 
@@ -796,7 +789,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
     Node* parent = NULL;
     /*first stage of deletion*/
     Node* toRemove = findNode(tree->root, data, tree->compFunc);
-    if(!toRemove || (tree->compFunc(toRemove->data, data) != EQUAL)) //data is not in tree
+    if(tree->compFunc(toRemove->data, data) != EQUAL) //data is not in tree
     {
         return FAILED;
     }
@@ -822,7 +815,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
             tree->freeFunc(toRemove->data);
             free(toRemove);
             /*might delete root, check and fix*/
-            if(tree->root && tree->root->parent != NULL)
+            if(tree->root->parent != NULL)
             {
                 tree->root->parent = NULL;
             }
@@ -850,7 +843,7 @@ int deleteFromRBTree(RBTree *tree, void *data)
             }
             else
             {
-                fixDB(parent, getSibling(parent), tree);
+                fixDB(parent,getSibling(parent), tree);
                 tree->size--;
                 checkRoot(tree);
                 return SUCCESS;
@@ -858,3 +851,5 @@ int deleteFromRBTree(RBTree *tree, void *data)
     }
     return FAILED;
 }
+
+
