@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/CPP_ex1.dir/main.cpp.o  -o CPP_ex1.exe -Wl,--out-implib,libCPP_ex1.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
