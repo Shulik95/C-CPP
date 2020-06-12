@@ -97,35 +97,7 @@ Matrix Activation::softMaxForEach(const Matrix &mat) const
     return ret;
 }
 
-int main()
-{
-    auto act = Activation(Relu);
-    Matrix m = Matrix(10, 10);
-    Matrix& ref = m;
-    Matrix m2;
-    for(int i = 0; i < 50; i++)
-    {
-        m[i] = (float)i;
-    }
-    for (int j = 50; j < 100; ++j)
-    {
-        m[j] = (float)-j;
-    }
-    m.plainPrint();
-    std::cout << std::endl;
-//    m2 = act(m);
-//    m2.plainPrint();
-    auto act2 = Activation(Softmax);
-    m2 = act2(m);
-    m2.plainPrint();
-    float sum = 0;
-    for (int k = 0; k < m2.getRows(); ++k) {
-        for (int i = 0; i < m2.getCols(); ++i) {
-            sum += m2(k,i);
-        }
-    }
-    std::cout << "This sum is: " << sum << std::endl;
-}
+
 
 
 
