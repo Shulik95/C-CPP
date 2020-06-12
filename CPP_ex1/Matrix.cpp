@@ -283,7 +283,7 @@ Matrix Matrix::operator*(const float c)
     {
         for (int j = 0; j < this->getCols(); ++j)
         {
-             ret(i,j) *= c;
+             ret(i, j) *= c;
         }
     }
     return ret;
@@ -302,7 +302,7 @@ Matrix operator*(const float c, Matrix &mat)
     {
         for (int j = 0; j < mat.getCols(); ++j)
         {
-            ret(i,j) *= c;
+            ret(i, j) *= c;
         }
     }
     return ret;
@@ -327,7 +327,7 @@ Matrix Matrix::operator*(Matrix &rhs)
         {
             for (int k = 0; k < this->cols; ++k)
             {
-                ret(i,j) += ((*this)(i,k) * rhs(k,j));
+                ret(i, j) += ((*this)(i, k) * rhs(k, j));
             }
         }
     }
@@ -367,7 +367,23 @@ std::istream &operator>>(std::istream &s, Matrix &mat)
 */
 std::ostream &operator<<(std::ostream &s, const Matrix &mat)
 {
-
+    for (int i = 0; i < mat.rows; ++i)
+    {
+        for (int j = 0; j < mat.cols ; ++j)
+        {
+            if(mat(i, j) <= 0.1f)
+            {
+                std::cout << "  ";
+            }
+            else
+            {
+                std::cout << "**";
+            }
+        }
+        std::cout << std::endl;
+    }
+    std::cout<< std::endl;
+    return s;
 }
 
 
