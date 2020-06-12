@@ -70,17 +70,62 @@ CMakeFiles/CPP_ex1.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CPP_ex1.dir/main.cpp.s"
 	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/CPP_ex1/main.cpp -o CMakeFiles/CPP_ex1.dir/main.cpp.s
 
+CMakeFiles/CPP_ex1.dir/Matrix.cpp.o: CMakeFiles/CPP_ex1.dir/flags.make
+CMakeFiles/CPP_ex1.dir/Matrix.cpp.o: ../Matrix.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CPP_ex1.dir/Matrix.cpp.o"
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CPP_ex1.dir/Matrix.cpp.o -c /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.cpp
+
+CMakeFiles/CPP_ex1.dir/Matrix.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CPP_ex1.dir/Matrix.cpp.i"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.cpp > CMakeFiles/CPP_ex1.dir/Matrix.cpp.i
+
+CMakeFiles/CPP_ex1.dir/Matrix.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CPP_ex1.dir/Matrix.cpp.s"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.cpp -o CMakeFiles/CPP_ex1.dir/Matrix.cpp.s
+
+CMakeFiles/CPP_ex1.dir/Activation.cpp.o: CMakeFiles/CPP_ex1.dir/flags.make
+CMakeFiles/CPP_ex1.dir/Activation.cpp.o: ../Activation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CPP_ex1.dir/Activation.cpp.o"
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CPP_ex1.dir/Activation.cpp.o -c /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.cpp
+
+CMakeFiles/CPP_ex1.dir/Activation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CPP_ex1.dir/Activation.cpp.i"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.cpp > CMakeFiles/CPP_ex1.dir/Activation.cpp.i
+
+CMakeFiles/CPP_ex1.dir/Activation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CPP_ex1.dir/Activation.cpp.s"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.cpp -o CMakeFiles/CPP_ex1.dir/Activation.cpp.s
+
+CMakeFiles/CPP_ex1.dir/Dense.cpp.o: CMakeFiles/CPP_ex1.dir/flags.make
+CMakeFiles/CPP_ex1.dir/Dense.cpp.o: ../Dense.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CPP_ex1.dir/Dense.cpp.o"
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CPP_ex1.dir/Dense.cpp.o -c /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.cpp
+
+CMakeFiles/CPP_ex1.dir/Dense.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CPP_ex1.dir/Dense.cpp.i"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.cpp > CMakeFiles/CPP_ex1.dir/Dense.cpp.i
+
+CMakeFiles/CPP_ex1.dir/Dense.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CPP_ex1.dir/Dense.cpp.s"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.cpp -o CMakeFiles/CPP_ex1.dir/Dense.cpp.s
+
 # Object files for target CPP_ex1
 CPP_ex1_OBJECTS = \
-"CMakeFiles/CPP_ex1.dir/main.cpp.o"
+"CMakeFiles/CPP_ex1.dir/main.cpp.o" \
+"CMakeFiles/CPP_ex1.dir/Matrix.cpp.o" \
+"CMakeFiles/CPP_ex1.dir/Activation.cpp.o" \
+"CMakeFiles/CPP_ex1.dir/Dense.cpp.o"
 
 # External object files for target CPP_ex1
 CPP_ex1_EXTERNAL_OBJECTS =
 
 CPP_ex1.exe: CMakeFiles/CPP_ex1.dir/main.cpp.o
+CPP_ex1.exe: CMakeFiles/CPP_ex1.dir/Matrix.cpp.o
+CPP_ex1.exe: CMakeFiles/CPP_ex1.dir/Activation.cpp.o
+CPP_ex1.exe: CMakeFiles/CPP_ex1.dir/Dense.cpp.o
 CPP_ex1.exe: CMakeFiles/CPP_ex1.dir/build.make
 CPP_ex1.exe: CMakeFiles/CPP_ex1.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable CPP_ex1.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable CPP_ex1.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CPP_ex1.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

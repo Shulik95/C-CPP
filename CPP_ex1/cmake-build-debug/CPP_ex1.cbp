@@ -80,6 +80,24 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.cpp">
+			<Option target="CPP_ex1"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.h">
+			<Option target="CPP_ex1"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.cpp">
+			<Option target="CPP_ex1"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.h">
+			<Option target="CPP_ex1"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.cpp">
+			<Option target="CPP_ex1"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h">
+			<Option target="CPP_ex1"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/main.cpp">
 			<Option target="CPP_ex1"/>
 		</Unit>

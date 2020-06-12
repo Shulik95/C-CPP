@@ -123,6 +123,87 @@ CPP_ex1/fast:
 	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/build
 .PHONY : CPP_ex1/fast
 
+Activation.o: Activation.cpp.o
+
+.PHONY : Activation.o
+
+# target to build an object file
+Activation.cpp.o:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Activation.cpp.o
+.PHONY : Activation.cpp.o
+
+Activation.i: Activation.cpp.i
+
+.PHONY : Activation.i
+
+# target to preprocess a source file
+Activation.cpp.i:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Activation.cpp.i
+.PHONY : Activation.cpp.i
+
+Activation.s: Activation.cpp.s
+
+.PHONY : Activation.s
+
+# target to generate assembly for a file
+Activation.cpp.s:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Activation.cpp.s
+.PHONY : Activation.cpp.s
+
+Dense.o: Dense.cpp.o
+
+.PHONY : Dense.o
+
+# target to build an object file
+Dense.cpp.o:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Dense.cpp.o
+.PHONY : Dense.cpp.o
+
+Dense.i: Dense.cpp.i
+
+.PHONY : Dense.i
+
+# target to preprocess a source file
+Dense.cpp.i:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Dense.cpp.i
+.PHONY : Dense.cpp.i
+
+Dense.s: Dense.cpp.s
+
+.PHONY : Dense.s
+
+# target to generate assembly for a file
+Dense.cpp.s:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Dense.cpp.s
+.PHONY : Dense.cpp.s
+
+Matrix.o: Matrix.cpp.o
+
+.PHONY : Matrix.o
+
+# target to build an object file
+Matrix.cpp.o:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Matrix.cpp.o
+.PHONY : Matrix.cpp.o
+
+Matrix.i: Matrix.cpp.i
+
+.PHONY : Matrix.i
+
+# target to preprocess a source file
+Matrix.cpp.i:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Matrix.cpp.i
+.PHONY : Matrix.cpp.i
+
+Matrix.s: Matrix.cpp.s
+
+.PHONY : Matrix.s
+
+# target to generate assembly for a file
+Matrix.cpp.s:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Matrix.cpp.s
+.PHONY : Matrix.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -159,6 +240,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CPP_ex1"
 	@echo "... edit_cache"
+	@echo "... Activation.o"
+	@echo "... Activation.i"
+	@echo "... Activation.s"
+	@echo "... Dense.o"
+	@echo "... Dense.i"
+	@echo "... Dense.s"
+	@echo "... Matrix.o"
+	@echo "... Matrix.i"
+	@echo "... Matrix.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
