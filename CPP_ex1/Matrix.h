@@ -50,6 +50,11 @@ private:
      */
     void deAllocMatrix();
 
+    /**
+     * inits a two dim array according to rows and cols of the matrix, assumes they are assigned.
+     */
+    void initMatrix();
+
 
 
 public:
@@ -101,11 +106,18 @@ public:
     void plainPrint() const;
 
     /**
-     * creates a new matrix with same values as given input
+     * assigns given matrix to our matrix.
      * @param rhs - matrix to copy.
-     * @return - refrence to new matrix.
+     * @return - reference to new matrix.
      */
     Matrix& operator=(const Matrix &rhs);
+
+    /**
+     * Matrix addition accumulation.
+     * @param rhs - the values to add.
+     * @return - refrence to matrix after adding given rhs Matrix.
+     */
+    Matrix& operator+=(const Matrix& rhs);
 
 
     /**
@@ -113,42 +125,54 @@ public:
      * @param c - scalar to multiply by
      * @return - returns reference to Matrix object.
      */
-    Matrix& operator*(const float c);
+    Matrix operator*(float c);
 
     /**
      * for given row, col returns the row,col element of the matrix.
      * @param row - row number.
      * @param col - columns number.
      */
-    float & operator()(int row, int col) const;
+    float& operator()(int row, int col);
+
+    /**
+     * for given row, col returns the row,col element of the matrix.
+     * @param row - row number.
+     * @param col - columns number.
+     */
+    const float& operator()(int row, int col) const;
 
     /**
      * for given index returns the idx'th item in the matrix.
      * @param idx - the number of the item to get.
      */
-    float& operator[](const int idx) const;
+    float& operator[](int idx);
+
+    /**
+     * for given index returns the idx'th item in the matrix.
+     * @param idx - the number of the item to get.
+     */
+    const float& operator[](int idx) const;
+
+    /**
+     * sums two matrices.
+     * @param rhs - rhs matrix to add.
+     * @return - a new matrix where each index is the sum of the two given matrices.
+     */
+    Matrix operator+(const Matrix& rhs) const;
 
     /**
      * multiplies the matrix by given scalar from the left side.
      * @param c - scalar to multiply by
-     * @param d -
-     * @return
+     * @return - refrence to given matrix, changed by scalar.
      */
-    friend Matrix& operator*(const float c, Matrix& mat);
+    friend Matrix operator*(float c, Matrix& mat);
 
-    /**
-     *
-     * @param lhs
-     * @param rhs
-     * @return
-     */
-    friend Matrix& operator*(const Matrix& lhs, const Matrix& rhs);
 
     /**
     * multiplies two given matrices.
     * @return - return a new matrix which is a multiplication of given matrices.
     */
-    friend Matrix& operator*(const Matrix &lhs, const Matrix &rhs);
+    Matrix operator*(Matrix &rhs);
 
     /**
      * inputs data from given and fills matrix.
