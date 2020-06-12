@@ -45,6 +45,11 @@ private:
      */
     void zeroMatrix();
 
+    /**
+     * free all memory used by matrix.
+     */
+    void deAllocMatrix();
+
 
 
 public:
@@ -64,7 +69,7 @@ public:
      * Constructs a matrix based on given matrix.
      * @param m - copies given matrix.
      */
-    Matrix(Matrix& m);
+    Matrix(const Matrix& m);
 
     /**
      * Destructor for Matrix class objects.
@@ -87,7 +92,6 @@ public:
 
     /**
      * transforms a matrix into a column vector, supports function calling concatenation.
-     * @return
      */
     Matrix& vectorize();
 
@@ -116,13 +120,13 @@ public:
      * @param row - row number.
      * @param col - columns number.
      */
-    float& operator()(const int row, const int col);
+    float & operator()(int row, int col) const;
 
     /**
      * for given index returns the idx'th item in the matrix.
      * @param idx - the number of the item to get.
      */
-    float& operator[](const int idx);
+    float& operator[](const int idx) const;
 
     /**
      * multiplies the matrix by given scalar from the left side.
