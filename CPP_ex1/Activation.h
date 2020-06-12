@@ -20,6 +20,21 @@ class Activation
 private:
     ActivationType aType;
 
+    /**
+     * activate Relu function on each item of the matrix.
+     * @param mat - input matrix for function.
+     * @return - Matrix object by val.
+     */
+    Matrix reluForEach(const Matrix& mat) const;
+
+    /**
+     * activate Softmax function on each item of the matrix.
+     * @param mat - input matrix for function.
+     * @return - Matrix object by val.
+     */
+    Matrix softMaxForEach(const Matrix& mat) const;
+
+
 public:
     /**
      * constructor for Activation class.
@@ -37,10 +52,7 @@ public:
      * @param mat - input for function.
      * @return - A new Matrix which represents the
      */
-    Matrix operator()(Matrix& mat);
-
-    ActivationType getAType() const;
-
+    Matrix operator()(const Matrix& mat) const;
 };
 
 #endif //ACTIVATION_H
