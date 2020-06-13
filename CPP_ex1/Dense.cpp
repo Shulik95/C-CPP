@@ -18,7 +18,7 @@
  * @param bias - Matrix.
  */
 Dense::Dense(Matrix& w, Matrix& bias, ActivationType actType) : weights(w), bias(bias),
-activation(Activation(actType))
+                                                                activation(Activation(actType))
 {
 }
 
@@ -57,5 +57,3 @@ Matrix Dense::operator()(const Matrix &mat)
     ret = this->activation(ret); // Relu/Softmax(W1*x +b1)
     return ret;
 }
-
-

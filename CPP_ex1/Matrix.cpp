@@ -283,7 +283,7 @@ Matrix Matrix::operator*(const float c)
     {
         for (int j = 0; j < this->getCols(); ++j)
         {
-             ret(i, j) *= c;
+            ret(i, j) *= c;
         }
     }
     return ret;
@@ -313,7 +313,7 @@ Matrix operator*(const float c, Matrix &mat)
  * @param rhs - one of the matrices to mult by.
  * @return - a Matrix object by value which is a outcome the the multiplication.
  */
-Matrix Matrix::operator*(Matrix &rhs)
+Matrix Matrix::operator*(const Matrix &rhs) const
 {
     if(this->cols != rhs.getRows())
     {
@@ -385,27 +385,3 @@ std::ostream &operator<<(std::ostream &s, const Matrix &mat)
     std::cout<< std::endl;
     return s;
 }
-
-
-//int main()
-//{
-//    Matrix m = Matrix(3, 5);
-//    Matrix m1 = Matrix(5, 4);
-//    Matrix m2;
-//    for (int i = 0; i < 15 ; ++i)
-//    {
-//        m[i] = (float)i+1;
-//    }
-//    //m.plainPrint();
-//
-//    for (int i = 0; i < 20 ; ++i)
-//    {
-//        m1[i] = (float)i+1;
-//    }
-//    //m1.plainPrint();
-////    m2 = m * m1;
-////    m2.plainPrint();
-//    std::cout << sizeof(float);
-//    std::ifstream is;
-//
-//}

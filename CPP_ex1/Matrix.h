@@ -172,7 +172,7 @@ public:
     * multiplies two given matrices.
     * @return - return a new matrix which is a multiplication of given matrices.
     */
-    Matrix operator*(Matrix &rhs);
+    Matrix operator*(const Matrix &rhs) const;
 
     /**
      * inputs data from given and fills matrix.

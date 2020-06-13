@@ -25,11 +25,10 @@
  * @param weights - array of weights for each layer.
  * @param biases -
  */
-MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[]) : \
-layers{Dense(weights[INIT_VAL],biases[INIT_VAL],Relu),
-       Dense(weights[SEC_LAYER], biases[SEC_LAYER], Relu),
-       Dense(weights[THIRD_LAYER], biases[THIRD_LAYER], Relu),
-       Dense(weights[FINAL_LAYER], biases[FINAL_SIZE], Softmax)}
+MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[]) : layer1(Dense(weights[0], biases[0], Relu)),
+layer2(Dense(weights[1], biases[1], Relu)),
+layer3(Dense(weights[2], biases[2], Relu)),
+layer4(Dense(weights[3], biases[3], Softmax))
 {
 }
 
@@ -44,10 +43,11 @@ Digit MlpNetwork::operator()(const Matrix &mat)
     Matrix r1 = Matrix(mat);
     retDig.probability = INIT_VAL;
     retDig.value = INIT_VAL;
-    for (auto layer : this->layers)
-    {
-        r1 = layer(r1);
-    }
+    r1 = layer1(r1);
+    r1 = layer2(r1);
+    r1 = layer3(r1);
+    r1 = layer4(r1);
+
     /*r1 is a length 10 vector now*/
     for(int i = 0; i < FINAL_SIZE; i++)
     {

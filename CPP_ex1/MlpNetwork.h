@@ -18,7 +18,10 @@ const MatrixDims biasDims[]    = {{128, 1}, {64, 1}, {20, 1},  {10, 1}};
 class MlpNetwork
 {
 private:
-    Dense layers[MLP_SIZE];
+    Dense layer1;
+    Dense layer2;
+    Dense layer3;
+    Dense layer4;
 
 public:
 
