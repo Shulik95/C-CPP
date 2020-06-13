@@ -12,7 +12,8 @@
 #include "MlpNetwork.h"
 
 // -------------------------- const definitions -------------------------
-#define RELU_LAYERS 3
+#define SEC_LAYER 1
+#define THIRD_LAYER 2
 #define FINAL_LAYER 3
 #define INIT_VAL 0
 #define FINAL_SIZE 10
@@ -24,14 +25,12 @@
  * @param weights - array of weights for each layer.
  * @param biases -
  */
-MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[])
+MlpNetwork::MlpNetwork(Matrix weights[], Matrix biases[]) : \
+layers{Dense(weights[INIT_VAL],biases[INIT_VAL],Relu),
+       Dense(weights[SEC_LAYER], biases[SEC_LAYER], Relu),
+       Dense(weights[THIRD_LAYER], biases[THIRD_LAYER], Relu),
+       Dense(weights[FINAL_LAYER], biases[FINAL_SIZE], Softmax)}
 {
-    /*creates array of layers according to section 3.1*/
-    for (int i = 0; i < RELU_LAYERS; ++i)
-    {
-        layers[i] = new Dense(weights[i], biases[i], Relu);
-    }
-    layers[FINAL_LAYER] = new Dense(weights[FINAL_LAYER], biases[FINAL_LAYER], Softmax);
 }
 
 /**
@@ -45,9 +44,9 @@ Digit MlpNetwork::operator()(const Matrix &mat)
     Matrix r1 = Matrix(mat);
     retDig.probability = INIT_VAL;
     retDig.value = INIT_VAL;
-    for (auto & layer : this->layers)
+    for (auto layer : this->layers)
     {
-        r1 = (*layer)(r1);
+        r1 = layer(r1);
     }
     /*r1 is a length 10 vector now*/
     for(int i = 0; i < FINAL_SIZE; i++)
@@ -58,12 +57,7 @@ Digit MlpNetwork::operator()(const Matrix &mat)
             retDig.value = i;
         }
     }
-    for(auto & layer : this->layers)
-    {
-        delete layer;
-    }
     return retDig;
-
 }
 
 
