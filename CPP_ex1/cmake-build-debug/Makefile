@@ -258,6 +258,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+t_matrix_invalid.o: t_matrix_invalid.cpp.o
+
+.PHONY : t_matrix_invalid.o
+
+# target to build an object file
+t_matrix_invalid.cpp.o:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/t_matrix_invalid.cpp.o
+.PHONY : t_matrix_invalid.cpp.o
+
+t_matrix_invalid.i: t_matrix_invalid.cpp.i
+
+.PHONY : t_matrix_invalid.i
+
+# target to preprocess a source file
+t_matrix_invalid.cpp.i:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/t_matrix_invalid.cpp.i
+.PHONY : t_matrix_invalid.cpp.i
+
+t_matrix_invalid.s: t_matrix_invalid.cpp.s
+
+.PHONY : t_matrix_invalid.s
+
+# target to generate assembly for a file
+t_matrix_invalid.cpp.s:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/t_matrix_invalid.cpp.s
+.PHONY : t_matrix_invalid.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -282,6 +309,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... t_matrix_invalid.o"
+	@echo "... t_matrix_invalid.i"
+	@echo "... t_matrix_invalid.s"
 .PHONY : help
 
 

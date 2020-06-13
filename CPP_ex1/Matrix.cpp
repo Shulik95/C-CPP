@@ -107,6 +107,11 @@ void Matrix::plainPrint() const
      */
 float & Matrix::operator()(const int row, const int col)
 {
+    if(row < 0 || col < 0 || row >= this->getRows() || col >= this->getCols())
+    {
+        std::cerr << IDX_OUT_OF_RANGE << std::endl;
+        exit(EXIT_FAILURE);
+    }
     return this->mat[row][col];
 }
 
@@ -117,6 +122,11 @@ float & Matrix::operator()(const int row, const int col)
      */
 const float& Matrix::operator()(int row, int col) const
 {
+    if(row < 0 || col < 0 || row >= this->getRows() || col >= this->getCols())
+    {
+        std::cerr << IDX_OUT_OF_RANGE << std::endl;
+        exit(EXIT_FAILURE);
+    }
     return this->mat[row][col];
 }
 
@@ -193,7 +203,12 @@ float& Matrix:: operator[](const int idx)
  */
 const float& Matrix::operator[](int idx) const
 {
-    return (*this)[idx];
+    if(idx >= this->getRows() * this->getCols() || idx < 0) //index out of range
+    {
+        std::cerr << IDX_OUT_OF_RANGE << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    return this->mat[idx / this->getCols()][idx % this->getCols()];
 }
 
 /**
@@ -382,6 +397,5 @@ std::ostream &operator<<(std::ostream &s, const Matrix &mat)
         }
         std::cout << std::endl;
     }
-    std::cout<< std::endl;
     return s;
 }

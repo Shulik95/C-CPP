@@ -6,27 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.cpp
-Activation.h
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.h
-cmath
+/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.cpp
+Matrix.h
+/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h
+string
 -
-
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.h
-Matrix.h
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h
-
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.cpp
-Matrix.h
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h
-Dense.h
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.h
-
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.h
-Matrix.h
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h
-Activation.h
-/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.h
+fstream
+-
 
 /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h
 iostream
