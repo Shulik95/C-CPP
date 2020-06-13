@@ -98,6 +98,12 @@
 		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h">
 			<Option target="CPP_ex1"/>
 		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/MlpNetwork.cpp">
+			<Option target="CPP_ex1"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/MlpNetwork.h">
+			<Option target="CPP_ex1"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/user/CLionProjects/CPP_ex1/main.cpp">
 			<Option target="CPP_ex1"/>
 		</Unit>

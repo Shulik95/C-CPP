@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.cpp" "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles/CPP_ex1.dir/Activation.cpp.o"
   "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.cpp" "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles/CPP_ex1.dir/Dense.cpp.o"
   "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.cpp" "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles/CPP_ex1.dir/Matrix.cpp.o"
+  "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/MlpNetwork.cpp" "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.o"
   "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/main.cpp" "/cygdrive/c/Users/user/CLionProjects/CPP_ex1/cmake-build-debug/CMakeFiles/CPP_ex1.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

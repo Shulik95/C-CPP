@@ -1,4 +1,3 @@
-
 /**
  * @file Dense.cpp
  * @author  Shalom Kachko
@@ -18,7 +17,8 @@
  * @param w - Matrix object holding weights.
  * @param bias - Matrix.
  */
-Dense::Dense(const Matrix& w, const Matrix& bias, ActivationType actType) : weights(w), bias(bias), activation(Activation(actType))
+Dense::Dense(Matrix& w, Matrix& bias, ActivationType actType) : weights(w), bias(bias),
+activation(Activation(actType))
 {
 }
 
@@ -51,6 +51,7 @@ const Activation &Dense::getActivation() const {
  */
 Matrix Dense::operator()(const Matrix &mat)
 {
+
     Matrix ret = Matrix(mat);
     ret = (this->weights * ret) + this->bias; // W1*x +b1
     ret = this->activation(ret); // Relu/Softmax(W1*x +b1)

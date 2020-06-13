@@ -204,6 +204,33 @@ Matrix.cpp.s:
 	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/Matrix.cpp.s
 .PHONY : Matrix.cpp.s
 
+MlpNetwork.o: MlpNetwork.cpp.o
+
+.PHONY : MlpNetwork.o
+
+# target to build an object file
+MlpNetwork.cpp.o:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.o
+.PHONY : MlpNetwork.cpp.o
+
+MlpNetwork.i: MlpNetwork.cpp.i
+
+.PHONY : MlpNetwork.i
+
+# target to preprocess a source file
+MlpNetwork.cpp.i:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.i
+.PHONY : MlpNetwork.cpp.i
+
+MlpNetwork.s: MlpNetwork.cpp.s
+
+.PHONY : MlpNetwork.s
+
+# target to generate assembly for a file
+MlpNetwork.cpp.s:
+	$(MAKE) -f CMakeFiles/CPP_ex1.dir/build.make CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.s
+.PHONY : MlpNetwork.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -249,6 +276,9 @@ help:
 	@echo "... Matrix.o"
 	@echo "... Matrix.i"
 	@echo "... Matrix.s"
+	@echo "... MlpNetwork.o"
+	@echo "... MlpNetwork.i"
+	@echo "... MlpNetwork.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

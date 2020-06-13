@@ -20,7 +20,7 @@ public:
      * @param w - Matrix object holding weights.
      * @param bias - Matrix.
      */
-    Dense(const Matrix& w, const Matrix& bias, ActivationType);
+    Dense(Matrix& w, Matrix& bias, ActivationType);
 
     /**
      * @return - Returns the weights of this layer as a Matrix obj.
