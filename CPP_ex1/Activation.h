@@ -14,6 +14,9 @@ enum ActivationType
     Softmax
 };
 
+/**
+ * decelerations for Activation class.
+ */
 class Activation
 {
 
@@ -25,14 +28,14 @@ private:
      * @param mat - input matrix for function.
      * @return - Matrix object by val.
      */
-    Matrix reluForEach(const Matrix& mat) const;
+    Matrix _reluForEach(const Matrix& mat) const;
 
     /**
      * activate Softmax function on each item of the matrix.
      * @param mat - input matrix for function.
      * @return - Matrix object by val.
      */
-    Matrix softMaxForEach(const Matrix& mat) const;
+    Matrix _softMaxForEach(const Matrix& mat) const;
 
 
 public:
@@ -45,7 +48,7 @@ public:
     /**
      * @return - activationType of object.
      */
-    ActivationType getActivation() const;
+    ActivationType getActivationType() const;
 
     /**
      * applies activation function on input, doesnt change input!

@@ -40,7 +40,8 @@ const Matrix &Dense::getBias() const
 /**
  * @return - the Activation obj of the layer.
  */
-const Activation &Dense::getActivation() const {
+const Activation &Dense::getActivation() const
+{
     return activation;
 }
 

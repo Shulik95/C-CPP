@@ -28,6 +28,9 @@ typedef struct MatrixDims
     int rows, cols;
 } MatrixDims;
 
+/**
+ * Matrix class decelerations.
+ */
 class Matrix
 {
 private:
@@ -38,22 +41,22 @@ private:
     /**
      * checks if given values for matrix rows and column vars are positive.
      */
-    void checkValid();
+    void _checkValid();
 
     /**
      * zeroes all given values in matrix.
      */
-    void zeroMatrix();
+    void _zeroMatrix();
 
     /**
      * free all memory used by matrix.
      */
-    void deAllocMatrix();
+    void _deAllocMatrix();
 
     /**
      * inits a two dim array according to rows and cols of the matrix, assumes they are assigned.
      */
-    void initMatrix();
+    void _initMatrix();
 
 
 
@@ -68,7 +71,7 @@ public:
     /**
      * Constructs 1x1 Matrix, single elemnts is inited to 0;
      */
-    Matrix() : Matrix(DEFAULT,DEFAULT){};
+    Matrix() : Matrix(DEFAULT, DEFAULT){};
 
     /**
      * Constructs a matrix based on given matrix.
@@ -84,14 +87,16 @@ public:
     /**
      * @return returns the amount of rows as int
      */
-    int getRows() const {
+    int getRows() const
+    {
         return rows;
     }
 
     /**
      * @return - returns the amount
      */
-    int getCols() const {
+    int getCols() const
+    {
         return cols;
     }
 

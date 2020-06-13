@@ -31,7 +31,7 @@ this->mat[i][j] op rhs.mat[i][j];\
 #define ASSIGN =
 #define ADD_ACCU +=
 
-const std::string NEG_INPUT_MSG= "Error: given input has negative number of rows or columns";
+const std::string NEG_INPUT_MSG = "Error: given input has negative number of rows or columns";
 const std::string ALLOC_FAILED = "Error: memory allocation failed :(";
 const std::string IDX_OUT_OF_RANGE = "Error: this index is out of matrix range";
 const std::string ILLEGAL_BINARY_OP = "Error: the dims of the matrices dont match";
@@ -45,9 +45,9 @@ const int DEF_VAL = 0;
  */
 Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols)
 {
-    this->checkValid();
-    this->initMatrix();
-    this->zeroMatrix();
+    this->_checkValid();
+    this->_initMatrix();
+    this->_zeroMatrix();
 }
 
 /**
@@ -62,9 +62,9 @@ Matrix::Matrix(const Matrix& m) : Matrix(m.getRows(), m.getCols())
 /**
  * checks if given values for matrix rows and column vars are positive.
  */
-void Matrix::checkValid()
+void Matrix::_checkValid()
 {
-    if(this->rows <=0 || this->cols <= 0)
+    if(this->rows <= 0 || this->cols <= 0)
     {
         std::cerr << NEG_INPUT_MSG << std::endl;
         exit(EXIT_FAILURE);
@@ -74,7 +74,7 @@ void Matrix::checkValid()
 /**
  * zeroes all given values in matrix.
  */
-void Matrix::zeroMatrix()
+void Matrix::_zeroMatrix()
 {
     for(int i = 0; i < this->rows; i++)
     {
@@ -135,7 +135,7 @@ const float& Matrix::operator()(int row, int col) const
  */
 Matrix::~Matrix()
 {
-    this->deAllocMatrix();
+    this->_deAllocMatrix();
 }
 
 /**
@@ -160,7 +160,7 @@ Matrix& Matrix::vectorize()
         }
         vector[i][DEF_VAL] = (*this)[i]; //get corresponding value from original matrix.
     }
-    this->deAllocMatrix();
+    this->_deAllocMatrix();
     this->rows = this->rows * this->cols;
     this->cols = DEFAULT;
     this->mat = vector;
@@ -170,7 +170,7 @@ Matrix& Matrix::vectorize()
 /**
  * frees all memory which was dynamically allocated by matrix.
  */
-void Matrix::deAllocMatrix()
+void Matrix::_deAllocMatrix()
 {
     if(this->mat != nullptr && *(this->mat) != nullptr)
     {
@@ -238,10 +238,10 @@ Matrix &Matrix::operator=(const Matrix &rhs)
     {
         return *this;
     }
-    this->deAllocMatrix();
+    this->_deAllocMatrix();
     this->rows = rhs.getRows();
     this->cols = rhs.getCols();
-    this->initMatrix();
+    this->_initMatrix();
     FOR_EACH_OP(ASSIGN)
     return *this;
 }
@@ -249,7 +249,7 @@ Matrix &Matrix::operator=(const Matrix &rhs)
 /**
  * inits a two dim array according to rows and cols of the matrix, assumes they are assigned.
  */
-void Matrix::initMatrix()
+void Matrix::_initMatrix()
 {
     this->mat = new(std::nothrow) float* [this->rows];
     if(this->mat == nullptr)
@@ -357,8 +357,8 @@ std::istream &operator>>(std::istream &s, Matrix &mat)
 {
     if(mat.mat == nullptr) //matrix was not created
     {
-        mat.initMatrix();
-        mat.zeroMatrix();
+        mat._initMatrix();
+        mat._zeroMatrix();
     }
     for (int i = 0; i < mat.getRows(); ++i)
     {

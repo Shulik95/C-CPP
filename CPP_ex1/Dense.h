@@ -6,6 +6,9 @@
 #include "Matrix.h"
 #include "Activation.h"
 
+/**
+ * 
+ */
 class Dense
 {
 private:

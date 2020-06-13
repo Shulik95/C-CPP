@@ -21,7 +21,7 @@ Activation::Activation(ActivationType actType) : aType(actType){}
 /**
 * @return - activationType of object.
 */
-ActivationType Activation::getActivation() const
+ActivationType Activation::getActivationType() const
 {
     return aType;
 }
@@ -34,13 +34,13 @@ ActivationType Activation::getActivation() const
 Matrix Activation::operator()(const Matrix &mat) const
 {
 
-    if(this->getActivation() == Relu)
+    if(this->getActivationType() == Relu)
     {
-        return this->reluForEach(mat);
+        return this->_reluForEach(mat);
     }
-    else if( this->getActivation() == Softmax)
+    else if(this->getActivationType() == Softmax)
     {
-        return  this->softMaxForEach(mat);
+        return this->_softMaxForEach(mat);
     }
     return mat;
 }
@@ -50,7 +50,7 @@ Matrix Activation::operator()(const Matrix &mat) const
 * @param mat - input matrix for function.
 * @return - Matrix object by val.
 */
-Matrix Activation::reluForEach(const Matrix &mat) const
+Matrix Activation::_reluForEach(const Matrix &mat) const
 {
     Matrix ret = Matrix(mat);
     for (int i = 0; i < mat.getRows(); ++i)
@@ -75,7 +75,7 @@ Matrix Activation::reluForEach(const Matrix &mat) const
 * @param mat - input matrix for function.
 * @return - Matrix object by val.
 */
-Matrix Activation::softMaxForEach(const Matrix &mat) const
+Matrix Activation::_softMaxForEach(const Matrix &mat) const
 {
     Matrix ret = Matrix(mat);
     float sigma = 0;
