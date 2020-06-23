@@ -2,8 +2,13 @@
 // ------------------------------ includes ------------------------------
 #include <iostream>
 #include <string.h>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 using std::string;
+using std::vector;
 // -------------------------- const definitions -------------------------
 #ifndef CPP_EX2_RECOMMENDERSYSTEM_H
 #define CPP_EX2_RECOMMENDERSYSTEM_H
@@ -14,15 +19,42 @@ class RecommenderSystem
 {
 private:
 
-public:
+    /*maps from name to a vector of movie rankings, rank order corresponds to movie order*/
+    std::map<string, vector<double>> _userRanks;
+    /*maps from movie name to a vector which contains its traits ranked.*/
+    std::map<string, vector<double>> _movieFeatures;
+    /*holds all movies in given order*/
+    vector<string> _movieVec;
 
+    /**
+     * loads movieFeatures map and movieVec.
+     * @param path  - path to file of movies and rankings.
+     */
+    int _parser(const string &path);
+
+    /**
+     * breaks line according to spaces and inserts to data struct, assumes movie name was removed.
+     * @param line - line to parse.
+     */
+    static void _parseLine(const string &line, vector<double> &vec);
+
+    /**
+     * breaks down line and inserts parts into string vector.
+     * @param line - line to parse.
+     * @param vec  - vector to hold data.s
+     */
+    static void _parseLine(const string &line, vector<string> &vec);
+
+
+public:
+    void printData();
     /**
      * loads data from files into object.
      * @param moviesAttributesFilePath - first file to load.
-     * @param userRanksFiltPath - second file to load
+     * @param userRanksFilePath - second file to load
      * @return - 1 if successful 0 otherwise.
      */
-    int loadData(const string &moviesAttributesFilePath, const string &userRanksFiltPath);
+    int loadData(const string &moviesAttributesFilePath, const string &userRanksFilePath);
 
     /**
      * recommends a movie to given user according to algorithm.
