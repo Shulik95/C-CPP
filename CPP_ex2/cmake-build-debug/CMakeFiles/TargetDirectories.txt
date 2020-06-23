@@ -1,0 +1,3 @@
+/cygdrive/c/Users/user/CLionProjects/CPP_ex2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cygdrive/c/Users/user/CLionProjects/CPP_ex2/cmake-build-debug/CMakeFiles/CPP_ex2.dir
+/cygdrive/c/Users/user/CLionProjects/CPP_ex2/cmake-build-debug/CMakeFiles/edit_cache.dir
