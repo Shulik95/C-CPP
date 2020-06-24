@@ -1,5 +1,6 @@
 
 // ------------------------------ includes ------------------------------
+
 #include "RecommenderSystem.h"
 // -------------------------- const definitions -------------------------
 #define PARSER(action)\
@@ -18,8 +19,12 @@ if(!tempWord.empty())\
 #define FAIL -1
 #define NORATE 0
 #define FIRSTLINE 1
+#define FIRST 0
+#define MINTHETA -1
+#define SQUARED 2.0
 
 const string FILE_ERR_MSG = "Unable to open file ";
+const string BAD_USER_ERR = "USER NOT FOUND";
 /*indicates that were reading the 2nd file*/
 bool gUserFile = false;
 // ------------------------------- methods ------------------------------
@@ -137,6 +142,237 @@ void RecommenderSystem::printData()
             std::cout << i << " ";
         }
         std::cout << "\n";
+    }
+}
+
+/**
+ * returns average of given users ratings.
+ */
+double RecommenderSystem::findAverage(const string& userName) const
+{
+    vector<double> tempVec = this->_userRanks.at(userName);
+    double sum = std::accumulate(tempVec.begin(), tempVec.end(), 0.0);
+    return sum / tempVec.size();
+}
+
+/**
+ * recommends a movie to given user according to algorithm.
+ * @param userName - recommend according to this user.
+ * @return -
+ */
+string RecommenderSystem::recommendByContent(const string &userName)
+{
+    if(this->_userRanks.find(userName) == this->_userRanks.end()) //user doesnt exist.
+    {
+        return BAD_USER_ERR;
+    }
+    double avg = this->findAverage(userName);
+    vector<double> normalizedVec = this->normalizeVec(this->_userRanks.at(userName), avg);
+    vector<double> prefVec = this->getPrefVec(normalizedVec);
+    return checkResemblance(prefVec, userName);
+}
+
+/**
+ * deducts the avg from all values of given vector, doesnt change it, returns a different one.
+ * @param vec - original vector.
+ * @return  - a normalized version of the given vector.
+ */
+vector<double> RecommenderSystem::normalizeVec(const vector<double>& vec, double avg) const
+{
+    vector<double> ret;
+    for(auto &i : vec)
+    {
+        ret.push_back(i - avg);
+    }
+    return ret;
+}
+
+/**
+ * returns the users prefrence vector according to the given algorithm.
+ * @param normVec - normalized ratings vector of the user.
+ * @return - vector of doubles which signify the traits the user likes in movies.
+ */
+vector<double> RecommenderSystem::getPrefVec(const vector<double> &normVec) const
+{
+    const string tempString = this->_movieVec[FIRST];
+    int vecLength = (this->_movieFeatures.at(tempString)).size();
+    vector<double> ret(vecLength, 0.0);
+    for(int i = 0 ; i < normVec.size(); i++)
+    {
+        double w = normVec[i];
+        if(w != 0) //only if user rated this film
+        {
+            string name = this->_movieVec[i]; //get name
+            vector<double> temp = this->_movieFeatures.at(name); //get features vector of the movie
+            _multByScalar(w, temp);
+            _sumVector(ret, temp);
+        }
+    }
+    return ret;
+}
+
+/**
+* multiplies all elements of given vec by a scalar.
+*/
+void RecommenderSystem::_multByScalar(double val, vector<double> &vec) const
+{
+    for(auto &i: vec)
+    {
+        i *= val;
+    }
+}
+
+/**
+ * adds rhs into lhs.
+ */
+void RecommenderSystem::_sumVector(vector<double> &lhs,const vector<double> &rhs) const
+{
+    for(int i = 0; i < lhs.size(); i++)
+    {
+        lhs[i] += rhs[i];
+    }
+}
+/**
+ * returns the norm of the vector.
+ */
+double RecommenderSystem::_getNorm(const vector<double>& vec)
+{
+    double norm = 0;
+    for(auto &item : vec)
+    {
+        norm += pow(item, SQUARED);
+    }
+    return sqrt(norm);
+}
+
+/**
+ * calculates the angle between 2 given vectors.
+ */
+double RecommenderSystem::calcAngle(const vector<double> &vec1, const vector<double> &vec2)
+{
+    return (dotProd(vec1, vec2) / (_getNorm(vec1) * _getNorm(vec2)));
+}
+
+/**
+ * implements scalar multiplication of two vectors.
+ * @return - the scalar which represents the dot product.
+ */
+double RecommenderSystem::dotProd(const vector<double>& lhs, const vector<double>& rhs)
+{
+    double dotProduct = 0;
+    for(int i = 0; i < lhs.size(); i++)
+    {
+        dotProduct  += (lhs[i] * rhs[i]);
+    }
+    return dotProduct;
+}
+
+string RecommenderSystem::checkResemblance(const vector<double> &prefrenceVec,const string &userName)
+{
+    string retMovie;
+    double maxAngle = MINTHETA;
+    vector<double> userRatings = this->_userRanks[userName]; //get rating vector.
+    for(int i = 0; i < userRatings.size(); i++)
+    {
+        if(userRatings[i] == NORATE) //movie is unrated
+        {
+            string movieName = this->_movieVec[i]; //get name of unwatched movie
+            double angle = calcAngle(prefrenceVec, this->_movieFeatures[movieName]);
+            if(angle > maxAngle)
+            {
+                maxAngle = angle;
+                retMovie = movieName;
+            }
+        }
+    }
+    return retMovie;
+}
+
+/**
+ * predicts the rating the given user will give the movie.
+ * @param movieName - movie to rate
+ * @param userName - user to predict rating for.
+ * @param k - algorithm input.
+ * @return - the predicted rating.
+ */
+double RecommenderSystem::predictMovieScoreForUser(const string &movieName, const string &userName, const int k)
+{
+    double upperSum = 0, lowerSum = 0;
+    if(this->_movieFeatures.find(movieName) == this->_movieFeatures.end() ||
+       this->_userRanks.find(userName) == this->_movieFeatures.end())
+    {
+        return FAIL;
+    }
+    vector<double> movieFeaturesVec = this->_movieFeatures[movieName];
+    vector<double> userRatings = this->_userRanks[userName]; //get ratings vectors.
+    vector<std::pair<string, double>> ratedMoviesVec; //holds movie name and resemblance to given movie.
+    vector<int> indexVec;
+    getResVec(movieFeaturesVec, userRatings, ratedMoviesVec, indexVec);
+    std::sort(ratedMoviesVec.begin(), ratedMoviesVec.end(), comparePair);
+    for (int i = 0; i < k; ++i)
+    {
+        int idx = indexVec[i];
+        upperSum += (this->_userRanks[userName][idx] * ratedMoviesVec[i].second);
+        lowerSum += ratedMoviesVec[i].second;
+    }
+    return (upperSum / lowerSum);
+}
+
+/**
+ * creates a vector which holds <movieName, resemblance> to given movie.
+ * @param movieFeaturesVec - features the movie to compare against.
+ * @param userRatings - vector of rating for movies by given user.
+ * @param ratedMoviesVec - the vector to hold pairs.
+ */
+void RecommenderSystem::getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
+                                  vector<std::pair<string, double>> &ratedMoviesVec, vector<int>& indexVec)
+{
+    for(int i = 0; i < userRatings.size(); i++)
+    {
+        if(userRatings[i] != NORATE) //user has watched the movies.
+        {
+            vector<double> tempVec = _movieFeatures[_movieVec[i]]; //get vector of movie features.
+            std::pair<string, double> tempPair;
+            double res = calcAngle(movieFeaturesVec, tempVec);
+            tempPair.first = _movieVec[i]; //movieName
+            tempPair.second = res; // resemblance
+            ratedMoviesVec.push_back(tempPair);
+            indexVec.push_back(i); // save index
+        }
+    }
+}
+
+/**
+ * comparator for sorting.
+ */
+bool RecommenderSystem::comparePair(const std::pair<string, double>& pair1, const std::pair<string, double>& pair2)
+{
+    return pair1.second > pair2.second;
+}
+
+/**
+ * recommends a movie to given user according to CF algorithm.
+ * @param userName - recommend movie to this user
+ * @param k - algorithm input.
+ * @return - recommendation as string.
+ */
+string RecommenderSystem::recommendByCF(const string &userName, const int k)
+{
+    if(this->_userRanks.find(userName) == this->_userRanks.end())
+    {
+        return BAD_USER_ERR;
+    }
+    vector<std::pair<string, double>> unwatchedRatings;
+    for(int i = 0; i < this->_movieVec.size(); i++)
+    {
+        if(this->_userRanks[userName][i] != NORATE) //unwatched.
+        {
+            double predictedScore = predictMovieScoreForUser(userName, this->_movieVec[i], k);
+            std::pair<string, double> tempPair;
+            tempPair.first = this->_movieVec[i];
+            tempPair.second = predictedScore;
+            unwatchedRatings.push_back(tempPair);
+        }
     }
 }
 

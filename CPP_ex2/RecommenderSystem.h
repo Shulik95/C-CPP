@@ -6,6 +6,9 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <numeric>
+#include <cmath>
+#include <algorithm>
 
 using std::string;
 using std::vector;
@@ -45,6 +48,72 @@ private:
      */
     static void _parseLine(const string &line, vector<string> &vec);
 
+    /**
+     * gets the average of all values in vector.
+     */
+    double findAverage(const string& userName) const;
+
+    /**
+     * deducts the avg from all values of given vector, doesnt change it, returns a different one.
+     * @param vec - original vector.
+     * @return  - a normalized version of the given vector.
+     */
+    vector<double> normalizeVec(const vector<double>& vec, double avg) const;
+
+    /**
+     * returns the users prefrence vector according to the given algorithm.
+     * @param normVec - normalized ratings vector of the user.
+     * @return - vector of doubles which signify the traits the user likes in movies.
+     */
+    vector<double> getPrefVec(const vector<double>& normVec) const;
+
+    /**
+     * multiplies all elements of given vec by a scalar.
+     */
+    void _multByScalar(double val, vector<double>& vec) const;
+
+    /**
+     * adds rhs into lhs.
+     */
+    void  _sumVector(vector<double>& lhs,const vector<double>& rhs) const;
+
+    /**
+     * returns the norm of the vector.
+     */
+    static double _getNorm(const vector<double>& vec);
+
+    /**
+     * calculates the angle between 2 given vectors.
+     */
+    static double calcAngle(const vector<double>& vec1, const vector<double>& vec2);
+
+    /**
+     * implements scalar multiplication of two vectors.
+     * @return - the scalar which represents the dot product.
+     */
+    static double dotProd(const vector<double>& lhs, const vector<double>& rhs);
+
+    /**
+     * find the movie with the highest resemblance rate for given user.
+     * @param prefrenceVec -vector of preferences for user.
+     * @param userName - name of the user.
+     * @return - name of the movie with the higest resemblance.
+     */
+    string checkResemblance(const vector<double>& prefrenceVec,const string& userName);
+
+    /**
+     * comparator function for sorting a vector according to resemblance.
+     */
+    static bool comparePair(const std::pair<string, double>& pair1, const std::pair<string, double>& pair2);
+
+    /**
+     * creates a vector of pairs <movieName, resemblance>
+     * @param movieFeaturesVec
+     * @param userRatings
+     * @param ratedMoviesVec
+     */
+    void getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
+                   vector<std::pair<string, double>> &ratedMoviesVec, vector<int>& indexVec);
 
 public:
     void printData();
@@ -61,7 +130,7 @@ public:
      * @param userName - recommend according to this user.
      * @return -
      */
-    string recommendByContent(const string userName) const;
+    string recommendByContent(const string &userName);
 
     /**
      * predicts the rating the given user will give the movie.
@@ -70,7 +139,7 @@ public:
      * @param k - algorithm input.
      * @return - the predicted rating.
      */
-    double preditcMovieScoreForUser(const string &movieName, const string &userName, const int k);
+    double predictMovieScoreForUser(const string &movieName, const string &userName, const int k);
 
     /**
      * recommends a movie to given user according to CF algorithm.
@@ -79,6 +148,8 @@ public:
      * @return - recommendation as string.
      */
     string recommendByCF(const string &userName, const int k);
+
+
 };
 #endif //CPP_EX2_RECOMMENDERSYSTEM_H
 
