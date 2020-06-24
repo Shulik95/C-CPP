@@ -275,7 +275,7 @@ double RecommenderSystem::calcAngle(const vector<double> &vec1, const vector<dou
  */
 double RecommenderSystem::dotProd(const vector<double>& lhs, const vector<double>& rhs)
 {
-    double dotProduct = 0;
+    double dotProduct = 0.0;
     for(long unsigned int i = 0; i < lhs.size(); i++)
     {
         dotProduct  += (lhs[i] * rhs[i]);
@@ -322,12 +322,12 @@ double RecommenderSystem::predictMovieScoreForUser(const string &movieName, cons
     vector<double> movieFeaturesVec = this->_movieFeatures[movieName];
     vector<double> userRatings = this->_userRanks[userName]; //get ratings vectors.
     vector<std::pair<string, double>> ratedMoviesVec; //holds movie name and resemblance to given movie.
-    vector<int> indexVec;
-    getResVec(movieFeaturesVec, userRatings, ratedMoviesVec, indexVec);
+    std::map<string, int> indexMap;
+    getResVec(movieFeaturesVec, userRatings, ratedMoviesVec, indexMap);
     std::sort(ratedMoviesVec.begin(), ratedMoviesVec.end(), comparePair);
     for (int i = 0; i < k; ++i)
     {
-        int idx = indexVec[i];
+        int idx = indexMap[ratedMoviesVec[i].first];
         upperSum += (this->_userRanks[userName][idx] * ratedMoviesVec[i].second);
         lowerSum += ratedMoviesVec[i].second;
     }
@@ -341,7 +341,7 @@ double RecommenderSystem::predictMovieScoreForUser(const string &movieName, cons
  * @param ratedMoviesVec - the vector to hold pairs.
  */
 void RecommenderSystem::getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
-                                  vector<std::pair<string, double>> &ratedMoviesVec, vector<int>& indexVec)
+                                  vector<std::pair<string, double>> &ratedMoviesVec, std::map<string, int>& idxMap)
 {
     for(long unsigned int i = 0; i < userRatings.size(); i++)
     {
@@ -353,7 +353,7 @@ void RecommenderSystem::getResVec(const vector<double> &movieFeaturesVec, const 
             tempPair.first = _movieVec[i]; //movieName
             tempPair.second = res; // resemblance
             ratedMoviesVec.push_back(tempPair);
-            indexVec.push_back(i); // save index
+            idxMap[this->_movieVec[i]] = i; //save index for future use.
         }
     }
 }
@@ -381,9 +381,9 @@ string RecommenderSystem::recommendByCF(const string &userName, const int k)
     vector<std::pair<string, double>> unwatchedRatings;
     for(long unsigned int i = 0; i < this->_movieVec.size(); i++)
     {
-        if(this->_userRanks[userName][i] != NORATE) //unwatched.
+        if(this->_userRanks[userName][i] == NORATE) //unwatched.
         {
-            double predictedScore = predictMovieScoreForUser(userName, this->_movieVec[i], k);
+            double predictedScore = predictMovieScoreForUser(this->_movieVec[i], userName, k);
             std::pair<string, double> tempPair;
             tempPair.first = this->_movieVec[i];
             tempPair.second = predictedScore;
@@ -414,14 +414,16 @@ string RecommenderSystem::getBestPrediction(const vector<std::pair<string, doubl
 }
 
 
-//int main(int argc, char* argv[])
-//{
-//    RecommenderSystem rec;
-//    rec.loadData(argv[1], argv[2]);
-//    rec.printData();
-//    std::cout << rec.recommendByContent("Christopher") << std::endl;
-//    std::cout << rec.recommendByContent("Brayson") << std::endl;
-//    std::cout << rec.recommendByContent("Randy") << std::endl;
-//    std::cout << rec.recommendByContent("Brayson") << std::endl;
-//    std::cout << rec.recommendByContent("London") << std::endl;
-//}
+int main(int argc, char* argv[])
+{
+    RecommenderSystem rec;
+    rec.loadData(argv[1], argv[2]);
+    rec.printData();
+    std::cout << rec.recommendByContent("Christopher") << std::endl;
+    std::cout << rec.recommendByContent("Brayson") << std::endl;
+    std::cout << rec.recommendByContent("Randy") << std::endl;
+    std::cout << rec.recommendByContent("Brayson") << std::endl;
+    std::cout << rec.recommendByContent("London") << std::endl;
+
+    std::cout << rec.predictMovieScoreForUser("Fargo", "Christopher", 2) << std::endl;
+}

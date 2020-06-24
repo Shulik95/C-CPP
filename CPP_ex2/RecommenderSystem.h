@@ -113,7 +113,7 @@ private:
      * @param ratedMoviesVec
      */
     void getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
-                   vector<std::pair<string, double>> &ratedMoviesVec, vector<int>& indexVec);
+                   vector<std::pair<string, double>> &ratedMoviesVec, std::map<string,int>& idxMap);
     /**
      * get the vector with the best predicted score.
      * @param vec - vector holding name of movie and its predicted rating.
