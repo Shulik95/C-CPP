@@ -18,6 +18,9 @@ using std::vector;
 
 // ------------------------------- methods ------------------------------
 
+/**
+ * Implements recommendation system for movies.
+ */
 class RecommenderSystem
 {
 private:
@@ -51,21 +54,21 @@ private:
     /**
      * gets the average of all values in vector.
      */
-    double findAverage(const string& userName) const;
+    double _findAverage(const string& userName) const;
 
     /**
      * deducts the avg from all values of given vector, doesnt change it, returns a different one.
      * @param vec - original vector.
      * @return  - a normalized version of the given vector.
      */
-    vector<double> normalizeVec(const vector<double>& vec, double avg) const;
+    vector<double> _normalizeVec(const vector<double>& vec, double avg) const;
 
     /**
      * returns the users prefrence vector according to the given algorithm.
      * @param normVec - normalized ratings vector of the user.
      * @return - vector of doubles which signify the traits the user likes in movies.
      */
-    vector<double> getPrefVec(const vector<double>& normVec) const;
+    vector<double> _getPrefVec(const vector<double>& normVec) const;
 
     /**
      * multiplies all elements of given vec by a scalar.
@@ -75,7 +78,7 @@ private:
     /**
      * adds rhs into lhs.
      */
-    void  _sumVector(vector<double>& lhs,const vector<double>& rhs) const;
+    void  _sumVector(vector<double>& lhs, const vector<double>& rhs) const;
 
     /**
      * returns the norm of the vector.
@@ -85,26 +88,26 @@ private:
     /**
      * calculates the angle between 2 given vectors.
      */
-    static double calcAngle(const vector<double>& vec1, const vector<double>& vec2);
+    static double _calcAngle(const vector<double>& vec1, const vector<double>& vec2);
 
     /**
      * implements scalar multiplication of two vectors.
      * @return - the scalar which represents the dot product.
      */
-    static double dotProd(const vector<double>& lhs, const vector<double>& rhs);
+    static double _dotProd(const vector<double>& lhs, const vector<double>& rhs);
 
     /**
      * find the movie with the highest resemblance rate for given user.
-     * @param prefrenceVec -vector of preferences for user.
+     * @param prefranceVec -vector of preferences for user.
      * @param userName - name of the user.
      * @return - name of the movie with the higest resemblance.
      */
-    string checkResemblance(const vector<double>& prefrenceVec,const string& userName);
+    string _checkResemblance(const vector<double>& prefranceVec, const string& userName);
 
     /**
      * comparator function for sorting a vector according to resemblance.
      */
-    static bool comparePair(const std::pair<string, double>& pair1, const std::pair<string, double>& pair2);
+    static bool _comparePair(const std::pair<string, double>& pair1, const std::pair<string, double>& pair2);
 
     /**
      * creates a vector of pairs <movieName, resemblance>
@@ -112,17 +115,17 @@ private:
      * @param userRatings
      * @param ratedMoviesVec
      */
-    void getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
-                   vector<std::pair<string, double>> &ratedMoviesVec, std::map<string,int>& idxMap);
+    void _getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
+                    vector<std::pair<string, double>> &ratedMoviesVec, std::map<string, int>& idxMap);
     /**
      * get the vector with the best predicted score.
      * @param vec - vector holding name of movie and its predicted rating.
      * @return - the name of the movie.
      */
-    static string getBestPrediction(const vector<std::pair<string, double>>& vec);
+    static string _getBestPrediction(const vector<std::pair<string, double>>& vec);
 
 public:
-    void printData();
+
     /**
      * loads data from files into object.
      * @param moviesAttributesFilePath - first file to load.
