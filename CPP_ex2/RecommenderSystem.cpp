@@ -414,16 +414,16 @@ string RecommenderSystem::getBestPrediction(const vector<std::pair<string, doubl
 }
 
 
-int main(int argc, char* argv[])
-{
-    RecommenderSystem rec;
-    rec.loadData(argv[1], argv[2]);
-    rec.printData();
-    std::cout << rec.recommendByContent("Christopher") << std::endl;
-    std::cout << rec.recommendByContent("Brayson") << std::endl;
-    std::cout << rec.recommendByContent("Randy") << std::endl;
-    std::cout << rec.recommendByContent("Brayson") << std::endl;
-    std::cout << rec.recommendByContent("London") << std::endl;
-
-    std::cout << rec.predictMovieScoreForUser("Fargo", "Christopher", 2) << std::endl;
-}
+//int main(int argc, char* argv[])
+//{
+//    RecommenderSystem rec;
+//    rec.loadData(argv[1], argv[2]);
+//    rec.printData();
+//    std::cout << rec.recommendByContent("Christopher") << std::endl;
+//    std::cout << rec.recommendByContent("Brayson") << std::endl;
+//    std::cout << rec.recommendByContent("Randy") << std::endl;
+//    std::cout << rec.recommendByContent("Brayson") << std::endl;
+//    std::cout << rec.recommendByContent("London") << std::endl;
+//
+//    std::cout << rec.predictMovieScoreForUser("Fargo", "Christopher", 2) << std::endl;
+//}
