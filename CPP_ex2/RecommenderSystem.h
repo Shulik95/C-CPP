@@ -114,6 +114,12 @@ private:
      */
     void getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
                    vector<std::pair<string, double>> &ratedMoviesVec, vector<int>& indexVec);
+    /**
+     * get the vector with the best predicted score.
+     * @param vec - vector holding name of movie and its predicted rating.
+     * @return - the name of the movie.
+     */
+    static string getBestPrediction(const vector<std::pair<string, double>>& vec);
 
 public:
     void printData();

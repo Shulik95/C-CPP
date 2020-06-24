@@ -374,6 +374,27 @@ string RecommenderSystem::recommendByCF(const string &userName, const int k)
             unwatchedRatings.push_back(tempPair);
         }
     }
+    return getBestPrediction(unwatchedRatings);
+}
+
+/**
+    * get the vector with the best predicted score.
+    * @param vec - vector holding name of movie and its predicted rating.
+    * @return - the name of the movie.
+    */
+string RecommenderSystem::getBestPrediction(const vector<std::pair<string, double>>& vec)
+{
+    string bestScoreMovie;
+    double highestScore = 0;
+    for(auto &item : vec)
+    {
+       if(item.second > highestScore)
+       {
+           highestScore = item.second;
+           bestScoreMovie = item.first;
+       }
+    }
+    return bestScoreMovie;
 }
 
 
