@@ -152,7 +152,15 @@ double RecommenderSystem::findAverage(const string& userName) const
 {
     vector<double> tempVec = this->_userRanks.at(userName);
     double sum = std::accumulate(tempVec.begin(), tempVec.end(), 0.0);
-    return sum / tempVec.size();
+    int vecSize  = 0;
+    for(double i : tempVec)
+    {
+        if(i != NORATE)
+        {
+            vecSize++;
+        }
+    }
+    return sum / vecSize;
 }
 
 /**
@@ -182,7 +190,15 @@ vector<double> RecommenderSystem::normalizeVec(const vector<double>& vec, double
     vector<double> ret;
     for(auto &i : vec)
     {
-        ret.push_back(i - avg);
+        if(i != 0)
+        {
+            ret.push_back(i - avg);
+        }
+        else
+        {
+            ret.push_back(i); //its zero no need to normalize
+        }
+
     }
     return ret;
 }
@@ -197,7 +213,7 @@ vector<double> RecommenderSystem::getPrefVec(const vector<double> &normVec) cons
     const string tempString = this->_movieVec[FIRST];
     int vecLength = (this->_movieFeatures.at(tempString)).size();
     vector<double> ret(vecLength, 0.0);
-    for(int i = 0 ; i < normVec.size(); i++)
+    for(long unsigned int i = 0 ; i < normVec.size(); i++)
     {
         double w = normVec[i];
         if(w != 0) //only if user rated this film
@@ -227,7 +243,7 @@ void RecommenderSystem::_multByScalar(double val, vector<double> &vec) const
  */
 void RecommenderSystem::_sumVector(vector<double> &lhs,const vector<double> &rhs) const
 {
-    for(int i = 0; i < lhs.size(); i++)
+    for(long unsigned int i = 0; i < lhs.size(); i++)
     {
         lhs[i] += rhs[i];
     }
@@ -260,7 +276,7 @@ double RecommenderSystem::calcAngle(const vector<double> &vec1, const vector<dou
 double RecommenderSystem::dotProd(const vector<double>& lhs, const vector<double>& rhs)
 {
     double dotProduct = 0;
-    for(int i = 0; i < lhs.size(); i++)
+    for(long unsigned int i = 0; i < lhs.size(); i++)
     {
         dotProduct  += (lhs[i] * rhs[i]);
     }
@@ -272,7 +288,7 @@ string RecommenderSystem::checkResemblance(const vector<double> &prefrenceVec,co
     string retMovie;
     double maxAngle = MINTHETA;
     vector<double> userRatings = this->_userRanks[userName]; //get rating vector.
-    for(int i = 0; i < userRatings.size(); i++)
+    for(long unsigned int i = 0; i < userRatings.size(); i++)
     {
         if(userRatings[i] == NORATE) //movie is unrated
         {
@@ -327,7 +343,7 @@ double RecommenderSystem::predictMovieScoreForUser(const string &movieName, cons
 void RecommenderSystem::getResVec(const vector<double> &movieFeaturesVec, const vector<double> &userRatings,
                                   vector<std::pair<string, double>> &ratedMoviesVec, vector<int>& indexVec)
 {
-    for(int i = 0; i < userRatings.size(); i++)
+    for(long unsigned int i = 0; i < userRatings.size(); i++)
     {
         if(userRatings[i] != NORATE) //user has watched the movies.
         {
@@ -363,7 +379,7 @@ string RecommenderSystem::recommendByCF(const string &userName, const int k)
         return BAD_USER_ERR;
     }
     vector<std::pair<string, double>> unwatchedRatings;
-    for(int i = 0; i < this->_movieVec.size(); i++)
+    for(long unsigned int i = 0; i < this->_movieVec.size(); i++)
     {
         if(this->_userRanks[userName][i] != NORATE) //unwatched.
         {
@@ -398,9 +414,14 @@ string RecommenderSystem::getBestPrediction(const vector<std::pair<string, doubl
 }
 
 
-int main(int argc, char* argv[])
-{
-    RecommenderSystem rec;
-    rec.loadData(argv[1], argv[2]);
-    rec.printData();
-}
+//int main(int argc, char* argv[])
+//{
+//    RecommenderSystem rec;
+//    rec.loadData(argv[1], argv[2]);
+//    rec.printData();
+//    std::cout << rec.recommendByContent("Christopher") << std::endl;
+//    std::cout << rec.recommendByContent("Brayson") << std::endl;
+//    std::cout << rec.recommendByContent("Randy") << std::endl;
+//    std::cout << rec.recommendByContent("Brayson") << std::endl;
+//    std::cout << rec.recommendByContent("London") << std::endl;
+//}
