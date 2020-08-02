@@ -17,6 +17,7 @@ const int LEGAL_INPUT_NUM = 3;
 #define BASE_SIZE 10
 #define DEFAULT_PROB 0.0
 #define FAILURE -1
+#define SICK 1
 
 int gCounter = 0;
 bool meetingFlag = false;
@@ -169,8 +170,27 @@ int binarySearch(Person arr[], int left, int right, int val)
  */
 Person* finalizeData(const char* fileName, Person** arr)
 {
+    float dist, time;
+    int id1, id2, currInfectorIdx;
+    char* res;
+    Person* personArr = *arr;
+    inputFile = fopen(fileName, "w");
+    if(inputFile == NULL)
+    {
+        /*opening file failed, free memory and close files.*/
+        free(personArr);
+        printError(STL_ERR);
+    }
+    qsort(personArr, gCounter, sizeof(Person), cmpfunc); //sort array.
+    char buffer[MAX_LINE_LEN];
+    fgets(buffer, MAX_LINE_LEN, inputFile); //get first line
+    int tempID = (int)strtol(buffer, &res, 10);
+    int idx = binarySearch(personArr, 0, gCounter - 1, tempID);
+    personArr[idx].prob = SICK;
+    while(fgets(buffer, MAX_LINE_LEN, inputFile) != NULL)
+    {
 
-
+    }
 }
 
 
