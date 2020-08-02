@@ -20,8 +20,10 @@ CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.o: ../Matrix.h
 CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.o: ../MlpNetwork.cpp
 CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.o: ../MlpNetwork.h
 
+CMakeFiles/CPP_ex1.dir/main.cpp.o: ../Activation.h
+CMakeFiles/CPP_ex1.dir/main.cpp.o: ../Dense.h
+CMakeFiles/CPP_ex1.dir/main.cpp.o: ../Digit.h
+CMakeFiles/CPP_ex1.dir/main.cpp.o: ../Matrix.h
+CMakeFiles/CPP_ex1.dir/main.cpp.o: ../MlpNetwork.h
 CMakeFiles/CPP_ex1.dir/main.cpp.o: ../main.cpp
-
-CMakeFiles/CPP_ex1.dir/t_matrix_invalid.cpp.o: ../Matrix.h
-CMakeFiles/CPP_ex1.dir/t_matrix_invalid.cpp.o: ../t_matrix_invalid.cpp
 

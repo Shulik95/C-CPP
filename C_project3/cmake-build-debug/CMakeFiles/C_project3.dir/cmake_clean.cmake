@@ -1,9 +1,10 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/C_project3.dir/ProductExample.c.o"
   "CMakeFiles/C_project3.dir/RBTree.c.o"
   "CMakeFiles/C_project3.dir/Structs.c.o"
-  "CMakeFiles/C_project3.dir/myTest.c.o"
-  "CMakeFiles/C_project3.dir/tests.c.o"
-  "CMakeFiles/C_project3.dir/utilities/RButilities.c.o"
+  "CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o"
+  "CMakeFiles/C_project3.dir/big_data_test/myTest.c.o"
+  "CMakeFiles/C_project3.dir/big_data_test/tests.c.o"
   "C_project3.exe"
   "C_project3.pdb"
   "libC_project3.dll.a"

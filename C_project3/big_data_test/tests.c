@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define LAST_NUMBER_OF_NODES_TO_CHECK 20
+#define LAST_NUMBER_OF_NODES_TO_CHECK 500
 
 #define MAX_STRING_LENGTH_CHECK 50
 #define MAX_VECTOR_DATA_VALUE 10000
@@ -154,6 +154,10 @@ void intTree()
         {
             for(int j = 0; j < i; j++)
             { // delete a[j]
+                if(j==3 && i == 19)
+                {
+                    printRBTree(t->root);
+                }
                 delete(t, &a[j], i, a, "int");
             }
             if(t->size != 0)

@@ -4,7 +4,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/CPP_ex1.dir/Matrix.cpp.o"
   "CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.o"
   "CMakeFiles/CPP_ex1.dir/main.cpp.o"
-  "CMakeFiles/CPP_ex1.dir/t_matrix_invalid.cpp.o"
   "CPP_ex1.exe"
   "CPP_ex1.pdb"
   "libCPP_ex1.dll.a"

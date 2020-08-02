@@ -250,7 +250,7 @@ void parseFile() //1st const locks the values, 2nd one locks the file pointer
 {
     int capacity = BASE_SIZE;
     char tempLine[MAX_LINE_LEN];
-    checkEmpty(inFile); // check if file is empty, prints error and exits.
+    checkEmpty(inFile); // check if file4 is empty, prints error and exits.
     fgets(tempLine, MAX_LINE_LEN, inFile); //gets length of rail
     checkIfNum(tempLine, &gLength);
     gLineCounter++;
@@ -401,9 +401,9 @@ int main(int argc, char* argv[])
     gOutFile = fopen("railway_planner_output.txt", "w");
     if(argc != 2)
     {
-        fprintf(gOutFile, "Usage: RailWayPlanner <InputFile>");
-        inputFail();
-    }
+        fprintf(gOutFile, "Usage: RailwayPlanner <InputFile>");
+    inputFail();
+}
     char const *const fName = argv[1];
     inFile = fopen(fName, "r");
     if(inFile == NULL) //failed to open file for some reason

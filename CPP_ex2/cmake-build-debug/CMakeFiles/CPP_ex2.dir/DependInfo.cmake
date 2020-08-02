@@ -5,7 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/cygdrive/c/Users/user/CLionProjects/CPP_ex2/RecommenderSystem.cpp" "/cygdrive/c/Users/user/CLionProjects/CPP_ex2/cmake-build-debug/CMakeFiles/CPP_ex2.dir/RecommenderSystem.cpp.o"
-  "/cygdrive/c/Users/user/CLionProjects/CPP_ex2/main.cpp" "/cygdrive/c/Users/user/CLionProjects/CPP_ex2/cmake-build-debug/CMakeFiles/CPP_ex2.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

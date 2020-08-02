@@ -123,6 +123,33 @@ C_project3/fast:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/build
 .PHONY : C_project3/fast
 
+ProductExample.o: ProductExample.c.o
+
+.PHONY : ProductExample.o
+
+# target to build an object file
+ProductExample.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.o
+.PHONY : ProductExample.c.o
+
+ProductExample.i: ProductExample.c.i
+
+.PHONY : ProductExample.i
+
+# target to preprocess a source file
+ProductExample.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.i
+.PHONY : ProductExample.c.i
+
+ProductExample.s: ProductExample.c.s
+
+.PHONY : ProductExample.s
+
+# target to generate assembly for a file
+ProductExample.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/ProductExample.c.s
+.PHONY : ProductExample.c.s
+
 RBTree.o: RBTree.c.o
 
 .PHONY : RBTree.o
@@ -177,86 +204,86 @@ Structs.c.s:
 	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/Structs.c.s
 .PHONY : Structs.c.s
 
-myTest.o: myTest.c.o
+big_data_test/RBUtilities.o: big_data_test/RBUtilities.c.o
 
-.PHONY : myTest.o
-
-# target to build an object file
-myTest.c.o:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/myTest.c.o
-.PHONY : myTest.c.o
-
-myTest.i: myTest.c.i
-
-.PHONY : myTest.i
-
-# target to preprocess a source file
-myTest.c.i:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/myTest.c.i
-.PHONY : myTest.c.i
-
-myTest.s: myTest.c.s
-
-.PHONY : myTest.s
-
-# target to generate assembly for a file
-myTest.c.s:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/myTest.c.s
-.PHONY : myTest.c.s
-
-tests.o: tests.c.o
-
-.PHONY : tests.o
+.PHONY : big_data_test/RBUtilities.o
 
 # target to build an object file
-tests.c.o:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.o
-.PHONY : tests.c.o
+big_data_test/RBUtilities.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o
+.PHONY : big_data_test/RBUtilities.c.o
 
-tests.i: tests.c.i
+big_data_test/RBUtilities.i: big_data_test/RBUtilities.c.i
 
-.PHONY : tests.i
+.PHONY : big_data_test/RBUtilities.i
 
 # target to preprocess a source file
-tests.c.i:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.i
-.PHONY : tests.c.i
+big_data_test/RBUtilities.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.i
+.PHONY : big_data_test/RBUtilities.c.i
 
-tests.s: tests.c.s
+big_data_test/RBUtilities.s: big_data_test/RBUtilities.c.s
 
-.PHONY : tests.s
+.PHONY : big_data_test/RBUtilities.s
 
 # target to generate assembly for a file
-tests.c.s:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/tests.c.s
-.PHONY : tests.c.s
+big_data_test/RBUtilities.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.s
+.PHONY : big_data_test/RBUtilities.c.s
 
-utilities/RButilities.o: utilities/RButilities.c.o
+big_data_test/myTest.o: big_data_test/myTest.c.o
 
-.PHONY : utilities/RButilities.o
+.PHONY : big_data_test/myTest.o
 
 # target to build an object file
-utilities/RButilities.c.o:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/utilities/RButilities.c.o
-.PHONY : utilities/RButilities.c.o
+big_data_test/myTest.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/myTest.c.o
+.PHONY : big_data_test/myTest.c.o
 
-utilities/RButilities.i: utilities/RButilities.c.i
+big_data_test/myTest.i: big_data_test/myTest.c.i
 
-.PHONY : utilities/RButilities.i
+.PHONY : big_data_test/myTest.i
 
 # target to preprocess a source file
-utilities/RButilities.c.i:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/utilities/RButilities.c.i
-.PHONY : utilities/RButilities.c.i
+big_data_test/myTest.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/myTest.c.i
+.PHONY : big_data_test/myTest.c.i
 
-utilities/RButilities.s: utilities/RButilities.c.s
+big_data_test/myTest.s: big_data_test/myTest.c.s
 
-.PHONY : utilities/RButilities.s
+.PHONY : big_data_test/myTest.s
 
 # target to generate assembly for a file
-utilities/RButilities.c.s:
-	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/utilities/RButilities.c.s
-.PHONY : utilities/RButilities.c.s
+big_data_test/myTest.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/myTest.c.s
+.PHONY : big_data_test/myTest.c.s
+
+big_data_test/tests.o: big_data_test/tests.c.o
+
+.PHONY : big_data_test/tests.o
+
+# target to build an object file
+big_data_test/tests.c.o:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/tests.c.o
+.PHONY : big_data_test/tests.c.o
+
+big_data_test/tests.i: big_data_test/tests.c.i
+
+.PHONY : big_data_test/tests.i
+
+# target to preprocess a source file
+big_data_test/tests.c.i:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/tests.c.i
+.PHONY : big_data_test/tests.c.i
+
+big_data_test/tests.s: big_data_test/tests.c.s
+
+.PHONY : big_data_test/tests.s
+
+# target to generate assembly for a file
+big_data_test/tests.c.s:
+	$(MAKE) -f CMakeFiles/C_project3.dir/build.make CMakeFiles/C_project3.dir/big_data_test/tests.c.s
+.PHONY : big_data_test/tests.c.s
 
 # Help Target
 help:
@@ -267,21 +294,24 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... C_project3"
 	@echo "... edit_cache"
+	@echo "... ProductExample.o"
+	@echo "... ProductExample.i"
+	@echo "... ProductExample.s"
 	@echo "... RBTree.o"
 	@echo "... RBTree.i"
 	@echo "... RBTree.s"
 	@echo "... Structs.o"
 	@echo "... Structs.i"
 	@echo "... Structs.s"
-	@echo "... myTest.o"
-	@echo "... myTest.i"
-	@echo "... myTest.s"
-	@echo "... tests.o"
-	@echo "... tests.i"
-	@echo "... tests.s"
-	@echo "... utilities/RButilities.o"
-	@echo "... utilities/RButilities.i"
-	@echo "... utilities/RButilities.s"
+	@echo "... big_data_test/RBUtilities.o"
+	@echo "... big_data_test/RBUtilities.i"
+	@echo "... big_data_test/RBUtilities.s"
+	@echo "... big_data_test/myTest.o"
+	@echo "... big_data_test/myTest.i"
+	@echo "... big_data_test/myTest.s"
+	@echo "... big_data_test/tests.o"
+	@echo "... big_data_test/tests.i"
+	@echo "... big_data_test/tests.s"
 .PHONY : help
 
 

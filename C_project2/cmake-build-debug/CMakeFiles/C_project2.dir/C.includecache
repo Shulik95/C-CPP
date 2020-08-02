@@ -6,15 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/user/CLionProjects/C_project2/RailWayPlanner.c
-stdio.h
--
-limits.h
--
-stdbool.h
--
-string.h
--
-stdlib.h
--
-

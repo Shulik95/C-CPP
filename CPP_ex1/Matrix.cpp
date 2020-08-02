@@ -364,7 +364,7 @@ std::istream &operator>>(std::istream &s, Matrix &mat)
     {
         for (int j = 0; j < mat.getCols(); ++j)
         {
-            if(!s.good())
+            if(!s.good() || s.peek() != EOF)
             {
                 std::cerr << FILE_ERR << std::endl;
                 exit(EXIT_FAILURE);

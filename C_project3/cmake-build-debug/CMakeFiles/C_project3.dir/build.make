@@ -83,64 +83,79 @@ CMakeFiles/C_project3.dir/Structs.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/Structs.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/Structs.c -o CMakeFiles/C_project3.dir/Structs.c.s
 
-CMakeFiles/C_project3.dir/utilities/RButilities.c.o: CMakeFiles/C_project3.dir/flags.make
-CMakeFiles/C_project3.dir/utilities/RButilities.c.o: ../utilities/RButilities.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/C_project3.dir/utilities/RButilities.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project3.dir/utilities/RButilities.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RButilities.c
+CMakeFiles/C_project3.dir/ProductExample.c.o: CMakeFiles/C_project3.dir/flags.make
+CMakeFiles/C_project3.dir/ProductExample.c.o: ../ProductExample.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/C_project3.dir/ProductExample.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project3.dir/ProductExample.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project3/ProductExample.c
 
-CMakeFiles/C_project3.dir/utilities/RButilities.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project3.dir/utilities/RButilities.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RButilities.c > CMakeFiles/C_project3.dir/utilities/RButilities.c.i
+CMakeFiles/C_project3.dir/ProductExample.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project3.dir/ProductExample.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project3/ProductExample.c > CMakeFiles/C_project3.dir/ProductExample.c.i
 
-CMakeFiles/C_project3.dir/utilities/RButilities.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/utilities/RButilities.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RButilities.c -o CMakeFiles/C_project3.dir/utilities/RButilities.c.s
+CMakeFiles/C_project3.dir/ProductExample.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/ProductExample.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/ProductExample.c -o CMakeFiles/C_project3.dir/ProductExample.c.s
 
-CMakeFiles/C_project3.dir/myTest.c.o: CMakeFiles/C_project3.dir/flags.make
-CMakeFiles/C_project3.dir/myTest.c.o: ../myTest.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/C_project3.dir/myTest.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project3.dir/myTest.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project3/myTest.c
+CMakeFiles/C_project3.dir/big_data_test/tests.c.o: CMakeFiles/C_project3.dir/flags.make
+CMakeFiles/C_project3.dir/big_data_test/tests.c.o: ../big_data_test/tests.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/C_project3.dir/big_data_test/tests.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project3.dir/big_data_test/tests.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/tests.c
 
-CMakeFiles/C_project3.dir/myTest.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project3.dir/myTest.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project3/myTest.c > CMakeFiles/C_project3.dir/myTest.c.i
+CMakeFiles/C_project3.dir/big_data_test/tests.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project3.dir/big_data_test/tests.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/tests.c > CMakeFiles/C_project3.dir/big_data_test/tests.c.i
 
-CMakeFiles/C_project3.dir/myTest.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/myTest.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/myTest.c -o CMakeFiles/C_project3.dir/myTest.c.s
+CMakeFiles/C_project3.dir/big_data_test/tests.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/big_data_test/tests.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/tests.c -o CMakeFiles/C_project3.dir/big_data_test/tests.c.s
 
-CMakeFiles/C_project3.dir/tests.c.o: CMakeFiles/C_project3.dir/flags.make
-CMakeFiles/C_project3.dir/tests.c.o: ../tests.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/C_project3.dir/tests.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project3.dir/tests.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project3/tests.c
+CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o: CMakeFiles/C_project3.dir/flags.make
+CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o: ../big_data_test/RBUtilities.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/RBUtilities.c
 
-CMakeFiles/C_project3.dir/tests.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project3.dir/tests.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project3/tests.c > CMakeFiles/C_project3.dir/tests.c.i
+CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/RBUtilities.c > CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.i
 
-CMakeFiles/C_project3.dir/tests.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/tests.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/tests.c -o CMakeFiles/C_project3.dir/tests.c.s
+CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/RBUtilities.c -o CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.s
+
+CMakeFiles/C_project3.dir/big_data_test/myTest.c.o: CMakeFiles/C_project3.dir/flags.make
+CMakeFiles/C_project3.dir/big_data_test/myTest.c.o: ../big_data_test/myTest.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/C_project3.dir/big_data_test/myTest.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/C_project3.dir/big_data_test/myTest.c.o   -c /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/myTest.c
+
+CMakeFiles/C_project3.dir/big_data_test/myTest.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/C_project3.dir/big_data_test/myTest.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/myTest.c > CMakeFiles/C_project3.dir/big_data_test/myTest.c.i
+
+CMakeFiles/C_project3.dir/big_data_test/myTest.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/C_project3.dir/big_data_test/myTest.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/myTest.c -o CMakeFiles/C_project3.dir/big_data_test/myTest.c.s
 
 # Object files for target C_project3
 C_project3_OBJECTS = \
 "CMakeFiles/C_project3.dir/RBTree.c.o" \
 "CMakeFiles/C_project3.dir/Structs.c.o" \
-"CMakeFiles/C_project3.dir/utilities/RButilities.c.o" \
-"CMakeFiles/C_project3.dir/myTest.c.o" \
-"CMakeFiles/C_project3.dir/tests.c.o"
+"CMakeFiles/C_project3.dir/ProductExample.c.o" \
+"CMakeFiles/C_project3.dir/big_data_test/tests.c.o" \
+"CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o" \
+"CMakeFiles/C_project3.dir/big_data_test/myTest.c.o"
 
 # External object files for target C_project3
 C_project3_EXTERNAL_OBJECTS =
 
 C_project3.exe: CMakeFiles/C_project3.dir/RBTree.c.o
 C_project3.exe: CMakeFiles/C_project3.dir/Structs.c.o
-C_project3.exe: CMakeFiles/C_project3.dir/utilities/RButilities.c.o
-C_project3.exe: CMakeFiles/C_project3.dir/myTest.c.o
-C_project3.exe: CMakeFiles/C_project3.dir/tests.c.o
+C_project3.exe: CMakeFiles/C_project3.dir/ProductExample.c.o
+C_project3.exe: CMakeFiles/C_project3.dir/big_data_test/tests.c.o
+C_project3.exe: CMakeFiles/C_project3.dir/big_data_test/RBUtilities.c.o
+C_project3.exe: CMakeFiles/C_project3.dir/big_data_test/myTest.c.o
 C_project3.exe: CMakeFiles/C_project3.dir/build.make
 C_project3.exe: CMakeFiles/C_project3.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable C_project3.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/user/CLionProjects/C_project3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable C_project3.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/C_project3.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

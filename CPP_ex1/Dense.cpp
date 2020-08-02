@@ -54,7 +54,9 @@ Matrix Dense::operator()(const Matrix &mat)
 {
 
     Matrix ret = Matrix(mat);
+
     ret = (this->weights * ret) + this->bias; // W1*x +b1
     ret = this->activation(ret); // Relu/Softmax(W1*x +b1)
+
     return ret;
 }

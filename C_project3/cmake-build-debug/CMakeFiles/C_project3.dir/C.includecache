@@ -6,25 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
-
-/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.h
+/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.c
 RBTree.h
 /cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
-
-/cygdrive/c/Users/user/CLionProjects/C_project3/myTest.c
-stdio.h
--
 stdlib.h
 -
-RBTree.h
-/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
-Structs.h
-/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.h
-utilities/RBUtilities.h
-/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RBUtilities.h
+stdio.h
+-
 
-/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RBUtilities.h
-../RBTree.h
 /cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.h
 

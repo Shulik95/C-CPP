@@ -74,6 +74,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/ProductExample.c">
+			<Option target="C_project3"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/RBTree.c">
 			<Option target="C_project3"/>
 		</Unit>
@@ -86,19 +89,16 @@
 		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/Structs.h">
 			<Option target="C_project3"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/myTest.c">
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/RBUtilities.c">
 			<Option target="C_project3"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/tests.c">
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/RBUtilities.h">
 			<Option target="C_project3"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RBUtilities.h">
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/myTest.c">
 			<Option target="C_project3"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RButilities.c">
-			<Option target="C_project3"/>
-		</Unit>
-		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/utilities/RButilities.h">
+		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/big_data_test/tests.c">
 			<Option target="C_project3"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/user/CLionProjects/C_project3/CMakeLists.txt">

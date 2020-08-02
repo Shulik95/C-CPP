@@ -21,7 +21,9 @@ CMakeFiles/CPP_ex1.dir/MlpNetwork.cpp.o
  /cygdrive/c/Users/user/CLionProjects/CPP_ex1/MlpNetwork.cpp
  /cygdrive/c/Users/user/CLionProjects/CPP_ex1/MlpNetwork.h
 CMakeFiles/CPP_ex1.dir/main.cpp.o
- /cygdrive/c/Users/user/CLionProjects/CPP_ex1/main.cpp
-CMakeFiles/CPP_ex1.dir/t_matrix_invalid.cpp.o
+ /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Activation.h
+ /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Dense.h
+ /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Digit.h
  /cygdrive/c/Users/user/CLionProjects/CPP_ex1/Matrix.h
- /cygdrive/c/Users/user/CLionProjects/CPP_ex1/t_matrix_invalid.cpp
+ /cygdrive/c/Users/user/CLionProjects/CPP_ex1/MlpNetwork.h
+ /cygdrive/c/Users/user/CLionProjects/CPP_ex1/main.cpp

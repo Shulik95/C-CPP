@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/user/CLionProjects/CPP_ex2/RecommenderSystem.cpp
+RecommenderSystem.h
+/cygdrive/c/Users/user/CLionProjects/CPP_ex2/RecommenderSystem.h
+
+/cygdrive/c/Users/user/CLionProjects/CPP_ex2/RecommenderSystem.h
+iostream
+-
+string.h
+-
+map
+-
+vector
+-
+fstream
+-
+sstream
+-
+numeric
+-
+cmath
+-
+algorithm
+-
+
