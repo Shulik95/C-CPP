@@ -17,6 +17,9 @@ const int LEGAL_INPUT_NUM = 3;
 #define SICK 1
 #define GT 1
 #define EQUAL 0
+#define HOSPITALIZE 0
+#define QUARANTINE 1
+#define NO_INFECTION 2
 
 int gCounter = 0;
 
@@ -210,7 +213,7 @@ Person* finalizeData(const char* fileName, Person** arr)
  * @param p1 - pointer to Person struct.
  * @param p2 - pointer to Person struct.
  */
-int probCompFunc(void* const p1, void* const p2)
+int probCompFunc(const void* p1, const void* p2)
 {
     float prob1 = (*(Person*)p1).prob;
     float prob2 = (*(Person*)p2).prob;
@@ -230,14 +233,49 @@ int probCompFunc(void* const p1, void* const p2)
 }
 
 /**
+ * compares the infection probabiliy to given thresholds and returns course of action.
+ * @param prob - infection probability.
+ * @return - return an integer indicating case.
+ */
+int getCase(float const prob)
+{
+    if(prob > MEDICAL_SUPERVISION_THRESHOLD)
+    {
+        return HOSPITALIZE;
+    }
+    else if (prob > REGULAR_QUARANTINE_THRESHOLD)
+    {
+        return QUARANTINE;
+    }
+    return NO_INFECTION;
+}
+
+/**
  * iterates over given array, checks for each person the probability of infection and writes recommendation into file
  * according to given care standards. This method is in charge of freeing the allocated array.
  * @param arr - array of Person structs, the probability for each is calculated, array is not sorted according to
  * probability.
 */
-void writeDataToOutput(Person* arr)
+void writeDataToOutput(Person** arr)
 {
+    qsort(arr, gCounter, sizeof(Person), probCompFunc); //sort according to probability
+    for( int i = 0; i < gCounter; i++)
+    {
+        char* tempName = (*arr)[i].name;
+        unsigned long tempID = strtoul((*arr[i]).ID, NULL, 10);
 
+        switch(getCase((*arr[i]).prob))
+        {
+            case HOSPITALIZE:
+                fprintf(outputFile, MEDICAL_SUPERVISION_THRESHOLD_MSG, tempName, tempID );
+            case QUARANTINE:
+                fprintf(outputFile, REGULAR_QUARANTINE_MSG, tempName, tempID);
+            case NO_INFECTION:
+                fprintf(outputFile, CLEAN_MSG, tempName, tempID);
+        }
+    }
+    free(*arr);
+    fclose(outputFile);
 }
 
 
