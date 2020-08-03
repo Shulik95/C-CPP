@@ -171,7 +171,7 @@ int binarySearch(Person arr[], int left, int right, int val)
  * @param arr - array of Person structs.
  * @return - pointer to an array of Person structs.
  */
-Person* finalizeData(const char* fileName, Person** arr)
+void finalizeData(const char* fileName, Person** arr)
 {
     float dist, time;
     int id1, id2, currInfectorIdx;
@@ -205,7 +205,6 @@ Person* finalizeData(const char* fileName, Person** arr)
         int infectedIdx = binarySearch(personArr, 0, gCounter, id2); // get 2nd person struct.
         personArr[infectedIdx].prob = currCrna; // update that struct to contain the infection probability.
     }
-    return personArr;
 }
 
 /**
@@ -275,6 +274,7 @@ void writeDataToOutput(Person** arr)
         }
     }
     free(*arr);
+    *arr = NULL;
     fclose(outputFile);
 }
 
@@ -282,21 +282,28 @@ void writeDataToOutput(Person** arr)
 
 int main(int argc, char* argv[])
 {
+    /*check amount of input files*/
     if (argc != LEGAL_INPUT_NUM)
     {
         printError(USAGE_ERR);
     }
+    /*open output file and check*/
     outputFile = fopen(OUTPUT_FILE, "w");
     if(outputFile == NULL) //opening outputFile failed
     {
         printError(OUTPUT_ERR);
     }
+
+    /*parse people.in file*/
     const char* const peopleFile = argv[1];
     Person* temp = (Person*)parsePeopleFile(peopleFile);
+
+    /*parse meeting*/
     const char* meetingFile = argv[2];
-    for(int i = 0; i < gCounter; i++ )
-    {
-        fprintf(outputFile, "Name: %s, ID: %s, age: %f \n", temp[i].name, temp[i].ID, temp[i].age);
-    }
+    finalizeData(meetingFile , &temp);
+
+    /*write data into output file and finish*/
+    writeDataToOutput(&temp);
+
     return 0;
 }
