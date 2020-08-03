@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "SpreaderDetectorParams.h"
 #include <string.h>
-
+#include <stdbool.h>
 // ----------------------------- definitions ----------------------------
 const char* USAGE_ERR = "Usage: ./SpreaderDetectorBackend <Path to People.in> <Path to Meetings.in>\n";
 const char* INPUT_ERR = "Error in input files.\n";
@@ -22,6 +22,7 @@ const int LEGAL_INPUT_NUM = 3;
 #define NO_INFECTION 2
 
 int gCounter = 0;
+bool pplEmpty = false;
 
 /**
  * struct representing each person.
@@ -85,7 +86,7 @@ int idCmpfunc(const void* p1, const void* p2)
  * @param fileName - name of file to parse.
  * @return - an array containing Person structs for all the people.
  */
- //TODO: take care of age cases like empty files...
+ //TODO: take care of edge cases like empty files...
 void* parsePeopleFile(const char* const fileName)
 {
     int capacity = BASE_SIZE;
@@ -119,6 +120,10 @@ void* parsePeopleFile(const char* const fileName)
         addPerson(buffer, &arr , lineCounter);
         lineCounter++;
         gCounter++;
+    }
+    if(gCounter == 0) //people.in is empty - return empty file
+    {
+        pplEmpty = true;
     }
     fclose(inputFile);
     return arr;
@@ -171,11 +176,16 @@ int binarySearch(Person arr[], int left, int right, int val)
  */
 Person* finalizeData(const char* fileName, Person** arr)
 {
+    if(pplEmpty)
+    {
+        return *arr; // return unchanged.
+    }
     float dist, time;
-    int id1, id2, currInfectorIdx;
+    int id1, id2;
+    int currInfectorIdx = 0;
     char* res;
     Person* personArr = *arr;
-
+    int innerCounter = 0;
     inputFile = fopen(fileName, "r");
     if(inputFile == NULL)
     {
@@ -183,15 +193,17 @@ Person* finalizeData(const char* fileName, Person** arr)
         free(personArr);
         printError(STANDARD_LIB_ERR_MSG);
     }
-
     qsort(personArr, gCounter, sizeof(Person), idCmpfunc); //sort array to use binary search.
 
     char buffer[MAX_LINE_LEN];
-    fgets(buffer, MAX_LINE_LEN, inputFile); //get first line
-    int tempID = (int)strtol(buffer, &res, 10);
-    int idx = binarySearch(personArr, 0, gCounter - 1, tempID);
-    personArr[idx].prob = SICK;
-    currInfectorIdx = idx;
+    if(fgets(buffer, MAX_LINE_LEN, inputFile) != NULL)
+    {
+        innerCounter++;
+        int tempID = (int)strtol(buffer, &res, 10);
+        int idx = binarySearch(personArr, 0, gCounter - 1, tempID);
+        personArr[idx].prob = SICK;
+        currInfectorIdx = idx;
+    }
     while(fgets(buffer, MAX_LINE_LEN, inputFile) != NULL)
     {
         sscanf(buffer, "%d %d %f %f", &id1, &id2, &dist, &time);
@@ -203,6 +215,7 @@ Person* finalizeData(const char* fileName, Person** arr)
         currCrna *= personArr[currInfectorIdx].prob;
         int infectedIdx = binarySearch(personArr, 0, gCounter - 1, id2); // get 2nd person struct.
         personArr[infectedIdx].prob = currCrna; // update that struct to contain the infection probability.
+        innerCounter++;
     }
     fclose(inputFile);
     return personArr;
@@ -259,10 +272,6 @@ int getCase(float const prob)
 void writeDataToOutput(Person** arr)
 {
     qsort(*arr, gCounter, sizeof(Person), probCompFunc); //sort according to probability
-    for(int i = 0; i < gCounter; i++)
-    {
-        fprintf(stderr, "Name: %s  probability: %f\n", (*arr)[i].name, (*arr)[i].prob);
-    }
 
     for( int i = 0; i < gCounter; i++)
     {
@@ -272,8 +281,10 @@ void writeDataToOutput(Person** arr)
         {
             case HOSPITALIZE:
                 fprintf(outputFile, MEDICAL_SUPERVISION_THRESHOLD_MSG, tempName, tempID );
+                break;
             case QUARANTINE:
                 fprintf(outputFile, REGULAR_QUARANTINE_MSG, tempName, tempID);
+                break;
             case NO_INFECTION:
                 fprintf(outputFile, CLEAN_MSG, tempName, tempID);
         }
