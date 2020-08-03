@@ -87,6 +87,7 @@ int idCmpfunc(const void* p1, const void* p2)
  * @param fileName - name of file to parse.
  * @return - an array containing Person structs for all the people.
  */
+ //TODO: take care of age cases like empty files...
 void* parsePeopleFile(const char* const fileName)
 {
     int capacity = BASE_SIZE;
@@ -139,13 +140,12 @@ float Crna(float const time, float const distance)
  * returns the index of the person struct with the given ID number.
  * @param arr - sorted array of Person structs.
  */
- //TODO: test binaetSeach first thing tommorow!!!
 int binarySearch(Person arr[], int left, int right, int val)
 {
     if(right >= left)
     {
         int mid = (left + right) / 2;
-        int midVal = (int)arr[mid].ID;
+        int midVal = (int)strtol(arr[mid].ID, NULL, 10);
         if(midVal == val)
         {
             return mid; //found value, return it
@@ -178,7 +178,7 @@ void finalizeData(const char* fileName, Person** arr)
     char* res;
     Person* personArr = *arr;
 
-    inputFile = fopen(fileName, "w");
+    inputFile = fopen(fileName, "r");
     if(inputFile == NULL)
     {
         /*opening file failed, free memory and close files.*/
@@ -205,6 +205,7 @@ void finalizeData(const char* fileName, Person** arr)
         int infectedIdx = binarySearch(personArr, 0, gCounter, id2); // get 2nd person struct.
         personArr[infectedIdx].prob = currCrna; // update that struct to contain the infection probability.
     }
+    fclose(inputFile);
 }
 
 /**
@@ -297,13 +298,15 @@ int main(int argc, char* argv[])
     /*parse people.in file*/
     const char* const peopleFile = argv[1];
     Person* temp = (Person*)parsePeopleFile(peopleFile);
+    //fprintf(stderr, "finished parsing people.in\n");
 
     /*parse meeting*/
     const char* meetingFile = argv[2];
     finalizeData(meetingFile , &temp);
 
+
     /*write data into output file and finish*/
     writeDataToOutput(&temp);
-
     return 0;
+
 }
