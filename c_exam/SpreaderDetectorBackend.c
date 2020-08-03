@@ -77,9 +77,7 @@ void addPerson(char* line, Person** arr ,int lineCounter)
  */
 int idCmpfunc(const void* p1, const void* p2)
 {
-    int num1 = (int)(*(Person*)p1).ID;
-    int num2 = (int)(*(Person*)p2).ID;
-    return (num1 - num2);
+    return strcmp((*(Person*)p1).ID, (*(Person*)p2).ID);
 }
 
 /**
@@ -152,7 +150,7 @@ int binarySearch(Person arr[], int left, int right, int val)
         }
         else if(val < midVal) //val must be on the left of mid
         {
-            return binarySearch(arr, left, mid + 1, val);
+            return binarySearch(arr, left, mid - 1, val);
         }
         else //val is on the right
         {
@@ -171,7 +169,7 @@ int binarySearch(Person arr[], int left, int right, int val)
  * @param arr - array of Person structs.
  * @return - pointer to an array of Person structs.
  */
-void finalizeData(const char* fileName, Person** arr)
+Person* finalizeData(const char* fileName, Person** arr)
 {
     float dist, time;
     int id1, id2, currInfectorIdx;
@@ -187,6 +185,7 @@ void finalizeData(const char* fileName, Person** arr)
     }
 
     qsort(personArr, gCounter, sizeof(Person), idCmpfunc); //sort array to use binary search.
+
     char buffer[MAX_LINE_LEN];
     fgets(buffer, MAX_LINE_LEN, inputFile); //get first line
     int tempID = (int)strtol(buffer, &res, 10);
@@ -202,10 +201,11 @@ void finalizeData(const char* fileName, Person** arr)
         }
         float currCrna = Crna(time, dist);
         currCrna *= personArr[currInfectorIdx].prob;
-        int infectedIdx = binarySearch(personArr, 0, gCounter, id2); // get 2nd person struct.
+        int infectedIdx = binarySearch(personArr, 0, gCounter - 1, id2); // get 2nd person struct.
         personArr[infectedIdx].prob = currCrna; // update that struct to contain the infection probability.
     }
     fclose(inputFile);
+    return personArr;
 }
 
 /**
@@ -217,7 +217,7 @@ int probCompFunc(const void* p1, const void* p2)
 {
     float prob1 = (*(Person*)p1).prob;
     float prob2 = (*(Person*)p2).prob;
-    float res = prob1 - prob2;
+    float res = prob2 - prob1;
     if(res > 0)
     {
         return GT;
@@ -258,13 +258,17 @@ int getCase(float const prob)
 */
 void writeDataToOutput(Person** arr)
 {
-    qsort(arr, gCounter, sizeof(Person), probCompFunc); //sort according to probability
+    qsort(*arr, gCounter, sizeof(Person), probCompFunc); //sort according to probability
+    for(int i = 0; i < gCounter; i++)
+    {
+        fprintf(stderr, "Name: %s  probability: %f\n", (*arr)[i].name, (*arr)[i].prob);
+    }
+
     for( int i = 0; i < gCounter; i++)
     {
         char* tempName = (*arr)[i].name;
-        unsigned long tempID = strtoul((*arr[i]).ID, NULL, 10);
-
-        switch(getCase((*arr[i]).prob))
+        unsigned long tempID = strtoul((*arr)[i].ID, NULL, 10);
+        switch(getCase((*arr)[i].prob))
         {
             case HOSPITALIZE:
                 fprintf(outputFile, MEDICAL_SUPERVISION_THRESHOLD_MSG, tempName, tempID );
@@ -302,7 +306,7 @@ int main(int argc, char* argv[])
 
     /*parse meeting*/
     const char* meetingFile = argv[2];
-    finalizeData(meetingFile , &temp);
+    temp = finalizeData(meetingFile , &temp);
 
 
     /*write data into output file and finish*/
