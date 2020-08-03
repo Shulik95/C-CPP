@@ -23,6 +23,8 @@ const int LEGAL_INPUT_NUM = 3;
 
 int gCounter = 0;
 bool pplEmpty = false;
+bool closeInput = false;
+bool closeOutput = false;
 
 /**
  * struct representing each person.
@@ -44,9 +46,15 @@ FILE* outputFile;
 
 void printError(const char* errMsg)
 {
+    if(closeInput)
+    {
+        fclose(inputFile);
+    }
+    if(closeOutput)
+    {
+        fclose(outputFile);
+    }
     fprintf(stderr, "%s", errMsg);
-    fclose(outputFile);
-    fclose(inputFile);
     exit(EXIT_FAILURE);
 }
 
@@ -86,7 +94,6 @@ int idCmpfunc(const void* p1, const void* p2)
  * @param fileName - name of file to parse.
  * @return - an array containing Person structs for all the people.
  */
- //TODO: take care of edge cases like empty files...
 void* parsePeopleFile(const char* const fileName)
 {
     int capacity = BASE_SIZE;
@@ -98,13 +105,13 @@ void* parsePeopleFile(const char* const fileName)
     {
         printError(INPUT_ERR);
     }
-
-    char buffer[MAX_LINE_LEN];
+    closeInput = true;
     Person* arr = (Person*)malloc(capacity * sizeof(Person));
     if(arr == NULL) // malloc failed, close files and exit program.
     {
         printError(STANDARD_LIB_ERR_MSG);
     }
+    char buffer[MAX_LINE_LEN];
     while(fgets(buffer, MAX_LINE_LEN, inputFile) != NULL)
     {
         if (lineCounter == capacity) //increase array if needed.
@@ -126,6 +133,7 @@ void* parsePeopleFile(const char* const fileName)
         pplEmpty = true;
     }
     fclose(inputFile);
+    closeInput = false;
     return arr;
 }
 
@@ -193,6 +201,7 @@ Person* finalizeData(const char* fileName, Person** arr)
         free(personArr);
         printError(STANDARD_LIB_ERR_MSG);
     }
+    closeInput = true;
     qsort(personArr, gCounter, sizeof(Person), idCmpfunc); //sort array to use binary search.
 
     char buffer[MAX_LINE_LEN];
@@ -218,6 +227,7 @@ Person* finalizeData(const char* fileName, Person** arr)
         innerCounter++;
     }
     fclose(inputFile);
+    closeInput = false;
     return personArr;
 }
 
@@ -292,6 +302,7 @@ void writeDataToOutput(Person** arr)
     free(*arr);
     *arr = NULL;
     fclose(outputFile);
+    closeOutput = false;
 }
 
 
@@ -309,11 +320,10 @@ int main(int argc, char* argv[])
     {
         printError(OUTPUT_ERR);
     }
-
+    closeOutput = true;
     /*parse people.in file*/
     const char* const peopleFile = argv[1];
     Person* temp = (Person*)parsePeopleFile(peopleFile);
-    //fprintf(stderr, "finished parsing people.in\n");
 
     /*parse meeting*/
     const char* meetingFile = argv[2];
