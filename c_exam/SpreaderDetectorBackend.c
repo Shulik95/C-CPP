@@ -25,6 +25,7 @@ int gCounter = 0;
 bool pplEmpty = false;
 bool closeInput = false;
 bool closeOutput = false;
+bool freeMem = false;
 
 /**
  * struct representing each person.
@@ -63,7 +64,7 @@ void printError(const char* errMsg)
  * @param  - line containing the info of the person, read by parsing method.
  * @param lineCounter - the line on which the person appears, decides its index in the array.
  */
-void addPerson(char* line, Person** arr ,int lineCounter)
+void addPerson(char* line, Person** arr, int lineCounter)
 {
     char tempAge[MAX_LINE_LEN];
     char name[MAX_LINE_LEN];
@@ -90,6 +91,47 @@ int idCmpfunc(const void* p1, const void* p2)
 }
 
 /**
+ * receives a counter for number of line read from the file, checks if its 0 and updates a flag for further use.
+ * @param lineCounter - int representing number of lines read from file.
+ */
+void checkEmptyPplFile()
+{
+    if(gCounter == 0)
+    {
+        pplEmpty = true;
+    }
+}
+
+/**
+ * pointer to an array of Person structs, checks if the array was allocated successfully, prints an informative error
+ * if it wasn't.
+ * @param arr - pointer to an array.
+ */
+void checkAlloc(Person* arr)
+{
+    if(arr == NULL) // malloc failed, close files and exit program.
+    {
+        printError(STANDARD_LIB_ERR_MSG);
+    }
+}
+
+/**
+ * receives a pointer to FILE, checks if the file was opened successfully.
+ * @param filePtr - pointer to FILE.
+ */
+void checkFilePtr(FILE* filePtr, Person** arr)
+{
+    if (filePtr == NULL) //opening input file failed.
+    {
+        if(freeMem) //memory was allocated and need to be freed.
+        {
+            free((*arr));
+        }
+        printError(INPUT_ERR);
+    }
+}
+
+/**
  * this function parses the people.in file, allocates memory but doesnt free it!
  * @param fileName - name of file to parse.
  * @return - an array containing Person structs for all the people.
@@ -101,16 +143,11 @@ void* parsePeopleFile(const char* const fileName)
 
     /*open file and check success*/
     inputFile = fopen(fileName, "r");
-    if (inputFile == NULL) //opening input file failed.
-    {
-        printError(INPUT_ERR);
-    }
+    checkFilePtr(inputFile, NULL);
     closeInput = true;
     Person* arr = (Person*)malloc(capacity * sizeof(Person));
-    if(arr == NULL) // malloc failed, close files and exit program.
-    {
-        printError(STANDARD_LIB_ERR_MSG);
-    }
+    checkAlloc(arr);
+    freeMem = true;
     char buffer[MAX_LINE_LEN];
     while(fgets(buffer, MAX_LINE_LEN, inputFile) != NULL)
     {
@@ -118,20 +155,13 @@ void* parsePeopleFile(const char* const fileName)
         {
             capacity += BASE_SIZE;
             arr = (Person*) realloc(arr, sizeof(Person) * capacity);
-            if(arr == NULL)
-            {
-                free(arr); //free what was already allocated.
-                printError(STANDARD_LIB_ERR_MSG); //close files and exit.
-            }
+            checkAlloc(arr);
         }
         addPerson(buffer, &arr , lineCounter);
         lineCounter++;
         gCounter++;
     }
-    if(gCounter == 0) //people.in is empty - return empty file
-    {
-        pplEmpty = true;
-    }
+    checkEmptyPplFile();
     fclose(inputFile);
     closeInput = false;
     return arr;
@@ -142,7 +172,7 @@ void* parsePeopleFile(const char* const fileName)
  * @param time - time they spent together.
  * @param distance - distance between the two people.
  */
-float Crna(float const time, float const distance)
+float crna(float const time, float const distance)
 {
     return (time * MIN_DISTANCE) / (distance * MAX_TIME);
 }
@@ -173,6 +203,21 @@ int binarySearch(Person arr[], int left, int right, int val)
     return FAILURE;
 }
 
+/**
+ * gets first infector from the first line of the meeting.in file
+ * @param line - first line.
+ * @param personArr - the array of people sorted by ID
+ * @return - the index of the first infector in the array.
+ */
+int getFirstInfector(char* line, Person** personArr)
+{
+    Person* arr = *personArr;
+    int tempID = (int)strtol(line, NULL, 10);
+    int idx = binarySearch(arr, 0, gCounter - 1, tempID);
+    arr[idx].prob = SICK;
+    return idx;
+}
+
 
 
 /**
@@ -188,30 +233,20 @@ Person* finalizeData(const char* fileName, Person** arr)
     {
         return *arr; // return unchanged.
     }
+
     float dist, time;
     int id1, id2;
     int currInfectorIdx = 0;
-    char* res;
     Person* personArr = *arr;
-    int innerCounter = 0;
     inputFile = fopen(fileName, "r");
-    if(inputFile == NULL)
-    {
-        /*opening file failed, free memory and close files.*/
-        free(personArr);
-        printError(STANDARD_LIB_ERR_MSG);
-    }
+    checkFilePtr(inputFile, arr);
     closeInput = true;
     qsort(personArr, gCounter, sizeof(Person), idCmpfunc); //sort array to use binary search.
 
     char buffer[MAX_LINE_LEN];
     if(fgets(buffer, MAX_LINE_LEN, inputFile) != NULL)
     {
-        innerCounter++;
-        int tempID = (int)strtol(buffer, &res, 10);
-        int idx = binarySearch(personArr, 0, gCounter - 1, tempID);
-        personArr[idx].prob = SICK;
-        currInfectorIdx = idx;
+        currInfectorIdx = getFirstInfector(buffer, arr);
     }
     while(fgets(buffer, MAX_LINE_LEN, inputFile) != NULL)
     {
@@ -220,11 +255,10 @@ Person* finalizeData(const char* fileName, Person** arr)
         {
             currInfectorIdx = binarySearch(personArr, 0, gCounter - 1, id1); // get correct infector index.
         }
-        float currCrna = Crna(time, dist);
+        float currCrna = crna(time, dist);
         currCrna *= personArr[currInfectorIdx].prob;
         int infectedIdx = binarySearch(personArr, 0, gCounter - 1, id2); // get 2nd person struct.
         personArr[infectedIdx].prob = currCrna; // update that struct to contain the infection probability.
-        innerCounter++;
     }
     fclose(inputFile);
     closeInput = false;
