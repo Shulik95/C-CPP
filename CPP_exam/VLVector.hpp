@@ -23,7 +23,7 @@ for (int i = 0; i < this->_currSize; ++i)\
 #define EMPTY 0
 #define INCREASE_FACTOR 3
 
-const std::string IDX_ERR = "given index is illegal";
+const static std::string IDX_ERR = "given index is illegal";
 // ------------------------------- methods ------------------------------
 
 template <class T, int statSize = DEFAULT_SIZE>
@@ -432,6 +432,14 @@ public:
         *this = vec;
     }
 
+    /**
+     * destructor for each object.
+     */
+    ~VLVector()
+    {
+        delete[] this->_dynamicArr;
+    }
+
 
     /**
      * @return - the current number of elements in the vector.
@@ -519,6 +527,7 @@ public:
         {
             this->_copyToStatic(); //copy data to static.
             delete[] this->_dynamicArr; //free allocated memory.
+            this->_dynamicArr = nullptr;
             this->_arrPtr = _staticArr;
             this->_currCap = statSize;
         }
@@ -555,6 +564,7 @@ public:
         if(_dynamicArr != nullptr)
         {
             delete[] (this->_dynamicArr);
+            this->_dynamicArr = nullptr;
         }
     }
 
@@ -611,7 +621,7 @@ public:
     }
 
     /**
-     * 
+     *
      * @return
      */
     const_iterator cend() const
@@ -640,6 +650,7 @@ public:
         this->_currSize = rhs.size();
         this->_currCap = rhs.capacity();
         delete[] this->_dynamicArr;
+        this->_dynamicArr = nullptr;
         if (this->capacity() > statSize) //data is in the dynamically allocated array
         {
             this->_dynamicArr = new T[this->capacity()];
