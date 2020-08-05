@@ -94,7 +94,7 @@ private:
         typedef const T &reference;
         typedef const T *pointer;
         typedef T difference_type;
-        typedef std::forward_iterator_tag iterator_category;
+        typedef std::random_access_iterator_tag iterator_category;
 
         /**
          * constructors for the Iterator class.
@@ -104,7 +104,7 @@ private:
         /**
          * @return - the current elements the iterator is holding.
          */
-        reference operator*() const
+        reference operator*()
         {
             return *(this->_currElem);
         }
@@ -140,7 +140,7 @@ private:
          * @param k - reference to T type.
          * @return - an iterator to the sum of the given input and curr.
          */
-        Iterator operator+(const difference_type& k)
+        Iterator operator+(const difference_type& k) const
         {
             return Iterator(this->_currElem + k);
         }
@@ -232,13 +232,161 @@ private:
         {
             return this->_currElem >= other._currElem;
         }
-
-
     };
 
     //TODO: implement const_iterator class
     class ConstIterator
     {
+        T* _curr;
+
+    public:
+        typedef T value_type;
+        typedef const T& reference;
+        typedef const T* pointer;
+        typedef std::ptrdiff_t difference_type;
+        typedef std::random_access_iterator_tag iterator_category;
+
+        /**
+         *
+         * @return
+         */
+        value_type operator*() const
+        {
+            return *(this->_curr);
+        }
+
+        /**
+         *
+         * @param n
+         * @return
+         */
+        value_type operator[](const difference_type n) const
+        {
+            return *(this->_curr) + n;
+        }
+
+        /**
+         *
+         * @return
+         */
+        ConstIterator &operator++()
+        {
+            _curr++;
+            return *this;
+        }
+
+        /**
+         *
+         * @return
+         */
+        ConstIterator &operator++(int)
+        {
+            ConstIterator temp = *this;
+            _curr++;
+            return temp;
+        }
+
+        /**
+         *
+         * @param n
+         * @return
+         */
+        ConstIterator operator+(const difference_type& n) const
+        {
+            return ConstIterator(_curr + n);
+        }
+
+        /**
+         *
+         * @param n
+         * @return
+         */
+        ConstIterator operator-(const difference_type& n) const
+        {
+            return ConstIterator(_curr - n);
+        }
+
+        /**
+         *
+         * @param n
+         * @return
+         */
+        ConstIterator operator+=(const difference_type& n) const
+        {
+            _curr += n;
+            return *this;
+        }
+
+        /**
+         *
+         * @param n
+         * @return
+         */
+        ConstIterator operator-=(const difference_type& n) const
+        {
+            _curr -= n;
+            return *this;
+        }
+
+        /**
+         *
+         * @param other
+         * @return
+         */
+        bool operator==(const ConstIterator& other) const
+        {
+            return this->_curr == other._curr;
+        }
+
+        /**
+         *
+         * @param other
+         * @return
+         */
+        bool operator!=(const ConstIterator& other) const
+        {
+            return this->_curr != other._curr_curr;
+        }
+
+        /**
+         *
+         * @param other
+         * @return
+         */
+        bool operator<(const ConstIterator& other) const
+        {
+            return _curr < other._curr;
+        }
+
+        /**
+         *
+         * @param other
+         * @return
+         */
+        bool operator>(const ConstIterator& other) const
+        {
+            return _curr > other._curr;
+        }
+
+        /**
+         *
+         * @param other - iterator to compare against.
+         * @return - true if the first pointer is lesser or equal then the other.
+         */
+        bool operator<=(const ConstIterator& other) const
+        {
+            return _curr <= _curr;
+        }
+
+        /**
+         *
+         * @param other - iterator to compare against.
+         * @return - true if the first pointer is greater or equal then the other.
+         */
+        bool operator>=(const ConstIterator& other) const
+        {
+            return _curr >= _curr;
+        }
 
     };
 
@@ -278,7 +426,7 @@ public:
     explicit VLVector(const VLVector<T>& vec) : VLVector()
     {
         _currSize = vec._currSize;
-        _currCap = this->_currCap;
+        _currCap = vec._currCap;
         for (int i = 0; i < vec.size(); ++i)
         {
             _arrPtr[i] = vec[i];
@@ -418,6 +566,11 @@ public:
     {
         return this->_arrPtr;
     }
+
+    //----------------Operators----------------
+
+    //TODO: implement operaotr=;
+
 
     /**
      * @param idx - index in the array to check
