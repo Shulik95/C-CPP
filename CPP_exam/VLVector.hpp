@@ -83,30 +83,42 @@ private:
         }
     }
 
-    /**
-     * copies the val
-     */
-    void _decrementCapacity()
-    {
-        this->_currCap = statSize;
-    }
-
     class Iterator
     {
         T* _currElem;
 
     public:
 
+        /*Iterator traits*/
+        typedef T value_type;
+        typedef const T &reference;
+        typedef const T *pointer;
+        typedef T difference_type;
+        typedef std::forward_iterator_tag iterator_category;
+
+        /**
+         * constructors for the Iterator class.
+         */
+        Iterator(T* val) : _currElem(val){}
+
         /**
          * @return - the current elements the iterator is holding.
          */
-        T& operator*() const
+        reference operator*() const
         {
             return *(this->_currElem);
         }
 
         /**
-         * @return - the iterator, post-fix advanced.
+         * @return - reference to the value at _currElem+n.
+         */
+        reference operator[](const difference_type& n)
+        {
+            return *this->_currElem + n;
+        }
+
+        /**
+         * @return - the incremented iterator, post-fix advanced.
          */
         Iterator &operator++()
         {
@@ -114,12 +126,56 @@ private:
             return *this;
         }
 
+        /**
+         * @return the incremented iterator/
+         */
         Iterator &operator++(int)
         {
             Iterator tmp = *this; //save curr iterator.
             _currElem++;
             return tmp;
         }
+
+        /**
+         * @param k - reference to T type.
+         * @return - an iterator to the sum of the given input and curr.
+         */
+        Iterator operator+(const difference_type& k)
+        {
+            return Iterator(this->_currElem + k);
+        }
+
+        /**
+         * @param k - reference to another T type.
+         * @return - an iterator to the difference of the given item and curr.
+         */
+        Iterator operator-(const difference_type& k)
+        {
+            return Iterator(this->_currElem - k);
+        }
+
+        /**
+         *
+         * @param T2
+         * @return
+         */
+        Iterator &operator+=(const difference_type& k)
+        {
+            this->_currElem += k;
+            return *this;
+        }
+
+        /**
+         *
+         * @param n
+         * @return
+         */
+        Iterator &operator-=(const difference_type& n)
+        {
+            this->_currElem -= n;
+            return *this;
+        }
+
 
         /**
          * @param other - iterator to compare against.
@@ -130,16 +186,70 @@ private:
             return this->_currElem == other._currElem;
         }
 
+        /**
+         * @param other - iterator to compare against.
+         * @return true if the iterators aren't pointing at the same value;
+         */
+        bool operator!=(const Iterator& other) const
+        {
+            return this->_currElem != other._currElem;
+        }
+
+        /**
+         * @param other - iterator to compare against.
+         * @return - true if the first pointer is lesser then the other.
+         */
+        bool operator<(const Iterator& other) const
+        {
+            return this->_currElem < other._currElem;
+        }
+
+        /**
+         * @param other - iterator to compare against.
+         * @return - true if the first pointer is greater then the other.
+         */
+        bool operator>(const Iterator& other) const
+        {
+            return this->_currElem > other._currElem;
+        }
+
+        /**
+         *
+         * @param other - iterator to compare against.
+         * @return - true if the first pointer is lesser or equal then the other.
+         */
+        bool operator<=(const Iterator& other) const
+        {
+            return this->_currElem <= other._currElem;
+        }
+
+        /**
+         *
+         * @param other - iterator to compare against.
+         * @return - true if the first pointer is greater or equal then the other.
+         */
+        bool operator>=(const Iterator& other) const
+        {
+            return this->_currElem >= other._currElem;
+        }
 
 
     };
+
+    //TODO: implement const_iterator class
+    class ConstIterator
+    {
+
+    };
+
 
 public:
 
     /**
      * iterator typedef.
      */
-    typedef T* iterator;
+    typedef Iterator iterator;
+    typedef ConstIterator const_iterator;
 
     /**
      * creates a default empty VLVector with the given generic size.
@@ -263,6 +373,7 @@ public:
             this->_copyToStatic(); //copy data to static.
             delete[] this->_dynamicArr; //free allocated memory.
             this->_arrPtr = _staticArr;
+            this->_currCap = statSize;
         }
     }
 
