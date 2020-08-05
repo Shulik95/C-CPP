@@ -13,6 +13,8 @@
 #define EMPTY 0
 #define INCREASE_FACTOR 3
 
+const std::string IDX_ERR = "given index is illegal";
+
 
 
 template <class T, int statSize = DEFAULT_SIZE>
@@ -21,6 +23,7 @@ class VLVector
 
 private:
     T _staticArr[statSize];
+    T* _arrPtr = this->_staticArr;
     size_t _currSize, _currCap;
     T* _dynamicArr;
 
@@ -54,11 +57,12 @@ private:
         if(this->_currSize == statSize)
         {
             /*the static memory is full, move to dynamic memory*/
-            _dynamicArr = new(std::nothrow) T * [ this->_currCap];
+            this->_dynamicArr = new(std::nothrow) T [ this->_currCap];
             this->_copyToDynamic();
             std::fill(std::begin(this->_staticArr), std::end(this->_staticArr), 0);//zero static array.
+            this->_arrPtr = this->_dynamicArr; // change ptr to point at dynamic memory
         }
-        else if(this->_currsize == this->_currCap)
+        else if(this->_currSize == this->_currCap)
         {
             /*need to increase dynamic memory*/
             _dynamicArr = (T*) realloc(_dynamicArr, this->_currCap * sizeof(T*));
@@ -76,6 +80,21 @@ public:
      * creates a default empty VLVector with the given generic size.
      */
     explicit VLVector() : _currSize(EMPTY), _currCap(statSize) {}
+
+    //TODO: insert and implement the 2nd constructor.
+
+    /**
+     *
+     * @tparam InputIterator
+     * @param first
+     * @param last
+     */
+    template<class InputIterator>
+    VLVector(InputIterator& first, InputIterator& last)
+
+    {
+
+    }
 
 
     /**
@@ -106,17 +125,15 @@ public:
     /**
      * @param idx - index to get from.
      * @return - the value at the given index.
+     * @throw - index out of range.
      */
     T at(const int idx) const
     {
-        if(this->_currCap < statSize) //using static memory.
+        if(idx > this->_currSize || idx < 0)
         {
-            return this->_staticArr[idx];
+            throw std::out_of_range(IDX_ERR);
         }
-        else //currently using dynamically allocated memory
-        {
-            return this->_dynamicArr[idx];
-        }
+        return this->_arrPtr[idx];
     }
 
     /**
@@ -128,21 +145,81 @@ public:
         if(this->_currSize + 1 > this->_currCap) //incrementation needed, definitely allocated memory
         {
             this->_incrementCapacity();
-            this->_dynamicArr[this->_currSize] = val;
         }
-        else
-        {
-            if(this->_currSize > statSize)
-            {
-                this->_dynamicArr[this->_currSize] = val;
-            }
-            else
-            {
-                this->_staticArr[this->_currSize] = val;
-            }
-        }
+        this->_arrPtr;
         (this->_currSize)++;
     }
+
+    /**
+     * inserts the given value on the left of the given position.
+     * @param pos - an iterator pointing to a position in the vector.
+     * @param val - refrence of value to insert.
+     * @return - an iterator to pointing to the new added value.
+     */
+    iterator insert(iterator pos ,const T& val)
+    {
+
+    }
+
+    /**
+     *
+     * @param pos
+     * @param beg
+     * @param end
+     * @return
+     */
+    template <class InputIterator>
+    iterator insert(iterator pos, const InputIterator& beg, const InputIterator& end)
+    {
+
+    }
+
+    /**
+     * removes the last element of the vector.
+     */
+    void pop_back()
+    {
+
+    }
+
+    /**
+     *
+     * @param pos
+     * @return
+     */
+    iterator erase(iterator pos)
+    {
+
+    }
+
+    /**
+     *
+     * @param first
+     * @param last
+     * @return
+     */
+    iterator erase(iterator first, iterator last)
+    {
+
+    }
+
+    /**
+     *
+     */
+    void clear()
+    {
+
+    }
+
+    /**
+     * @return - a direct pointer to the memory array used internally by the vector to store its owned elements.
+     */
+    T* data()
+    {
+        return this->_arrPtr;
+    }
+
+
 
 
 
