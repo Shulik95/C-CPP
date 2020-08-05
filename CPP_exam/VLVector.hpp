@@ -4,19 +4,27 @@
 
 #ifndef CPP_EXAM_VLVECTOR_HPP
 #define CPP_EXAM_VLVECTOR_HPP
-
+// ------------------------------ includes ------------------------------
 #include <fstream>
 #include <cmath>
 #include <cstdlib>
 
+// -------------------------- const definitions -------------------------
+/**
+ * general copy method between both arrays.
+ */
+#define COPY_DATA(src, dest)\
+for (int i = 0; i < this->_currSize; ++i)\
+    {\
+        (this->dest)[i] = (this->src)[i];\
+    }
 
 #define DEFAULT_SIZE 16
 #define EMPTY 0
 #define INCREASE_FACTOR 3
 
 const std::string IDX_ERR = "given index is illegal";
-
-
+// ------------------------------- methods ------------------------------
 
 template <class T, int statSize = DEFAULT_SIZE>
 class VLVector
@@ -42,10 +50,15 @@ private:
      */
     void _copyToDynamic()
     {
-        for(int i = 0; i < this->_currSize; i++)
-        {
-            (this->_dynamicArr)[i] = (this->_staticArr)[i];
-        }
+        COPY_DATA(_staticArr, _dynamicArr)
+    }
+
+    /**
+     * copies the elements from the dynamic array into the static array.
+     */
+    void _copyToStatic()
+    {
+        COPY_DATA(_dynamicArr, _staticArr)
     }
 
     /**
@@ -78,6 +91,49 @@ private:
         this->_currCap = statSize;
     }
 
+    class Iterator
+    {
+        T* _currElem;
+
+    public:
+
+        /**
+         * @return - the current elements the iterator is holding.
+         */
+        T& operator*() const
+        {
+            return *(this->_currElem);
+        }
+
+        /**
+         * @return - the iterator, post-fix advanced.
+         */
+        Iterator &operator++()
+        {
+            _currElem++;
+            return *this;
+        }
+
+        Iterator &operator++(int)
+        {
+            Iterator tmp = *this; //save curr iterator.
+            _currElem++;
+            return tmp;
+        }
+
+        /**
+         * @param other - iterator to compare against.
+         * @return - true if both iterators point at the same item, false otherwise.
+         */
+        bool operator==(const Iterator& other) const
+        {
+            return this->_currElem == other._currElem;
+        }
+
+
+
+    };
+
 public:
 
     /**
@@ -99,7 +155,7 @@ public:
      * @param last
      */
     template<class InputIterator>
-    VLVector(InputIterator& first, InputIterator& last)
+    explicit VLVector(InputIterator& first, InputIterator& last)
 
     {
 
@@ -142,7 +198,6 @@ public:
     bool empty() const
     {
         return this->_currSize == EMPTY;
-
     }
 
     /**
@@ -169,7 +224,7 @@ public:
         {
             this->_incrementCapacity();
         }
-        this->_arrPtr;
+        this->_arrPtr[this->_currSize] = val;
         (this->_currSize)++;
     }
 
@@ -203,6 +258,12 @@ public:
     void pop_back()
     {
         this->_currSize--;
+        if(this->_currSize <= statSize) //free allocated array and go back to static array.
+        {
+            this->_copyToStatic(); //copy data to static.
+            delete[] this->_dynamicArr; //free allocated memory.
+            this->_arrPtr = _staticArr;
+        }
     }
 
     /**
@@ -270,7 +331,7 @@ public:
      * @param rhs - VLVector to compare with.
      * @return - true if equal, false otherwise.
      */
-    bool operator==(const VLVector<T> rhs) const
+    bool operator==(const VLVector<T>& rhs) const
     {
         if(this->_currSize != rhs.size()) //sizes are not the same, no need to check further.
         {
@@ -291,9 +352,9 @@ public:
      * @param rhs - VLVector to compare with.
      * @return - true if arent equal, false otherwise.
      */
-    bool operator!=(const VLVector<T> rhs) const
+    bool operator!=(const VLVector<T>& rhs) const
     {
-        return !(this == rhs);
+        return !(*this == rhs);
     }
 };
 
