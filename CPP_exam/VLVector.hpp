@@ -93,7 +93,7 @@ private:
         typedef T value_type;
         typedef const T &reference;
         typedef const T *pointer;
-        typedef T difference_type;
+        typedef std::ptrdiff_t difference_type;
         typedef std::random_access_iterator_tag iterator_category;
 
         /**
@@ -244,6 +244,11 @@ private:
         typedef const T* pointer;
         typedef std::ptrdiff_t difference_type;
         typedef std::random_access_iterator_tag iterator_category;
+
+        /**
+         * constructors for the Iterator class.
+         */
+        ConstIterator(T* val) : _curr(val){}
 
         /**
          *
@@ -420,16 +425,11 @@ public:
 
     /**
      * a copy constructor for VLVector, creates a deep copy of the given vector.
-     * @param vec - the vecotor to copy.
+     * @param vec - the vector to copy.
      */
-    explicit VLVector(const VLVector<T>& vec) : VLVector()
+    explicit VLVector(const VLVector<T>& vec) : _currSize(EMPTY), _currCap(statSize)
     {
-        _currSize = vec._currSize;
-        _currCap = vec._currCap;
-        for (int i = 0; i < vec.size(); ++i)
-        {
-            _arrPtr[i] = vec[i];
-        }
+        *this = vec;
     }
 
 
@@ -566,16 +566,72 @@ public:
         return this->_arrPtr;
     }
 
+    /**
+     *
+     * @return
+     */
+    iterator begin()
+    {
+        return iterator((this->_arrPtr));
+    }
+
+    /**
+     *
+     * @return
+     */
+    const_iterator begin() const
+    {
+        return const_iterator(this->_arrPtr);
+    }
+
+    /**
+     *
+     * @return
+     */
+    const_iterator cbegin() const
+    {
+        return const_iterator(this->_arrPtr);
+    }
+
+    /**
+     *
+     */
+    iterator end()
+    {
+        return iterator(this->_arrPtr[_currSize]);
+    }
+
+    /**
+     *
+     * @return
+     */
+    const_iterator end() const
+    {
+        return const_iterator(this->_arrPtr[_currSize]);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    const_iterator cend() const
+    {
+        return const_iterator(this->_arrPtr[_currSize]);
+    }
+
+
+
+
+
+
+
     //----------------Operators----------------
-
-    //TODO: implement operaotr=;
-
     /**
      *
      * @param rhs
      * @return
      */
-    VLVector &operator=(const VLVector& rhs)
+    VLVector& operator=(const VLVector& rhs)
     {
         if(this == &rhs)
         {
@@ -603,7 +659,6 @@ public:
         }
         return *this;
     }
-
 
     /**
      * @param idx - index in the array to check
