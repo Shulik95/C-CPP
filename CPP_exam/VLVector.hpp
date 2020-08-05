@@ -234,7 +234,6 @@ private:
         }
     };
 
-    //TODO: implement const_iterator class
     class ConstIterator
     {
         T* _curr;
@@ -570,6 +569,40 @@ public:
     //----------------Operators----------------
 
     //TODO: implement operaotr=;
+
+    /**
+     *
+     * @param rhs
+     * @return
+     */
+    VLVector &operator=(const VLVector& rhs)
+    {
+        if(this == &rhs)
+        {
+            return *this;
+        }
+        this->_currSize = rhs.size();
+        this->_currCap = rhs.capacity();
+        delete[] this->_dynamicArr;
+        if (this->capacity() > statSize) //data is in the dynamically allocated array
+        {
+            this->_dynamicArr = new T[this->capacity()];
+            for (int i = 0; i < rhs.size(); ++i)
+            {
+                this->_dynamicArr[i] = rhs._dynamicArr[i];
+            }
+            this->_arrPtr = this->_dynamicArr;
+        }
+        else //data is on the stack.
+        {
+            for (int i = 0; i < this->size(); ++i)
+            {
+                this->_staticArr[i] = rhs._staticArr[i];
+            }
+            this->_arrPtr = this->_staticArr;
+        }
+        return *this;
+    }
 
 
     /**
