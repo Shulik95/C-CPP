@@ -9,6 +9,7 @@
 #include <cmath>
 #include <cstdlib>
 
+
 #define DEFAULT_SIZE 16
 #define EMPTY 0
 #define INCREASE_FACTOR 3
@@ -25,7 +26,7 @@ private:
     T _staticArr[statSize];
     T* _arrPtr = this->_staticArr;
     size_t _currSize, _currCap;
-    T* _dynamicArr;
+    T* _dynamicArr = nullptr;
 
 
     /**
@@ -69,6 +70,14 @@ private:
         }
     }
 
+    /**
+     * copies the val
+     */
+    void _decrementCapacity()
+    {
+        this->_currCap = statSize;
+    }
+
 public:
 
     /**
@@ -94,6 +103,20 @@ public:
 
     {
 
+    }
+
+    /**
+     * a copy constructor for VLVector, creates a deep copy of the given vector.
+     * @param vec - the vecotor to copy.
+     */
+    explicit VLVector(const VLVector<T>& vec) : VLVector()
+    {
+        _currSize = vec._currSize;
+        _currCap = this->_currCap;
+        for (int i = 0; i < vec.size(); ++i)
+        {
+            _arrPtr[i] = vec[i];
+        }
     }
 
 
@@ -179,7 +202,7 @@ public:
      */
     void pop_back()
     {
-
+        this->_currSize--;
     }
 
     /**
@@ -204,11 +227,16 @@ public:
     }
 
     /**
-     *
+     * Removes all elements from the vector (which are destroyed), leaving the container with a size of 0.
      */
     void clear()
     {
-
+        this->_currSize = EMPTY;
+        this->_currCap = statSize;
+        if(_dynamicArr != nullptr)
+        {
+            delete[] (this->_dynamicArr);
+        }
     }
 
     /**
@@ -219,11 +247,54 @@ public:
         return this->_arrPtr;
     }
 
+    /**
+     * @param idx - index in the array to check
+     * @return - the value at the given index.
+     */
+    T& operator[](const int idx)
+    {
+        return this->_arrPtr[idx];
+    }
 
+    /**
+     * @param idx - idx to get.
+     * @return - the value at the given index in the vector.
+     */
+    const T& operator[](const int idx) const
+    {
+        return this->_arrPtr[idx];
+    }
 
+    /**
+     * checks if two given VLVectors, vectors are equal only if each "cell" holds the same value.
+     * @param rhs - VLVector to compare with.
+     * @return - true if equal, false otherwise.
+     */
+    bool operator==(const VLVector<T> rhs) const
+    {
+        if(this->_currSize != rhs.size()) //sizes are not the same, no need to check further.
+        {
+            return false;
+        }
+        for (int i = 0; i < rhs.size(); ++i)
+        {
+            if((this->_arrPtr)[i] != rhs[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-
-
+    /**
+     * uses the == operator and answers the opposite.
+     * @param rhs - VLVector to compare with.
+     * @return - true if arent equal, false otherwise.
+     */
+    bool operator!=(const VLVector<T> rhs) const
+    {
+        return !(this == rhs);
+    }
 };
 
 #endif //CPP_EXAM_VLVECTOR_HPP
