@@ -92,8 +92,8 @@ private:
 
         /*Iterator traits*/
         typedef T value_type;
-        typedef const T &reference;
-        typedef const T *pointer;
+        typedef T &reference;
+        typedef  T *pointer;
         typedef int difference_type;
         typedef std::random_access_iterator_tag iterator_category;
 
@@ -105,9 +105,9 @@ private:
         /**
          * @return - the current elements the iterator is holding.
          */
-        reference operator*()
+        reference operator*() const
         {
-            return *(this->_currElem);
+            return *_currElem;
         }
 
         /**
@@ -143,7 +143,16 @@ private:
          */
         Iterator operator+(const difference_type& k) const
         {
-            return Iterator(this->_currElem + k);
+            return Iterator(_currElem + k);
+        }
+
+        /**
+         * @param other - iterator.
+         * @return - sum of pointers.
+         */
+        difference_type operator+(const Iterator other) const
+        {
+            return _currElem + other._currElem;
         }
 
         /**
@@ -153,6 +162,15 @@ private:
         Iterator operator-(const difference_type& k) const
         {
             return Iterator(this->_currElem - k);
+        }
+
+        /**
+         * @param other - another iterator.
+         * @return - distance between pointers.
+         */
+        difference_type operator-(const Iterator other) const
+        {
+            return _currElem - other._currElem;
         }
 
         /**
@@ -257,7 +275,7 @@ private:
          */
         value_type operator*() const
         {
-            return *(this->_curr);
+            return *_curr;
         }
 
         /**
@@ -300,6 +318,7 @@ private:
         {
             return ConstIterator(_curr + n);
         }
+
 
         /**
          *
@@ -541,16 +560,30 @@ public:
      */
     iterator erase(iterator pos)
     {
-        
+        for(auto item = pos; item != this->end(); item++)
+        {
+            *item = *(item +1);
+        }
         if(_currSize - 1 == statSize) //change back to static memory from dynamic
         {
-            COPY_DATA(_dynamicArr, _staticArr);
-            delete[] _dynamicArr;
-            _arrPtr = _staticArr;
-            _currCap = statSize;
+            int idx = pos - this->begin();
+            toStack();
+            pos = Iterator(&(_arrPtr[idx]));
         }
         _currSize--;
         return pos;
+    }
+
+    /**
+     *
+     */
+    void toStack()
+    {
+        COPY_DATA(_dynamicArr, _staticArr);
+        delete[] _dynamicArr;
+        _dynamicArr = nullptr;
+        _arrPtr = _staticArr;
+        _currCap = statSize;
     }
 
     /**
@@ -561,7 +594,16 @@ public:
      */
     iterator erase(iterator first, iterator last)
     {
-
+        std::copy(last - 1, this->end(), first - 1);
+        int sizeChange = last - first;
+        int idx = first - this->begin();
+        if(_currSize - sizeChange == statSize) //move to stack
+        {
+            toStack();
+            first = Iterator(&(_arrPtr[idx]));
+        }
+        _currSize -= sizeChange;
+        return first;
     }
 
     /**

@@ -67,7 +67,15 @@ int main() {
     VLVector<int> VL3;
     VL3 = VL1;
     assertm(VL1 == VL3, "failed test 3.5\n");
-    //VL1.erase(VL1.begin());
-    //assertm(VL1[0] == 1, "erase failed\n");
-
+    for (int m = 0; m < VL3.size(); ++m) {
+        VL1.erase(VL1.begin()); //erases whole vector
+    }
+    assertm(VL1.empty(), "failed test 3.6\n");
+    VL1 = VL3;
+    auto first = &(VL1[3]);
+    auto last = &(VL1[6]);
+    VL1.erase(first, last);
+    assertm(VL1.size() == 13, "failed test 3.7\n");
+    VL1.erase(VL1.begin(), VL1.end());
+    assertm(VL1.empty(),"failed test 3.8\n");
 }
