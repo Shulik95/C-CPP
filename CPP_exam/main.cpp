@@ -127,6 +127,8 @@ int main() {
     assertm(VL1.empty(), "failed test 3.15\n");
     assertm(VL1.capacity() == 16, "failed test 3.16");
 
+    
+
     std::cout << "**************************************************" << std::endl;
     std::cout << "*****operators, insert and erase tests passed*****" << std::endl;
     std::cout << "**************************************************" << std::endl;

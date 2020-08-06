@@ -481,8 +481,6 @@ public:
      */
     explicit VLVector() : _currSize(EMPTY), _currCap(statSize) {}
 
-    //TODO: insert and implement the 2nd constructor.
-
     /**
      *
      * @tparam InputIterator
@@ -593,15 +591,26 @@ public:
 
     /**
      *
-     * @param pos
-     * @param beg
-     * @param end
-     * @return
+     * @param first -
+     * @param last -
+     * @param pos -
+     * @return -
      */
     template <class InputIterator>
-    iterator insert(iterator pos, const InputIterator& beg, const InputIterator& end)
+    iterator insert(iterator pos, const InputIterator& first, const InputIterator& last)
     {
-
+        int sizeChange = last - first;
+        auto tmpEnd = this->end();
+        _currSize += sizeChange;
+        int idx = pos - this->begin();
+        while(_currSize > _currCap) //increase capacity
+        {
+            _incrementCapacity();
+            pos = Iterator(&(this->_arrPtr[idx]));
+        }
+        std::copy_backward(pos - 1, tmpEnd, this->end());
+        std::copy(first, last, pos);
+        return pos;
     }
 
     /**
@@ -671,6 +680,7 @@ public:
         {
             delete[] (this->_dynamicArr);
             this->_dynamicArr = nullptr;
+            _arrPtr = _staticArr;
         }
     }
 
