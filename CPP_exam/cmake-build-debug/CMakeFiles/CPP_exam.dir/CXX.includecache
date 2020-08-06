@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/user/CLionProjects/CPP_exam/VLVector.hpp
+fstream
+-
+cmath
+-
+cstdlib
+-
+algorithm
+-
+
+/cygdrive/c/Users/user/CLionProjects/CPP_exam/main.cpp
+iostream
+-
+vector
+-
+VLVector.hpp
+/cygdrive/c/Users/user/CLionProjects/CPP_exam/VLVector.hpp
+cassert
+-
+

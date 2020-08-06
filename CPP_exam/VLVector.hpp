@@ -8,6 +8,7 @@
 #include <fstream>
 #include <cmath>
 #include <cstdlib>
+#include <algorithm>
 
 // -------------------------- const definitions -------------------------
 /**
@@ -93,7 +94,7 @@ private:
         typedef T value_type;
         typedef const T &reference;
         typedef const T *pointer;
-        typedef std::ptrdiff_t difference_type;
+        typedef int difference_type;
         typedef std::random_access_iterator_tag iterator_category;
 
         /**
@@ -149,7 +150,7 @@ private:
          * @param k - reference to another T type.
          * @return - an iterator to the difference of the given item and curr.
          */
-        Iterator operator-(const difference_type& k)
+        Iterator operator-(const difference_type& k) const
         {
             return Iterator(this->_currElem - k);
         }
@@ -242,7 +243,7 @@ private:
         typedef T value_type;
         typedef const T& reference;
         typedef const T* pointer;
-        typedef std::ptrdiff_t difference_type;
+        typedef int difference_type;
         typedef std::random_access_iterator_tag iterator_category;
 
         /**
@@ -524,7 +525,7 @@ public:
     void pop_back()
     {
         this->_currSize--;
-        if(this->_currSize <= statSize) //free allocated array and go back to static array.
+        if(this->_currSize == statSize) //free allocated array and go back to static array.
         {
             this->_copyToStatic(); //copy data to static.
             delete[] this->_dynamicArr; //free allocated memory.
@@ -535,13 +536,21 @@ public:
     }
 
     /**
-     *
-     * @param pos
-     * @return
+     * @param pos - iterator for the array
+     * @return - an iterator to the element on the right of the removed element.
      */
     iterator erase(iterator pos)
     {
-
+        
+        if(_currSize - 1 == statSize) //change back to static memory from dynamic
+        {
+            COPY_DATA(_dynamicArr, _staticArr);
+            delete[] _dynamicArr;
+            _arrPtr = _staticArr;
+            _currCap = statSize;
+        }
+        _currSize--;
+        return pos;
     }
 
     /**
@@ -609,7 +618,7 @@ public:
      */
     iterator end()
     {
-        return iterator(this->_arrPtr[_currSize]);
+        return _arrPtr + _currSize;
     }
 
     /**
@@ -629,11 +638,6 @@ public:
     {
         return const_iterator(this->_arrPtr[_currSize]);
     }
-
-
-
-
-
 
 
     //----------------Operators----------------

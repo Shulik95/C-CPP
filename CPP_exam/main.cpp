@@ -59,12 +59,15 @@ int main() {
     }
     assertm(VL1 != VL2, "failed test 3.2\n");
     VL1.clear();
-    assertm(VL1.empty(),"failed test 3.3\n")
+    assertm(VL1.empty(),"failed test 3.3\n");
     /*test assignment operator=*/
     VL1 = VL2;
     assertm(VL1 == VL2, "failed test 3.4\n");
     /*test copy constructor*/
-    VLVector<int> VL3 = VLVector<int>(VL1);
+    VLVector<int> VL3;
+    VL3 = VL1;
     assertm(VL1 == VL3, "failed test 3.5\n");
+    //VL1.erase(VL1.begin());
+    //assertm(VL1[0] == 1, "erase failed\n");
 
 }
