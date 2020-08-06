@@ -46,7 +46,9 @@ int main() {
         v1.pop_back();
         assertm(v1.size() == VL1.size(), "failed test 2.6\n");
     }
-
+    std::cout << "******************************************" << std::endl;
+    std::cout << "*****Pushback and PopBack test passed*****" << std::endl;
+    std::cout << "******************************************" << std::endl;
 
     /*3 - operators*/
 
@@ -81,22 +83,52 @@ int main() {
         VL1.erase(VL1.begin()); //erases whole vector
     }
     assertm(VL1.empty(), "failed test 3.6\n");
-    VL1 = VL3;
+    for (int n = 0; n < 17; ++n) {
+        VL1.push_back(n);
+    }
+//    for (int n = 0; n < VL1.size(); ++n) {
+//        std::cout << VL1[n] << std::endl;
+//    }
     auto first = &(VL1[3]);
     auto last = &(VL1[6]);
     auto  it3 = VL1.erase(first, last);
 //    for (int n = 0; n < VL1.size(); ++n) {
 //        std::cout << VL1[n] << std::endl;
 //    }
-//    std::cout << *it3 << std::endl;
+    //std::cout << *it3 << std::endl;
     assertm(*it3 == 6, "failed test 3.7\n" );
-    assertm(VL1.size() == 13, "failed test 3.8\n");
+
+    assertm(VL1.size() == 14, "failed test 3.8\n");
     VL1.erase(VL1.begin(), VL1.end());
     assertm(VL1.empty(),"failed test 3.9\n");
     VL1 = VL3;
-    VL1.pop_back();
-    VL1.pop_back();
+
+//    VL1.pop_back();
+//    VL1.pop_back();
     VL1.insert(VL1.begin(), 36);
     assertm(VL1[0] == 36, "failed test 3.10\n");
+    assertm(VL1.size() == 17, "failed test 3.11\n");
+//    for (int n = 0; n < VL1.size(); ++n) {
+//        std::cout << VL1[n] << std::endl;
+//    }
+    auto itr = &(VL1[6]);
+    auto itr1 = VL1.insert(itr, 15);
+    assertm(VL1[6] == 15, "failed test 3.12\n");
+    assertm(*itr1 == 15, "failed test 3.13\n");
+    assertm(VL1.size() == 18, "failed test 3.13");
+    VL1.insert(itr1, 14);
+    for (int i1 = 0; i1 < 18; ++i1) {
+        auto tmpItr = &(VL1[i1]);
+        int val = i1 * 2;
+        VL1.insert(tmpItr, val);
+    }
+    assertm(VL1.size() == 37, "failed test 3.14\n");
+    VL1.erase(VL1.begin(), VL1.end());
+    assertm(VL1.empty(), "failed test 3.15\n");
+    assertm(VL1.capacity() == 16, "failed test 3.16");
+
+    std::cout << "**************************************************" << std::endl;
+    std::cout << "*****operators, insert and erase tests passed*****" << std::endl;
+    std::cout << "**************************************************" << std::endl;
 
 }

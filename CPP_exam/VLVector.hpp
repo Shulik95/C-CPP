@@ -77,7 +77,7 @@ private:
             std::fill(std::begin(this->_staticArr), std::end(this->_staticArr), 0);//zero static array.
             this->_arrPtr = this->_dynamicArr; // change ptr to point at dynamic memory
         }
-        else if(this->_currSize == this->_currCap)
+        else
         {
             /*need to increase dynamic memory*/
             _dynamicArr = (T*) realloc(_dynamicArr, this->_currCap * sizeof(T*));
@@ -353,7 +353,7 @@ private:
         }
 
         /**
-         * 
+         *
          * @return
          */
         ConstIterator &operator--(int)
@@ -578,18 +578,17 @@ public:
     {
         if(_currSize + 1 > _currCap) // need to increase the array.
         {
+            int idx = pos - this->begin();
             _incrementCapacity();
+            pos = Iterator(&(_arrPtr[idx]));
         }
-        for (auto it = this->end(); it != (pos - 1); it--) //shift all elements to the right
+        for (auto it = this->end(); it != (pos - 1); --it) //shift all elements to the right
         {
             *(it + 1) = *it;
         }
         *pos = val;
+        _currSize++;
         return pos;
-
-
-
-
     }
 
     /**
@@ -634,7 +633,7 @@ public:
         if(_currSize - 1 == statSize) //change back to static memory from dynamic
         {
             int idx = pos - this->begin();
-            _toStack();
+            this->_toStack();
             pos = Iterator(&(_arrPtr[idx]));
         }
         _currSize--;
@@ -651,13 +650,13 @@ public:
     {
         std::copy(last, this->end(), first);
         int sizeChange = last - first;
+        _currSize -= sizeChange;
         int idx = first - this->begin();
-        if(_currSize - sizeChange == statSize) //move to stack
+        if(_currSize <= statSize) //move to stack
         {
             _toStack();
             first = Iterator(&(_arrPtr[idx]));
         }
-        _currSize -= sizeChange;
         return first;
     }
 
