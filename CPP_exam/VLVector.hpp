@@ -19,14 +19,14 @@ for (int i = 0; i < this->_currSize; ++i)\
         (this->dest)[i] = (this->src)[i];\
     }
 
-#define DEFAULT_SIZE 16
+#define DEFAULT_CAP 16
 #define EMPTY 0
 #define INCREASE_FACTOR 3
 
 const static std::string IDX_ERR = "given index is illegal";
 // ------------------------------- methods ------------------------------
 
-template <class T, int statSize = DEFAULT_SIZE>
+template <class T, int statSize = DEFAULT_CAP>
 class VLVector
 {
 
@@ -474,6 +474,7 @@ public:
     {
         if(idx > this->_currSize || idx < 0)
         {
+            delete[] this->_dynamicArr;
             throw std::out_of_range(IDX_ERR);
         }
         return this->_arrPtr[idx];
