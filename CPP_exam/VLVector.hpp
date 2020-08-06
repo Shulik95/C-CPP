@@ -84,6 +84,18 @@ private:
         }
     }
 
+    /**
+     * contains all actions needed when transferring the data from dynamic memory onto the stack.
+     */
+    void _toStack()
+    {
+        COPY_DATA(_dynamicArr, _staticArr);
+        delete[] _dynamicArr;
+        _dynamicArr = nullptr;
+        _arrPtr = _staticArr;
+        _currCap = statSize;
+    }
+
     class Iterator
     {
         T* _currElem;
@@ -437,10 +449,12 @@ public:
      * @param last
      */
     template<class InputIterator>
-    explicit VLVector(InputIterator& first, InputIterator& last)
-
+    explicit VLVector(InputIterator& first, InputIterator& last) : _currSize(EMPTY), _currCap(statSize)
     {
-
+        for (auto it = first; it != last; it++)
+        {
+            this->push_back(*it);
+        }
     }
 
     /**
@@ -459,7 +473,6 @@ public:
     {
         delete[] this->_dynamicArr;
     }
-
 
     /**
      * @return - the current number of elements in the vector.
@@ -567,24 +580,14 @@ public:
         if(_currSize - 1 == statSize) //change back to static memory from dynamic
         {
             int idx = pos - this->begin();
-            toStack();
+            _toStack();
             pos = Iterator(&(_arrPtr[idx]));
         }
         _currSize--;
         return pos;
     }
 
-    /**
-     *
-     */
-    void toStack()
-    {
-        COPY_DATA(_dynamicArr, _staticArr);
-        delete[] _dynamicArr;
-        _dynamicArr = nullptr;
-        _arrPtr = _staticArr;
-        _currCap = statSize;
-    }
+
 
     /**
      *
@@ -599,7 +602,7 @@ public:
         int idx = first - this->begin();
         if(_currSize - sizeChange == statSize) //move to stack
         {
-            toStack();
+            _toStack();
             first = Iterator(&(_arrPtr[idx]));
         }
         _currSize -= sizeChange;

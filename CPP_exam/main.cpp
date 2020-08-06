@@ -30,6 +30,7 @@ int main() {
         VL2.push_back(i);
         v1.push_back(i);
     }
+
     /*2 - push back and pop*/
     assertm(VL1.size() == v1.size(), "failed test 2.2\n");
     assertm(VL2.size() == VL1.size(), "failed test 2.3\n");
@@ -38,21 +39,27 @@ int main() {
     for (int j = 0; j < VL1.size(); ++j) {
         assertm(VL1.at(j) == v1.at(j), "failed test 2.5\n");
     }
+
     /*check if size is updated correctly when removing*/
     for (int k = 0; k < 4; ++k) {
         VL1.pop_back();
         v1.pop_back();
         assertm(v1.size() == VL1.size(), "failed test 2.6\n");
     }
+
+
     /*3 - operators*/
+
     //check operator[]
     for (int j = 0; j < VL1.size(); ++j) {
         assertm(VL1[j] == v1[j], "failed test 3.0\n");
     }
+
     /*change values*/
     for (int l = 0; l < VL1.size(); ++l) {
         VL1[l] += 3;
     }
+
     /*should be different now*/
     for (int j = 1; j < VL1.size(); ++j) {
         assertm(VL1[j] != v1[j], "failed test 3.1\n");
@@ -63,10 +70,13 @@ int main() {
     /*test assignment operator=*/
     VL1 = VL2;
     assertm(VL1 == VL2, "failed test 3.4\n");
+
     /*test copy constructor*/
     VLVector<int> VL3;
     VL3 = VL1;
     assertm(VL1 == VL3, "failed test 3.5\n");
+
+    /*test both erase and insert methods*/
     for (int m = 0; m < VL3.size(); ++m) {
         VL1.erase(VL1.begin()); //erases whole vector
     }
