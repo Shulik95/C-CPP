@@ -84,8 +84,19 @@ int main() {
     VL1 = VL3;
     auto first = &(VL1[3]);
     auto last = &(VL1[6]);
-    VL1.erase(first, last);
-    assertm(VL1.size() == 13, "failed test 3.7\n");
+    auto  it3 = VL1.erase(first, last);
+//    for (int n = 0; n < VL1.size(); ++n) {
+//        std::cout << VL1[n] << std::endl;
+//    }
+//    std::cout << *it3 << std::endl;
+    assertm(*it3 == 6, "failed test 3.7\n" );
+    assertm(VL1.size() == 13, "failed test 3.8\n");
     VL1.erase(VL1.begin(), VL1.end());
-    assertm(VL1.empty(),"failed test 3.8\n");
+    assertm(VL1.empty(),"failed test 3.9\n");
+    VL1 = VL3;
+    VL1.pop_back();
+    VL1.pop_back();
+    VL1.insert(VL1.begin(), 36);
+    assertm(VL1[0] == 36, "failed test 3.10\n");
+
 }

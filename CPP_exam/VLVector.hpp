@@ -150,6 +150,27 @@ private:
         }
 
         /**
+         *
+         * @return
+         */
+        Iterator &operator--()
+        {
+            _currElem--;
+            return *this;
+        }
+
+        /**
+         *
+         * @return
+         */
+        Iterator &operator__(int)
+        {
+            Iterator tmp = *this;
+            _currElem--;
+            return tmp;
+        }
+
+        /**
          * @param k - reference to T type.
          * @return - an iterator to the sum of the given input and curr.
          */
@@ -323,6 +344,27 @@ private:
 
         /**
          *
+         * @return
+         */
+        ConstIterator &operator--()
+        {
+            _curr--;
+            return *this;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        ConstIterator &operator--(int)
+        {
+            ConstIterator temp = *this;
+            _curr--;
+            return temp;
+        }
+
+        /**
+         *
          * @param n
          * @return
          */
@@ -425,7 +467,6 @@ private:
         }
 
     };
-
 
 public:
 
@@ -535,6 +576,19 @@ public:
      */
     iterator insert(iterator pos ,const T& val)
     {
+        if(_currSize + 1 > _currCap) // need to increase the array.
+        {
+            _incrementCapacity();
+        }
+        for (auto it = this->end(); it != (pos - 1); it--) //shift all elements to the right
+        {
+            *(it + 1) = *it;
+        }
+        *pos = val;
+        return pos;
+
+
+
 
     }
 
@@ -587,17 +641,15 @@ public:
         return pos;
     }
 
-
-
     /**
      *
-     * @param first
-     * @param last
-     * @return
+     * @param first - iterator pointing to the first element to delete
+     * @param last - first element which is not deleted
+     * @return - iterator to the first element which is not deleted.
      */
     iterator erase(iterator first, iterator last)
     {
-        std::copy(last - 1, this->end(), first - 1);
+        std::copy(last, this->end(), first);
         int sizeChange = last - first;
         int idx = first - this->begin();
         if(_currSize - sizeChange == statSize) //move to stack
