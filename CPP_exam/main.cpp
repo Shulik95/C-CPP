@@ -196,6 +196,20 @@ std::cout << n << ", ";
 }
 std::cout << std::endl;
 std::cout << "*******************************" << std::endl;
+
+/* inserting elements into array from the same array*/
+auto iter3 = &(VL3[3]);
+auto iter4 = &(VL3[7]);
+auto pos1 = &(VL3[0]);
+VL3.insert(pos1, iter3, iter4);
+std::cout << "Size = " << VL3.size() << " ,Capacity = " << VL3.capacity() << " ,The vector itself: " << std::endl;
+for (int n : VL3) {
+    std::cout << n << ", ";
+}
+std::cout << std::endl;
+std::cout << "*******************************" << std::endl;
+
+
 std::cout << "**************************************************" << std::endl;
 std::cout << "*****operators, insert and erase tests passed*****" << std::endl;
 std::cout << "**************************************************" << std::endl;

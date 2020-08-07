@@ -608,11 +608,34 @@ public:
     }
 
     /**
-     *
-     * @param first -
-     * @param last -
-     * @param pos -
-     * @return -
+    * insertion for const_iterator.
+    * @param pos - an iterator pointing to a position in the vector.
+    * @param val - refrence of value to insert.
+    * @return - an iterator to pointing to the new added value.
+    */
+    const_iterator insert(const_iterator pos, const T& val)
+    {
+        if(_currSize + 1 > _currCap) // need to increase the array.
+        {
+            int idx = pos - this->begin();
+            _incrementCapacity();
+            pos = Iterator(&(_arrPtr[idx]));
+        }
+        for (auto it = this->end(); it != (pos - 1); --it) //shift all elements to the right
+        {
+            *(it + 1) = *it;
+        }
+        *pos = val;
+        _currSize++;
+        return pos;
+    }
+
+    /**
+     * inserting elements from a given container between two given pointers.
+     * @param first - iterator to beginning of values to add.
+     * @param last - iterator pointing to the first element not to add.
+     * @param pos - position to add in VLVector.
+     * @return - iterator pointing to the first element added.
      */
     template <class InputIterator>
     iterator insert(iterator pos, const InputIterator& first, const InputIterator& last)
@@ -625,6 +648,32 @@ public:
         {
             _incrementCapacity();
             pos = Iterator(&(this->_arrPtr[idx]));
+            tmpEnd = Iterator(&(_arrPtr[endIdx]));
+        }
+        _currSize += sizeChange;
+        std::copy_backward(pos, tmpEnd, this->end());
+        std::copy(first, last, pos);
+        return pos;
+    }
+
+    /**
+     inserting elements from a given container between two given pointers.
+     * @param first - iterator to beginning of values to add.
+     * @param last - iterator pointing to the first element not to add.
+     * @param pos - position to add in VLVector.
+     * @return - iterator pointing to the first element added.
+     */
+    template <class InputIterator>
+    const_iterator insert(const_iterator pos, const InputIterator& first, const InputIterator& last)
+    {
+        int sizeChange = last - first;
+        auto tmpEnd = this->end();
+        int idx = pos - this->begin();
+        int endIdx = this->end() - this->begin();
+        while(_currSize + sizeChange > _currCap) //increase capacity
+        {
+            _incrementCapacity();
+            pos = ConstIterator(&(this->_arrPtr[idx]));
             tmpEnd = Iterator(&(_arrPtr[endIdx]));
         }
         _currSize += sizeChange;
@@ -653,7 +702,7 @@ public:
      * @param pos - iterator for the array
      * @return - an iterator to the element on the right of the removed element.
      */
-    iterator erase(iterator pos)
+    iterator erase(const iterator pos)
     {
         for(auto item = pos; item != this->end(); item++)
         {
@@ -670,12 +719,33 @@ public:
     }
 
     /**
+     * ConstIterator for the above function.
+     * @param pos - iterator for the array.
+     * @return - an iterator to the element on the right of the removed element.
+     */
+    const_iterator erase(const const_iterator pos)
+    {
+        for(auto item = pos; item != this->end(); item++)
+        {
+            *item = *(item + 1);
+        }
+        if(_currSize - 1 == statSize) //change back to static memory from dynamic
+        {
+            int idx = pos - this->begin();
+            this->_toStack();
+            pos = ConstIterator(&(_arrPtr[idx]));
+        }
+        _currSize--;
+        return pos;
+    }
+
+    /**
      *
      * @param first - iterator pointing to the first element to delete
      * @param last - first element which is not deleted
      * @return - iterator to the first element which is not deleted.
      */
-    iterator erase(iterator first, iterator last)
+    iterator erase(const iterator first, const iterator last)
     {
         int sizeChange = last - first;
         int idx = first - this->begin();
@@ -688,6 +758,29 @@ public:
         {
             this->_toStack();
             first = Iterator(&(_arrPtr[idx]));
+        }
+        return first;
+    }
+
+    /**
+     *
+     * @param first - iterator pointing to the first element to delete
+     * @param last - first element which is not deleted
+     * @return - iterator to the first element which is not deleted.
+     */
+    const_iterator erase(const const_iterator first, const const_iterator last)
+    {
+        int sizeChange = last - first;
+        int idx = first - this->begin();
+        for(auto it = last; it != this->end(); it++)
+        {
+            *(it - sizeChange) = *it;
+        }
+        _currSize -= sizeChange;
+        if(_currSize <= statSize && _dynamicArr != nullptr) //move from dynamic to static
+        {
+            this->_toStack();
+            first = ConstIterator(&(_arrPtr[idx]));
         }
         return first;
     }
