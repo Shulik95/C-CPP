@@ -80,7 +80,14 @@ private:
         else
         {
             /*need to increase dynamic memory*/
-            _dynamicArr = (T*) realloc(_dynamicArr, this->_currCap * sizeof(T*));
+            //_dynamicArr = (T*) realloc(_dynamicArr, this->_currCap * sizeof(T*));
+            T* tmp = new(std::nothrow) T [_currCap];
+            for (int i = 0; i < _currSize ; ++i)
+            {
+                tmp[i] = _dynamicArr[i];
+            }
+            delete[] _dynamicArr;
+            _dynamicArr = tmp;
         }
     }
 
@@ -488,7 +495,7 @@ public:
      * @param last
      */
     template<class InputIterator>
-    explicit VLVector(InputIterator& first, InputIterator& last) : _currSize(EMPTY), _currCap(statSize)
+    VLVector(InputIterator first, InputIterator last) : _currSize(EMPTY), _currCap(statSize)
     {
         for (auto it = first; it != last; it++)
         {
@@ -500,7 +507,7 @@ public:
      * a copy constructor for VLVector, creates a deep copy of the given vector.
      * @param vec - the vector to copy.
      */
-    explicit VLVector(const VLVector<T>& vec) : _currSize(EMPTY), _currCap(statSize)
+    VLVector(const VLVector<T>& vec) : _currSize(EMPTY), _currCap(statSize)
     {
         *this = vec;
     }
@@ -601,14 +608,17 @@ public:
     {
         int sizeChange = last - first;
         auto tmpEnd = this->end();
-        _currSize += sizeChange;
+        //_currSize += sizeChange;
         int idx = pos - this->begin();
-        while(_currSize > _currCap) //increase capacity
+        int endIdx = this->end() - this->begin();
+        while(_currSize + sizeChange > _currCap) //increase capacity
         {
             _incrementCapacity();
             pos = Iterator(&(this->_arrPtr[idx]));
+            tmpEnd = Iterator(&(_arrPtr[endIdx]));
         }
-        std::copy_backward(pos - 1, tmpEnd, this->end());
+        _currSize += sizeChange;
+        std::copy_backward(pos, tmpEnd, this->end());
         std::copy(first, last, pos);
         return pos;
     }
@@ -657,13 +667,16 @@ public:
      */
     iterator erase(iterator first, iterator last)
     {
-        std::copy(last, this->end(), first);
         int sizeChange = last - first;
-        _currSize -= sizeChange;
         int idx = first - this->begin();
-        if(_currSize <= statSize) //move to stack
+        for(auto it = last; it != this->end(); it++)
         {
-            _toStack();
+            *(it - sizeChange) = *it;
+        }
+        _currSize -= sizeChange;
+        if(_currSize <= statSize && _dynamicArr != nullptr) //move from dynamic to static
+        {
+            this->_toStack();
             first = Iterator(&(_arrPtr[idx]));
         }
         return first;
