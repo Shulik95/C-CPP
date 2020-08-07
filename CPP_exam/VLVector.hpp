@@ -15,7 +15,7 @@
  * general copy method between both arrays.
  */
 #define COPY_DATA(src, dest)\
-for (int i = 0; i < this->_currSize; ++i)\
+for (size_t i = 0; i < this->_currSize; ++i)\
     {\
         (this->dest)[i] = (this->src)[i];\
     }
@@ -27,6 +27,11 @@ for (int i = 0; i < this->_currSize; ++i)\
 const static std::string IDX_ERR = "given index is illegal";
 // ------------------------------- methods ------------------------------
 
+/**
+ * implements VLVector class
+ * @tparam T
+ * @tparam statSize
+ */
 template <class T, int statSize = DEFAULT_CAP>
 class VLVector
 {
@@ -82,7 +87,7 @@ private:
             /*need to increase dynamic memory*/
             //_dynamicArr = (T*) realloc(_dynamicArr, this->_currCap * sizeof(T*));
             T* tmp = new(std::nothrow) T [_currCap];
-            for (int i = 0; i < _currSize ; ++i)
+            for (size_t i = 0; i < _currSize ; ++i)
             {
                 tmp[i] = _dynamicArr[i];
             }
@@ -103,6 +108,9 @@ private:
         _currCap = statSize;
     }
 
+    /**
+     * implementation of Iterator for VLVector.
+     */
     class Iterator
     {
         T* _currElem;
@@ -293,6 +301,9 @@ private:
         }
     };
 
+    /**
+     * implementation of ConstIterator for VLVector.
+     */
     class ConstIterator
     {
         T* _curr;
@@ -549,7 +560,7 @@ public:
      * @return - the value at the given index.
      * @throw - index out of range.
      */
-    T at(const int idx) const
+    T at(const size_t idx) const
     {
         if(idx > this->_currSize || idx < 0)
         {
@@ -608,7 +619,6 @@ public:
     {
         int sizeChange = last - first;
         auto tmpEnd = this->end();
-        //_currSize += sizeChange;
         int idx = pos - this->begin();
         int endIdx = this->end() - this->begin();
         while(_currSize + sizeChange > _currCap) //increase capacity
@@ -778,7 +788,7 @@ public:
         if (this->capacity() > statSize) //data is in the dynamically allocated array
         {
             this->_dynamicArr = new T[this->capacity()];
-            for (int i = 0; i < rhs.size(); ++i)
+            for (size_t i = 0; i < rhs.size(); ++i)
             {
                 this->_dynamicArr[i] = rhs._dynamicArr[i];
             }
@@ -786,7 +796,7 @@ public:
         }
         else //data is on the stack.
         {
-            for (int i = 0; i < this->size(); ++i)
+            for (size_t i = 0; i < this->size(); ++i)
             {
                 this->_staticArr[i] = rhs._staticArr[i];
             }
@@ -824,7 +834,7 @@ public:
         {
             return false;
         }
-        for (int i = 0; i < rhs.size(); ++i)
+        for (size_t i = 0; i < rhs.size(); ++i)
         {
             if((this->_arrPtr)[i] != rhs[i])
             {
