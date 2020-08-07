@@ -79,7 +79,7 @@ private:
             /*the static memory is full, move to dynamic memory*/
             this->_dynamicArr = new(std::nothrow) T [ this->_currCap];
             this->_copyToDynamic();
-            std::fill(std::begin(this->_staticArr), std::end(this->_staticArr), 0);//zero static array.
+            std::fill(std::begin(this->_staticArr), std::end(this->_staticArr), 0); //zero static array.
             this->_arrPtr = this->_dynamicArr; // change ptr to point at dynamic memory
         }
         else
@@ -157,7 +157,7 @@ private:
         /**
          * @return the incremented iterator/
          */
-        Iterator &operator++(int)
+        Iterator operator++(int)
         {
             Iterator tmp = *this; //save curr iterator.
             _currElem++;
@@ -178,7 +178,7 @@ private:
          *
          * @return
          */
-        Iterator &operator__(int)
+        Iterator operator--(int)
         {
             Iterator tmp = *this;
             _currElem--;
@@ -590,7 +590,7 @@ public:
      * @param val - refrence of value to insert.
      * @return - an iterator to pointing to the new added value.
      */
-    iterator insert(iterator pos ,const T& val)
+    iterator insert(iterator pos, const T& val)
     {
         if(_currSize + 1 > _currCap) // need to increase the array.
         {
@@ -657,7 +657,7 @@ public:
     {
         for(auto item = pos; item != this->end(); item++)
         {
-            *item = *(item +1);
+            *item = *(item + 1);
         }
         if(_currSize - 1 == statSize) //change back to static memory from dynamic
         {
@@ -756,7 +756,7 @@ public:
      */
     const_iterator end() const
     {
-        return const_iterator(this->_arrPtr[_currSize]);
+        return const_iterator(&this->_arrPtr[_currSize]);
     }
 
     /**
@@ -765,7 +765,7 @@ public:
      */
     const_iterator cend() const
     {
-        return const_iterator(this->_arrPtr[_currSize]);
+        return const_iterator(&(this->_arrPtr[_currSize]));
     }
 
 
